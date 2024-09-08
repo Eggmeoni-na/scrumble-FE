@@ -1,13 +1,14 @@
 {
-	"compilerOptions": {
-		"target": "esnext",
-		"jsx": "react-jsx",
-		"module": "esnext",
-		"moduleResolution": "node",
-		"skipLibCheck": true,
-		"esModuleInterop": true,
-		"strict": true
-	},
-	"files": [],
-	"references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }]
+  "compilerOptions": {
+    "target": "esnext",
+    "jsx": "react-jsx",
+    "jsxImportSource": "@emotion/react",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "strict": true
+  },
+  "files": [],
+  "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }]
 }
