@@ -1,7 +1,13 @@
-import "./App.css";
+import { globalStyles } from '@/styles/globalStyles';
+import { Global } from '@emotion/react';
+import './App.css';
 
 function App() {
-  return <></>;
+  return (
+    <>
+      <Global styles={globalStyles} />
+    </>
+  );
 }
 
 export default App;
