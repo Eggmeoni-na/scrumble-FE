@@ -1,14 +1,23 @@
 {
   "compilerOptions": {
     "target": "esnext",
+    "lib": ["DOM", "ESNext"],
     "jsx": "react-jsx",
     "jsxImportSource": "@emotion/react",
     "module": "esnext",
     "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "outDir": "./dist",
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "strict": true
+    "strict": true,
+    "sourceMap": true,
+    "baseUrl": ".", // baseUrl을 기준으로 관련된 위치에 모듈 이름의 경로 매핑 목록을 나열한다.
+    "paths": {
+      "@/*": ["src/*"],
+      "@components/*": ["./src/components/*"],
+      "@pages/*": ["./src/pages/*"]
+    }
   },
-  "files": [],
-  "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }]
+  "include": ["src"]
 }
