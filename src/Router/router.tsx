@@ -1,10 +1,12 @@
 import App from '@/App';
+import { MainLayout } from '@/components';
+import LoginLayout from '@/components/layouts/LoginLayout';
 import GroupDetailPage from '@/Pages/GroupDetailPage';
 import HomePage from '@/Pages/HomePage';
 import LoginPage from '@/Pages/LoginPage';
 import MyGroupsPage from '@/Pages/MyGroupsPage';
 import MyPage from '@/Pages/MyPage';
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Outlet } from 'react-router-dom';
 
 export const router = createBrowserRouter([
   {
@@ -12,24 +14,38 @@ export const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        index: true,
-        element: <HomePage />,
+        path: '/',
+        element: (
+          <MainLayout>
+            <Outlet />
+          </MainLayout>
+        ),
+        children: [
+          {
+            index: true,
+            element: <HomePage />,
+          },
+          {
+            path: '/my-groups',
+            element: <MyGroupsPage />,
+          },
+          {
+            path: '/my-groups/:groupId',
+            element: <GroupDetailPage />,
+          },
+          {
+            path: '/me',
+            element: <MyPage />,
+          },
+        ],
       },
       {
         path: '/login',
-        element: <LoginPage />,
-      },
-      {
-        path: '/my-groups',
-        element: <MyGroupsPage />,
-      },
-      {
-        path: '/my-groups/:groupId',
-        element: <GroupDetailPage />,
-      },
-      {
-        path: '/me',
-        element: <MyPage />,
+        element: (
+          <LoginLayout>
+            <LoginPage />
+          </LoginLayout>
+        ),
       },
     ],
   },
