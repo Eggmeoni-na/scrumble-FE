@@ -1,4 +1,4 @@
-import { globalStyles } from '@/styles/globalStyles';
+import { globalStyles } from '@/styles';
 import { Global } from '@emotion/react';
 import { Outlet } from 'react-router-dom';
 import './App.css';
