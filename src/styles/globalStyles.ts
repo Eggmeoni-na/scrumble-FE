@@ -2,6 +2,14 @@ import { css } from '@emotion/react';
 
 export const globalStyles = css`
   /* Reset CSS */
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    background-color: #fffef6;
+  }
+
   html,
   body,
   div,
