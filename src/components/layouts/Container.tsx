@@ -1,5 +1,5 @@
 import { breakpoints } from '@/styles';
-import { MobileMediaQuery, pcMediaQuery } from '@/styles/breakpoints';
+import { mobileMediaQuery, pcMediaQuery } from '@/styles/breakpoints';
 import { css } from '@emotion/react';
 import { ReactNode } from 'react';
 
@@ -22,7 +22,7 @@ const containerStyles = css`
   justify-content: space-between;
   background-color: #fff;
 
-  ${MobileMediaQuery(css`
+  ${mobileMediaQuery(css`
     max-width: ${breakpoints.mobile};
     border: 2px solid red; // 구분용 - 삭제 예정
   `)}

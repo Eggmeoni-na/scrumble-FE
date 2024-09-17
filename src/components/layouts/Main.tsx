@@ -6,11 +6,11 @@ type Props = {
 };
 
 const Main = ({ children }: Props) => {
-  return <main css={MainContainer}>{children}</main>;
+  return <main css={mainContainer}>{children}</main>;
 };
 
 export default Main;
 
-const MainContainer = css`
+const mainContainer = css`
   flex: 1;
 `;
