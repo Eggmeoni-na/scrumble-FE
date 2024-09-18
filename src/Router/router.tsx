@@ -1,6 +1,7 @@
 import App from '@/App';
 import { MainLayout } from '@/components';
 import LoginLayout from '@/components/layouts/LoginLayout';
+import GoogleOAuthCallbackPage from '@/Pages/GoogleOAuthLoginPage';
 import GroupDetailPage from '@/Pages/GroupDetailPage';
 import HomePage from '@/Pages/HomePage';
 import LoginPage from '@/Pages/LoginPage';
@@ -46,6 +47,10 @@ export const router = createBrowserRouter([
             <LoginPage />
           </LoginLayout>
         ),
+      },
+      {
+        path: '/login/oauth2/code/google',
+        element: <GoogleOAuthCallbackPage />,
       },
     ],
   },
