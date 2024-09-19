@@ -9,4 +9,14 @@ export default defineConfig({
     }),
     tsconfigPaths(),
   ],
+  server: {
+    port: 8080,
+    proxy: {
+      '/api': {
+        target: 'http://3.38.3.226:8080',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    },
+  },
 });
