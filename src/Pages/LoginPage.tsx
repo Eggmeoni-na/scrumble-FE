@@ -1,16 +1,29 @@
+import { generateTempSession } from '@/api/auth';
 import { pcMediaQuery } from '@/styles/breakpoints';
 import { css } from '@emotion/react';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
-  const handleGoogleLogin = () => {
-    // TODO: Issue-11에서 Oauth 연동 예정
+  const navigate = useNavigate();
+  const handleGoogleLogin = async () => {
+    try {
+      // TODO: 테스트 완료 후 구글 로그인창으로 변경 예정
+      const response = await generateTempSession();
+      if (response.status === 200) {
+        navigate('/');
+        return;
+      }
+    } catch (error) {
+      // TODO: 로그인 실패 에러 안내
+      console.error('Failed to fetch Google OAuth URL', error);
+    }
   };
 
   return (
-    <div css={Container}>
-      <img css={LoginHomeImg} src="/images/login.png" alt="login_image" />
+    <div css={loginContainer}>
+      <img css={loginHomeImgStyle} src="/images/login.png" alt="login_image" />
       <button onClick={handleGoogleLogin} aria-label="Login with Google">
-        <img css={GoogleLoginImg} src="/images/google_login.png" alt="google_login" />
+        <img css={googleLoginImgStyle} src="/images/google_login.png" alt="google_login" />
       </button>
     </div>
   );
@@ -18,7 +31,7 @@ const LoginPage = () => {
 
 export default LoginPage;
 
-const Container = css`
+const loginContainer = css`
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -26,7 +39,7 @@ const Container = css`
   gap: 28px;
 `;
 
-const LoginHomeImg = css`
+const loginHomeImgStyle = css`
   width: 70%;
   margin-top: 112px;
 
@@ -35,7 +48,7 @@ const LoginHomeImg = css`
   `)}
 `;
 
-const GoogleLoginImg = css`
+const googleLoginImgStyle = css`
   height: 48px;
 
   ${pcMediaQuery(css`

@@ -5,7 +5,7 @@ export const breakpoints = {
   pc: '600px',
 };
 
-export const MobileMediaQuery = (styles: SerializedStyles) => css`
+export const mobileMediaQuery = (styles: SerializedStyles) => css`
   @media (min-width: ${breakpoints.mobile}) {
     ${styles}
   }
