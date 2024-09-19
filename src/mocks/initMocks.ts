@@ -7,7 +7,9 @@ const initMocks = async () => {
   }
 
   const worker = setupWorker(...handlers);
-  await worker.start();
+  await worker.start({
+    onUnhandledRequest: 'bypass',
+  });
 };
 
 export { initMocks };

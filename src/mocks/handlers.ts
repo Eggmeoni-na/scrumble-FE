@@ -1,7 +1,9 @@
 import { http, HttpResponse } from 'msw';
 
+const mockURL = '/mock-api';
+
 export const handlers = [
-  http.get('/posts', () => {
+  http.get(`${mockURL}/post`, () => {
     console.log('Captured a "GET /posts" request');
     return HttpResponse.json({
       data: Array.from(
@@ -14,7 +16,7 @@ export const handlers = [
     });
   }),
 
-  http.post('/posts', async ({ request }) => {
+  http.post(`${mockURL}/posts`, async ({ request }) => {
     const newPost = await request.json();
     return HttpResponse.json(
       {
@@ -25,7 +27,7 @@ export const handlers = [
     );
   }),
 
-  http.delete('/posts/:id', ({ params }) => {
+  http.delete(`${mockURL}/posts/:id`, ({ params }) => {
     const { id } = params;
     const deletedPost = { id, title: 'title' };
 
@@ -39,7 +41,7 @@ export const handlers = [
     });
   }),
 
-  http.get('/user', ({ cookies }) => {
+  http.get(`${mockURL}/user`, ({ cookies }) => {
     const { session } = cookies;
 
     if (!session) {
