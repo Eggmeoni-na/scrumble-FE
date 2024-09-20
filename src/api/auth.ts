@@ -1,5 +1,5 @@
 import { instance } from '@/api';
-import { OAuthRequestParams, OAuthUrl } from '@/types/auth';
+import { OAuthRequestParams, OAuthUrl, User } from '@/types/auth';
 import { AxiosResponse } from 'axios';
 
 // 개발기용 임시 로그인 API
@@ -34,4 +34,9 @@ export const signInOrSignUp = async ({ oauthType, code, scope }: OAuthRequestPar
 
   const response = await instance.post('/api/auth/login', data);
   return response;
+};
+
+export const getUser = async (): Promise<{ data: User }> => {
+  const response = await instance.get('/api/members/me');
+  return response.data;
 };
