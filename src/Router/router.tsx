@@ -1,12 +1,9 @@
 import App from '@/App';
 import { MainLayout } from '@/components';
 import LoginLayout from '@/components/layouts/LoginLayout';
+import { HomePage, LoginPage, MyPage, SquadDetailPage, SquadPage } from '@/Pages';
 import GoogleOAuthCallbackPage from '@/Pages/GoogleOAuthLoginPage';
-import GroupDetailPage from '@/Pages/GroupDetailPage';
-import HomePage from '@/Pages/HomePage';
-import LoginPage from '@/Pages/LoginPage';
-import MyGroupsPage from '@/Pages/MyGroupsPage';
-import MyPage from '@/Pages/MyPage';
+
 import { createBrowserRouter, Outlet } from 'react-router-dom';
 
 export const router = createBrowserRouter([
@@ -27,12 +24,12 @@ export const router = createBrowserRouter([
             element: <HomePage />,
           },
           {
-            path: '/my-groups',
-            element: <MyGroupsPage />,
+            path: '/squad',
+            element: <SquadPage />,
           },
           {
-            path: '/my-groups/:groupId',
-            element: <GroupDetailPage />,
+            path: '/squad/:groupId',
+            element: <SquadDetailPage />,
           },
           {
             path: '/me',
