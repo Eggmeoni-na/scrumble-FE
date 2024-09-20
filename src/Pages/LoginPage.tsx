@@ -1,17 +1,24 @@
-import { generateTempSession } from '@/api/auth';
+import { generateTempSession, getUser } from '@/api/auth';
+import { useAuthStore } from '@/stores/auth';
 import { pcMediaQuery } from '@/styles/breakpoints';
 import { css } from '@emotion/react';
 import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const login = useAuthStore((state) => state.login);
   const handleGoogleLogin = async () => {
     try {
-      // TODO: 테스트 완료 후 구글 로그인창으로 변경 예정
+      // TODO: 테스트 완료 후 구글 로그인으로 변경 예정
       const response = await generateTempSession();
       if (response.status === 200) {
-        navigate('/');
+        const { data: user } = await getUser();
+        login(user);
+        navigate('/squad');
         return;
+      } else {
+        // TODO: 세션 발급 실패 에러 처리
+        console.error('Failed to generate session:', response.status);
       }
     } catch (error) {
       // TODO: 로그인 실패 에러 안내

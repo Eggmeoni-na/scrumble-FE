@@ -13,3 +13,8 @@ export type OAuthRequestParams = {
   code: string;
   scope: string;
 };
+
+export type User = {
+  oauthType: OAuthType;
+  email: 'string';
+};
