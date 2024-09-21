@@ -1,13 +1,14 @@
-import { css } from '@emotion/react';
+import { css, Theme } from '@emotion/react';
 
-export const globalStyles = css`
+export const globalStyles = (theme: Theme) => css`
   /* Reset CSS */
   * {
     box-sizing: border-box;
+    color: ${theme.colors.text};
   }
 
   body {
-    background-color: #fffef6;
+    background-color: ${theme.colors.background.lightYellow};
   }
 
   html,
