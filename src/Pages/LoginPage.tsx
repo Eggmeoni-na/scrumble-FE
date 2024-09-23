@@ -1,4 +1,4 @@
-import { generateTempSession, getUser } from '@/api/auth';
+import { generateTempSession } from '@/api/auth';
 import { useAuthStore } from '@/stores/auth';
 import { pcMediaQuery } from '@/styles/breakpoints';
 import { css } from '@emotion/react';
@@ -12,8 +12,7 @@ const LoginPage = () => {
       // TODO: 테스트 완료 후 구글 로그인으로 변경 예정
       const response = await generateTempSession();
       if (response.status === 200) {
-        const { data: user } = await getUser();
-        login(user);
+        login();
         navigate('/squad');
         return;
       } else {
