@@ -37,6 +37,6 @@ export const signInOrSignUp = async ({ oauthType, code, scope }: OAuthRequestPar
 };
 
 export const getUser = async (): Promise<{ data: User }> => {
-  const response = await instance.get('/api/members/me');
+  const response = await instance.get('/api/users/me');
   return response.data;
 };
