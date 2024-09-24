@@ -1,4 +1,4 @@
-import { css } from '@emotion/react';
+import { css, Theme } from '@emotion/react';
 import { ReactNode } from 'react';
 
 type Props = {
@@ -11,6 +11,7 @@ const Main = ({ children }: Props) => {
 
 export default Main;
 
-const mainContainer = css`
+const mainContainer = (theme: Theme) => css`
   flex: 1;
+  background-color: ${theme.colors.background.yellow};
 `;

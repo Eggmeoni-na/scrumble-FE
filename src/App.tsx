@@ -1,15 +1,15 @@
 import { useThemeStore } from '@/stores/theme';
 import { globalStyles } from '@/styles';
+import { darkTheme, lightTheme } from '@/styles/theme';
 import { Global, ThemeProvider } from '@emotion/react';
 import { Outlet } from 'react-router-dom';
 import './App.css';
 
 function App() {
-  const { theme, toggleTheme } = useThemeStore((state) => state);
+  const isDarkMode = useThemeStore((state) => state.isDarkMode);
 
   return (
-    <ThemeProvider theme={theme}>
-      <button onClick={toggleTheme}>임시 테마 변경 버튼</button>
+    <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
       <Global styles={globalStyles} />
       <Outlet />
     </ThemeProvider>
