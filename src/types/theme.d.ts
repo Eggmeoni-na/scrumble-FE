@@ -11,6 +11,11 @@ declare module '@emotion/react' {
         lightYellow: string;
       };
       text: string;
+      border: {
+        gray100: string;
+        gray200: string;
+        gray300: string;
+      };
     };
   }
 }
