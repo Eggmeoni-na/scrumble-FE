@@ -174,5 +174,10 @@ export const globalStyles = (theme: Theme) => css`
     cursor: pointer;
   }
 
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
   /* Add global styles */
 `;
