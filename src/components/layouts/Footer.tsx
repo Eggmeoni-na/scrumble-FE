@@ -6,8 +6,8 @@ import { Link } from 'react-router-dom';
 const Footer = () => {
   return (
     <footer css={footerContainer}>
-      <Link to={'/squad'} css={menuIcon}>
-        <IconWrapper name="squad">
+      <Link to={'/squads'} css={menuIcon}>
+        <IconWrapper name="squads">
           <Target />
         </IconWrapper>
         <p>스쿼드</p>

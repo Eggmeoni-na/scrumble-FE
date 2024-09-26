@@ -1,8 +1,9 @@
 import App from '@/App';
 import { MainLayout } from '@/components';
 import LoginLayout from '@/components/layouts/LoginLayout';
-import { HomePage, LoginPage, MyPage, SquadDetailPage, SquadPage } from '@/Pages';
+import { HomePage, LoginPage, MyPage, ProtectedPage, SquadDetailPage, SquadPage } from '@/Pages';
 import GoogleOAuthCallbackPage from '@/Pages/GoogleOAuthLoginPage';
+import { Suspense } from 'react';
 
 import { createBrowserRouter, Outlet } from 'react-router-dom';
 
@@ -24,11 +25,17 @@ export const router = createBrowserRouter([
             element: <HomePage />,
           },
           {
-            path: '/squad',
-            element: <SquadPage />,
+            path: '/squads',
+            element: (
+              <Suspense fallback={<h1>로딩중</h1>}>
+                <ProtectedPage>
+                  <SquadPage />
+                </ProtectedPage>
+              </Suspense>
+            ),
           },
           {
-            path: '/squad/:groupId',
+            path: '/squads/:squadId',
             element: <SquadDetailPage />,
           },
           {
