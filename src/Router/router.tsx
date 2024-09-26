@@ -1,7 +1,7 @@
 import App from '@/App';
 import { MainLayout } from '@/components';
 import LoginLayout from '@/components/layouts/LoginLayout';
-import { HomePage, LoginPage, MyPage, SquadDetailPage, SquadPage } from '@/Pages';
+import { HomePage, LoginPage, MyPage, ProtectedPage, SquadDetailPage, SquadPage } from '@/Pages';
 import GoogleOAuthCallbackPage from '@/Pages/GoogleOAuthLoginPage';
 
 import { createBrowserRouter, Outlet } from 'react-router-dom';
@@ -25,7 +25,11 @@ export const router = createBrowserRouter([
           },
           {
             path: '/squad',
-            element: <SquadPage />,
+            element: (
+              <ProtectedPage>
+                <SquadPage />
+              </ProtectedPage>
+            ),
           },
           {
             path: '/squad/:groupId',
