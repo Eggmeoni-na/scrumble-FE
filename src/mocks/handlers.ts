@@ -48,4 +48,15 @@ export const handlers = [
       return new HttpResponse(null, { status: 401 });
     }
   }),
+
+  http.get(`${mockURL}/squads`, () => {
+    console.log('Captured a "GET /squads" request');
+    return HttpResponse.json({
+      data: [
+        { squadId: 1, squadName: '만들어유' },
+        { squadId: 2, squadName: '해볼까유' },
+      ],
+      message: 'GET 요청 성공',
+    });
+  }),
 ];

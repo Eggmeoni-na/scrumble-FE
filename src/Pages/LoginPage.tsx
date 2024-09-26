@@ -13,7 +13,7 @@ const LoginPage = () => {
       const response = await generateTempSession();
       if (response.status === 200) {
         login();
-        navigate('/squad');
+        navigate('/squads', { replace: true });
         return;
       } else {
         // TODO: 세션 발급 실패 에러 처리
