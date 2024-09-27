@@ -6,3 +6,5 @@ export type ResponseType<T> = {
   message: string;
   statusCodeValue: number;
 };
+
+export type Status = 'success' | 'warning' | 'failed';
