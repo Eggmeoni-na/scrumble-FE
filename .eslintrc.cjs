@@ -9,7 +9,7 @@ module.exports = {
   plugins: ['react', '@typescript-eslint', 'prettier'],
   rules: {
     'prettier/prettier': 'off',
-    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
+    'no-console': import.meta.env.NODE_ENV === 'production' ? 'error' : 'warn',
   },
   settings: {
     react: {
