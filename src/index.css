@@ -1,0 +1,51 @@
+#SvgjsSvg2482 {
+  color: aqua;
+}
+
+.modal-container {
+  width: 360px;
+  z-index: 999;
+  background: white;
+  padding: 28px;
+  border-radius: 16px;
+  position: relative;
+  -webkit-box-shadow: -5px 10px 49px 0px rgba(36, 36, 36, 0.25);
+  box-shadow: -5px 10px 49px 0px rgba(36, 36, 36, 0.25);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+
+  & h1 {
+    color: #252525;
+    font-size: 1.2rem;
+    font-weight: 700;
+  }
+
+  .close {
+    background: transparent;
+    color: #707070;
+    display: flex;
+    align-items: center;
+    padding: 0;
+
+    & svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+}
+
+.modal-btn-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.modal-btn-group button {
+  width: 100%;
+}
