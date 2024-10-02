@@ -38,7 +38,7 @@ const Toast = ({ message, type, onRemove, disabled }: Omit<Toast, 'id'> & { onRe
       <span>{toastType[type]}</span>
       <span>{message}</span>
     </div>
-    <IconWrapper customStyle={() => closeButton(disabled)} onClick={onRemove} name="close toast">
+    <IconWrapper customStyle={() => closeButton(disabled)} onClick={onRemove} label="close toast">
       <Close />
     </IconWrapper>
   </div>

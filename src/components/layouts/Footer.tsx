@@ -7,18 +7,18 @@ const Footer = () => {
   return (
     <footer css={footerContainer}>
       <Link to={'/squads'} css={menuIcon}>
-        <IconWrapper name="squads">
+        <IconWrapper label="squads">
           <Target />
         </IconWrapper>
         <p>스쿼드</p>
       </Link>
       <Link to={'/'} css={homeIcon}>
-        <IconWrapper name="home and my todos">
+        <IconWrapper label="home and my todos">
           <Pouch />
         </IconWrapper>
       </Link>
       <Link to={'/me'} css={menuIcon}>
-        <IconWrapper name="account">
+        <IconWrapper label="account">
           <User />
         </IconWrapper>
         <p>계정</p>
