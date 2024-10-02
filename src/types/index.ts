@@ -1,4 +1,5 @@
 export * from './auth';
+export * from './modal';
 export * from './squad';
 
 export type ResponseType<T> = {
