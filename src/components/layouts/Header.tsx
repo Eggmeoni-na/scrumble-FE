@@ -7,17 +7,17 @@ const Header = () => {
   const { isDarkMode, toggleTheme } = useThemeStore((state) => state);
   return (
     <header css={headerContainer}>
-      <IconWrapper name="Back">
+      <IconWrapper aria-label="Go to back" role="button">
         <Back />
       </IconWrapper>
       <div css={rightMenu}>
-        <IconWrapper name="Theme" onClick={toggleTheme}>
+        <IconWrapper aria-label="Toggle theme" onClick={toggleTheme} role="button">
           {isDarkMode ? <Dark /> : <Light />}
         </IconWrapper>
-        <IconWrapper name="Alarm">
+        <IconWrapper aria-label="alarm" role="button">
           <Bell />
         </IconWrapper>
-        <IconWrapper name="Add squad">
+        <IconWrapper aria-label="Add squad" role="button">
           <Add />
         </IconWrapper>
       </div>

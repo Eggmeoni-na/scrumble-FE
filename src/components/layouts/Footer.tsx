@@ -6,22 +6,22 @@ import { Link } from 'react-router-dom';
 const Footer = () => {
   return (
     <footer css={footerContainer}>
-      <Link to={'/squads'} css={menuIcon}>
-        <IconWrapper name="squads">
+      <Link to="/squads" css={menuIcon} aria-label="Go to squads">
+        <IconWrapper>
           <Target />
         </IconWrapper>
-        <p>스쿼드</p>
+        <span>스쿼드</span>
       </Link>
-      <Link to={'/'} css={homeIcon}>
-        <IconWrapper name="home and my todos">
+      <Link to="/" css={homeIcon} aria-label="Go to home">
+        <IconWrapper>
           <Pouch />
         </IconWrapper>
       </Link>
-      <Link to={'/me'} css={menuIcon}>
-        <IconWrapper name="account">
+      <Link to="/me" css={menuIcon} aria-label="Go to my">
+        <IconWrapper>
           <User />
         </IconWrapper>
-        <p>계정</p>
+        <span>계정</span>
       </Link>
     </footer>
   );
@@ -44,7 +44,7 @@ const menuIcon = (theme: Theme) => css`
   gap: 4px;
   color: ${theme.colors.primary};
 
-  p {
+  span {
     color: ${theme.colors.gray.gray300};
   }
 `;
