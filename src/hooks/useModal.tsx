@@ -1,5 +1,5 @@
 import { Modal, ModalPortal } from '@/components/common/Modal';
-import { ActionModalType, ModalParameters } from '@/types';
+import { ActionModalType } from '@/types';
 import { ComponentType, useCallback, useEffect, useId } from 'react';
 import { useModalContext } from 'src/context/ModalContext';
 
@@ -10,10 +10,7 @@ export const useModal = () => {
 
   const closeModal = useCallback(() => close(modalId), [modalId, close]);
   const openModal = useCallback(
-    <P extends { onSubmit(value: unknown): unknown }>(
-      Component: ComponentType<ModalParameters>,
-      actionModal?: ActionModalType,
-    ) =>
+    <P extends { onSubmit(value: unknown): unknown }>(Component: ComponentType<P>, actionModal?: ActionModalType) =>
       new Promise<{ ok: boolean; value?: Parameters<P['onSubmit']>[0]; error?: string }>((resolve) => {
         const modal = {
           element: Component,
