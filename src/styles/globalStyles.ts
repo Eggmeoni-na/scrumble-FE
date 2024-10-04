@@ -4,8 +4,16 @@ export const globalStyles = (theme: Theme) => css`
   /* Reset CSS */
 
   :root {
-    --color-success: #409c2c;
-    --color-failed: #ff5e7e;
+    --color-text-gray: #616161;
+    --color-primary: #ffa500;
+    --color-secondary: #ffd700;
+    --color-success: #50d133;
+    --color-warning: #ffc107;
+    --color-failed: #ff382a;
+    --color-primary-bg: #fdf8e1;
+    --color-success-bg: #e8f1e6;
+    --color-default-bg: #f5f5f5;
+    --color-failed-bg: #ffe2da;
   }
 
   @font-face {
@@ -132,6 +140,7 @@ export const globalStyles = (theme: Theme) => css`
     font-size: 100%;
     vertical-align: baseline;
   }
+
   /* HTML5 display-role reset for older browsers */
   article,
   aside,
