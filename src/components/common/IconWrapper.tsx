@@ -31,7 +31,7 @@ const icon = ({ disabled }: IconProps) => css`
   padding: 4px;
   stroke-width: 0.1;
   transition: all 0.3s ease-in-out;
-  visibility: ${disabled ? 'hidden' : 'visible'};
+  display: ${disabled ? 'none' : 'block'};
   transition: transform 0.3s ease-in-out;
   :hover {
     transform: scale(1.1);
