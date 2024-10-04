@@ -27,11 +27,11 @@ export const router = createBrowserRouter([
           {
             path: '/squads',
             element: (
-              <Suspense fallback={<h1>로딩중</h1>}>
-                <ProtectedPage>
+              <ProtectedPage>
+                <Suspense fallback={<h1>로딩중</h1>}>
                   <SquadPage />
-                </ProtectedPage>
-              </Suspense>
+                </Suspense>
+              </ProtectedPage>
             ),
           },
           {
