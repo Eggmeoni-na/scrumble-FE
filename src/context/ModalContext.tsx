@@ -17,7 +17,7 @@ type ModalContextValue<P> = {
   portalRef: MutableRefObject<HTMLDivElement | null>;
 };
 
-const modalContext = createContext<ModalContextValue<ModalParameters> | null>(null);
+const modalContext = createContext<ModalContextValue<any> | null>(null);
 
 export const ModalProvider = ({ children }: PropsWithChildren) => {
   const [modals, setModals] = useState<ModalType<ModalParameters>[]>([]);
