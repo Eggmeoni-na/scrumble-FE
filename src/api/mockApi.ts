@@ -1,5 +1,7 @@
-import { Squad } from '@/types';
-import axios from 'axios';
+import { createSquadParamType } from '@/hooks/useMutations';
+import { ApiResponse, Squad } from '@/types';
+import { MutationFunction } from '@tanstack/react-query';
+import axios, { AxiosResponse } from 'axios';
 
 const mockBaseUrl = '/mock-api';
 const mockInstance = axios.create({
@@ -13,5 +15,10 @@ export const getTest = async () => {
 
 export const getSquadApi = async (): Promise<{ data: Squad[] }> => {
   const response = await mockInstance.get('/squads');
+  return response.data;
+};
+
+export const createSquadApi: MutationFunction<ApiResponse<Squad>, createSquadParamType> = async ({ squadName }) => {
+  const response: AxiosResponse<ApiResponse<Squad>> = await mockInstance.post('/squads', { squadName });
   return response.data;
 };
