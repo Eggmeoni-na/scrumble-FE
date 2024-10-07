@@ -5,14 +5,13 @@ type Variant = 'default' | 'primary' | 'confirm' | 'delete';
 
 type ButtonProps = {
   text: string;
-  name: string;
   variant?: Variant;
   onClick?: () => void | Promise<void>;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
-const Button = ({ text, name, variant = 'default', onClick, ...rest }: ButtonProps) => {
+const Button = ({ text, variant = 'default', onClick, ...rest }: ButtonProps) => {
   return (
-    <button css={[buttonStyle, getVariantStyles(variant)]} onClick={onClick} name={name} {...rest}>
+    <button css={[buttonStyle, getVariantStyles(variant)]} onClick={onClick} {...rest}>
       {text}
     </button>
   );
