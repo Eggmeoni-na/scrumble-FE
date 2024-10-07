@@ -1,18 +1,25 @@
 import { css } from '@emotion/react';
-import { PropsWithChildren } from 'react';
+import { HTMLAttributes, PropsWithChildren } from 'react';
 
 export type OverlayProps = {
   onClose?: () => void;
   preventClick?: boolean;
   transparent?: boolean;
-};
+} & HTMLAttributes<HTMLDivElement>;
 
-const Overlay = ({ children, onClose, preventClick = true, transparent = false }: PropsWithChildren & OverlayProps) => {
+const Overlay = ({
+  children,
+  onClose,
+  preventClick = true,
+  transparent = false,
+  ...rest
+}: PropsWithChildren & OverlayProps) => {
   return (
     <div
       css={[container, transparent && bgTransparent]}
       onClick={preventClick ? undefined : onClose}
       onKeyDown={() => {}}
+      {...rest}
     >
       {children}
     </div>
