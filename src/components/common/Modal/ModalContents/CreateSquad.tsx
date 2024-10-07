@@ -21,7 +21,13 @@ const CreateSquad = ({ onSubmit, onAbort }: ModalContentProps<string>) => {
       <ModalContent>
         <p css={descStyle}>스쿼드명을 입력해주세요.</p>
         <form onSubmit={handleCreateSquad}>
-          <input css={inputStyle} type="text" value={squadName} onChange={(e) => setSquadName(e.target.value)} />
+          <input
+            css={inputStyle}
+            type="text"
+            value={squadName}
+            onChange={(e) => setSquadName(e.target.value)}
+            maxLength={9}
+          />
           <ModalButtonGroup>
             <Button text="취소" onClick={() => onAbort('취소')} name="cancel" variant="default" />
             <Button text="확인" name="confirm" variant="primary" type="submit" />
