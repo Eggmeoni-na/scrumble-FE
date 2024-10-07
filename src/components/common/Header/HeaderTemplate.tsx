@@ -23,11 +23,11 @@ const BackButton = () => {
   );
 };
 
-export const RightMenu = ({ children }: PropsWithChildren) => {
+const RightMenuWrapper = ({ children }: PropsWithChildren) => {
   return <div css={rightMenu}>{children}</div>;
 };
 
-export const ToggleTheme = () => {
+const ToggleThemeButton = () => {
   const { isDarkMode, toggleTheme } = useThemeStore((state) => state);
 
   return (
@@ -37,7 +37,7 @@ export const ToggleTheme = () => {
   );
 };
 
-export const AlarmButton = () => {
+const AlarmButton = () => {
   return (
     <IconWrapper
       aria-label="alarm"
@@ -51,13 +51,12 @@ export const AlarmButton = () => {
   );
 };
 
-export const MenutButton = () => {
+const SidebarToggleButton = ({ toggleSidebar }: { toggleSidebar: VoidFunction }) => {
   return (
     <IconWrapper
       aria-label="menu"
       onClick={() => {
-        // TODO: 스쿼드 메뉴
-        console.log('first');
+        toggleSidebar();
       }}
       role="button"
     >
@@ -67,10 +66,10 @@ export const MenutButton = () => {
 };
 
 HeaderTemplate.BackButton = BackButton;
-HeaderTemplate.RightMenu = RightMenu;
-HeaderTemplate.ToggleTheme = ToggleTheme;
+HeaderTemplate.RightMenuWrapper = RightMenuWrapper;
+HeaderTemplate.ToggleThemeButton = ToggleThemeButton;
 HeaderTemplate.AlarmButton = AlarmButton;
-HeaderTemplate.MenuButton = MenutButton;
+HeaderTemplate.SidebarToggleButton = SidebarToggleButton;
 
 const headerContainer = (theme: Theme) => css`
   height: 52px;

@@ -1,18 +1,25 @@
 import { css } from '@emotion/react';
-import { PropsWithChildren } from 'react';
+import { HTMLAttributes, PropsWithChildren } from 'react';
 
 export type OverlayProps = {
   onClose?: () => void;
   preventClick?: boolean;
   transparent?: boolean;
-};
+} & HTMLAttributes<HTMLDivElement>;
 
-const Overlay = ({ children, onClose, preventClick = true, transparent = false }: PropsWithChildren & OverlayProps) => {
+const Overlay = ({
+  children,
+  onClose,
+  preventClick = true,
+  transparent = false,
+  ...rest
+}: PropsWithChildren & OverlayProps) => {
   return (
     <div
       css={[container, transparent && bgTransparent]}
       onClick={preventClick ? undefined : onClose}
       onKeyDown={() => {}}
+      {...rest}
     >
       {children}
     </div>
@@ -22,12 +29,11 @@ const Overlay = ({ children, onClose, preventClick = true, transparent = false }
 export default Overlay;
 
 const container = css`
-  position: fixed;
+  position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgb(0 0 0 / 35%);
-  backdrop-filter: blur(5px);
+  background-color: rgb(0 0 0 / 50%);
   top: 0;
   left: 0;
   right: 0;
