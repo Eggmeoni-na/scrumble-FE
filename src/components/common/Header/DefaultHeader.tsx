@@ -4,10 +4,10 @@ const DefaultHeader = () => {
   return (
     <HeaderTemplate>
       <HeaderTemplate.BackButton />
-      <HeaderTemplate.RightMenu>
-        <HeaderTemplate.ToggleTheme />
+      <HeaderTemplate.RightMenuWrapper>
+        <HeaderTemplate.ToggleThemeButton />
         <HeaderTemplate.AlarmButton />
-      </HeaderTemplate.RightMenu>
+      </HeaderTemplate.RightMenuWrapper>
     </HeaderTemplate>
   );
 };
