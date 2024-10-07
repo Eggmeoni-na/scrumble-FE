@@ -22,12 +22,11 @@ const Overlay = ({ children, onClose, preventClick = true, transparent = false }
 export default Overlay;
 
 const container = css`
-  position: fixed;
+  position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgb(0 0 0 / 35%);
-  backdrop-filter: blur(5px);
+  background-color: rgb(0 0 0 / 50%);
   top: 0;
   left: 0;
   right: 0;

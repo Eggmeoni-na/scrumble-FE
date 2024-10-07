@@ -1,4 +1,6 @@
+import { breakpoints, mobileMediaQuery, pcMediaQuery } from '@/styles/breakpoints';
 import { ModalParameters, ModalType } from '@/types';
+import { css } from '@emotion/react';
 import {
   MutableRefObject,
   PropsWithChildren,
@@ -38,7 +40,7 @@ export const ModalProvider = ({ children }: PropsWithChildren) => {
 
   return (
     <modalContext.Provider value={value}>
-      <div style={{ position: 'relative' }} ref={portalRef}>
+      <div css={modalConatiner} ref={portalRef}>
         {children}
       </div>
     </modalContext.Provider>
@@ -52,3 +54,19 @@ export const useModalContext = () => {
   }
   return context;
 };
+
+const modalConatiner = css`
+  position: relative;
+  height: 100vh;
+  margin: 0 auto;
+  background-color: #f0f0f0;
+  overflow: hidden;
+
+  ${mobileMediaQuery(css`
+    max-width: ${breakpoints.mobile};
+  `)}
+
+  ${pcMediaQuery(css`
+    max-width: ${breakpoints.pc};
+  `)}
+`;
