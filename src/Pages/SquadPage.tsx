@@ -5,15 +5,17 @@ import { breakpoints, mobileMediaQuery, pcMediaQuery } from '@/styles/breakpoint
 import { Squad } from '@/types/squad';
 import { css, Theme } from '@emotion/react';
 import { useSuspenseQuery } from '@tanstack/react-query';
+import { startTransition } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const SquadPage = () => {
   const { data: squadList } = useSuspenseQuery(squadQueryOptions()).data;
   const { ModalContainer, handleCreateSquad } = useCreateSquad();
+
   return (
     <>
       <ul>
-        <li css={headerStyle} onClick={handleCreateSquad}>
+        <li css={headerStyle}>
           <span>스쿼드</span>
           <Button text="스쿼드 생성" onClick={handleCreateSquad} aria-label="스쿼드 생성" />
         </li>
@@ -30,8 +32,15 @@ export default SquadPage;
 
 const SquadItem = ({ squad }: { squad: Squad }) => {
   const navigate = useNavigate();
+
+  const handleNavigation = () => {
+    startTransition(() => {
+      navigate(`/squads/${squad.squadId}`);
+    });
+  };
+
   return (
-    <li css={itemStyle} onClick={() => navigate(`/squads/${squad.squadId}`)}>
+    <li css={itemStyle} onClick={handleNavigation}>
       {squad.squadName}
     </li>
   );
