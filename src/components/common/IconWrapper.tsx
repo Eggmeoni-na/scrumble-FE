@@ -26,8 +26,8 @@ const icon = ({ disabled }: IconProps) => css`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   padding: 4px;
   stroke-width: 0.1;
   transition: all 0.3s ease-in-out;
