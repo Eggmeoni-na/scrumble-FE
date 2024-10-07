@@ -9,7 +9,7 @@ const Modal = ({ modal }: { modal: ModalType<ModalParameters> }) => {
     document.body.style.cssText = `
       position: fixed;
       top: -${scrollY}px;
-      overflow-y: scroll;
+      overflow-y: hidden;
       width: 100%;`;
     return () => {
       document.body.style.cssText = '';
