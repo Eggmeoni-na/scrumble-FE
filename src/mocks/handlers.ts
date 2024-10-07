@@ -1,3 +1,4 @@
+import { ApiResponse, Squad } from '@/types';
 import { http, HttpResponse } from 'msw';
 
 const mockURL = '/mock-api';
@@ -59,4 +60,18 @@ export const handlers = [
       message: 'GET 요청 성공',
     });
   }),
+
+  http.post(`${mockURL}/squads`, async () =>
+    HttpResponse.json<ApiResponse<Squad>>(
+      {
+        data: {
+          squadId: 1,
+          squadName: '만들어유',
+        },
+        message: 'POST 요청 성공!',
+        statusCodeValue: 0,
+      },
+      { status: 201 },
+    ),
+  ),
 ];

@@ -5,7 +5,8 @@ export type Toast = {
   id: string;
   message: string;
   type: Status;
-  disabled?: boolean;
+  showCloseButton?: boolean;
+  duration?: number;
 };
 
 type ToastState = {
@@ -16,17 +17,17 @@ type ToastState = {
 
 export const useToastStore = create<ToastState>((set) => ({
   toasts: [],
-  createToast: ({ message, type, disabled }) => {
+  createToast: ({ message, type, showCloseButton = true, duration = 3000 }) => {
     const toastId = Date.now().toString();
     set((state) => ({
-      toasts: [...state.toasts, { id: toastId, message, type, disabled }],
+      toasts: [...state.toasts, { id: toastId, message, type, showCloseButton }],
     }));
 
     setTimeout(() => {
       set((state) => ({
         toasts: state.toasts.filter((toast) => toast.id !== toastId),
       }));
-    }, 3000);
+    }, duration);
   },
   removeToast: (id) => {
     set((state) => ({

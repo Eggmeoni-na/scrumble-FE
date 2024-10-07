@@ -1,4 +1,4 @@
-import { getSquadApi } from '@/api/mockApi';
+import { getSquadList } from '@/api';
 import { queryOptions } from '@tanstack/react-query';
 
 export const squadKeys = {
@@ -9,5 +9,5 @@ export const squadKeys = {
 export const squadQueryOptions = () =>
   queryOptions({
     queryKey: squadKeys.squad,
-    queryFn: getSquadApi,
+    queryFn: getSquadList,
   });

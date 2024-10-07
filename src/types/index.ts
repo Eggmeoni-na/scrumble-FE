@@ -2,7 +2,7 @@ export * from './auth';
 export * from './modal';
 export * from './squad';
 
-export type ResponseType<T> = {
+export type ApiResponse<T> = {
   data: T;
   message: string;
   statusCodeValue: number;
