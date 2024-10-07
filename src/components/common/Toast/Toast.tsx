@@ -21,7 +21,7 @@ const ToastContainer = () => {
             key={toast.id}
             message={toast.message}
             type={toast.type}
-            disabled={toast.disabled}
+            showCloseButton={toast.showCloseButton}
             onRemove={() => removeToast(toast.id)}
           />
         ))}
@@ -32,13 +32,18 @@ const ToastContainer = () => {
 
 export default ToastContainer;
 
-const Toast = ({ message, type, onRemove, disabled }: Omit<Toast, 'id'> & { onRemove: VoidFunction }) => (
+const Toast = ({ message, type, onRemove, showCloseButton }: Omit<Toast, 'id'> & { onRemove: VoidFunction }) => (
   <div css={[toastStyle, [getStatusStyles(type)]]}>
     <div css={messageWrapper}>
       <span>{toastType[type]}</span>
       <span>{message}</span>
     </div>
-    <IconWrapper customStyle={() => closeButton(disabled)} onClick={onRemove} aria-label="Close toast" role="button">
+    <IconWrapper
+      customStyle={() => closeButton(showCloseButton)}
+      onClick={onRemove}
+      aria-label="Close toast"
+      role="button"
+    >
       <Close />
     </IconWrapper>
   </div>
@@ -81,10 +86,11 @@ const messageWrapper = css`
   gap: 8px;
 `;
 
-const closeButton = (disabled?: boolean) => css`
+const closeButton = (showCloseButton?: boolean) => css`
   display: flex;
   align-items: center;
-  visibility: ${disabled ? 'hidden' : 'visible'};
+  color: white;
+  visibility: ${showCloseButton ? 'visible' : 'hidden'};
 
   & svg {
     width: 20px;
@@ -102,7 +108,7 @@ const getStatusStyles = (status: Status) => {
     case 'warning':
       return css`
         background-color: var(--color-warning);
-        color: black;
+        color: white;
       `;
     case 'failed':
       return css`
@@ -112,7 +118,7 @@ const getStatusStyles = (status: Status) => {
     default:
       return css`
         background-color: white;
-        color: black;
+        color: white;
       `;
   }
 };
