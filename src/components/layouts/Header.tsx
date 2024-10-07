@@ -1,7 +1,5 @@
-import { Add, Back, Bell, Dark, Light } from '@/assets/icons';
+import { Back, Bell, Dark, Light } from '@/assets/icons';
 import IconWrapper from '@/components/common/IconWrapper';
-import { CreateSquad } from '@/components/common/Modal/ModalContents';
-import { useModal } from '@/hooks/useModal';
 import { useThemeStore } from '@/stores/theme';
 import { css, Theme } from '@emotion/react';
 import { useNavigate } from 'react-router-dom';
@@ -9,14 +7,8 @@ import { useNavigate } from 'react-router-dom';
 const Header = () => {
   const { isDarkMode, toggleTheme } = useThemeStore((state) => state);
   const navigate = useNavigate();
-  const { ModalContainer, openModal } = useModal();
 
   const handleBack = () => navigate(-1);
-  const handleCreateSquad = async () => {
-    const res = await openModal(CreateSquad);
-    if (!res.ok || !res.value) return;
-    // TODO: Issue-34 스쿼드 생성 API 연동
-  };
 
   return (
     <header css={headerContainer}>
@@ -39,16 +31,7 @@ const Header = () => {
         >
           <Bell />
         </IconWrapper>
-        <IconWrapper
-          aria-label="Add squad"
-          role="button"
-          onClick={handleCreateSquad}
-          disabled={location.pathname === '/'}
-        >
-          <Add />
-        </IconWrapper>
       </div>
-      <ModalContainer />
     </header>
   );
 };
@@ -70,6 +53,8 @@ const headerContainer = (theme: Theme) => css`
 
 const rightMenu = css`
   display: flex;
+  justify-content: flex-end;
+  width: 25%;
 `;
 
 const logoStyle = css`
