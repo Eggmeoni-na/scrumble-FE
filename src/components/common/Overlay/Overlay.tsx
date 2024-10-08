@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { HTMLAttributes, PropsWithChildren } from 'react';
+import { HTMLAttributes, MouseEvent, PropsWithChildren } from 'react';
 
 export type OverlayProps = {
   onClose?: () => void;
@@ -14,10 +14,15 @@ const Overlay = ({
   transparent = false,
   ...rest
 }: PropsWithChildren & OverlayProps) => {
+  const handleClose = (e: MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    onClose && onClose();
+  };
+
   return (
     <div
       css={[container, transparent && bgTransparent]}
-      onClick={preventClick ? undefined : onClose}
+      onClick={preventClick ? undefined : handleClose}
       onKeyDown={() => {}}
       {...rest}
     >
@@ -38,6 +43,7 @@ const container = css`
   left: 0;
   right: 0;
   bottom: 0;
+  z-index: 999;
 `;
 
 const bgTransparent = css`
