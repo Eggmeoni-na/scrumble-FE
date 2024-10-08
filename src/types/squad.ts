@@ -4,11 +4,11 @@ export type Squad = {
 };
 
 export type SquadDetail = {
-  squadMembers: [
-    {
-      memberId: number;
-      name: string;
-      profileImg: '';
-    },
-  ];
+  squadMembers: SquadMember[];
 } & Squad;
+
+export type SquadMember = {
+  memberId: number;
+  name: string;
+  profileImg: '';
+};
