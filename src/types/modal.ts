@@ -6,11 +6,13 @@ export type ActionStatus = 'confirm' | 'delete';
 export type ModalParameters = {
   onSubmit(value: unknown): unknown;
   onAbort(reason?: string): void;
+  props?: Record<string, unknown>;
   actionModal?: ActionModalType;
 };
 
 export type ModalType<P> = {
   element: ComponentType<P>;
+  props?: Record<string, unknown>;
   modalId: string;
   resolve: <T extends {}>(value?: T | PromiseLike<T>) => void;
   reject: (reason: string) => void;

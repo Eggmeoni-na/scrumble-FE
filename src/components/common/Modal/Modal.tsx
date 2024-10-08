@@ -2,7 +2,7 @@ import { ModalParameters, ModalType } from '@/types';
 import { memo, useEffect } from 'react';
 
 const Modal = ({ modal }: { modal: ModalType<ModalParameters> }) => {
-  const { element: ModalContainer, resolve, reject, actionModal } = modal;
+  const { element: ModalContainer, resolve, reject, actionModal, props } = modal;
 
   useEffect(() => {
     const scrollY = window.scrollY;
@@ -17,7 +17,7 @@ const Modal = ({ modal }: { modal: ModalType<ModalParameters> }) => {
     };
   }, []);
 
-  return <ModalContainer onSubmit={resolve} onAbort={reject} actionModal={actionModal} />;
+  return <ModalContainer onSubmit={resolve} onAbort={reject} actionModal={actionModal} {...props} />;
 };
 
 export default memo(Modal);
