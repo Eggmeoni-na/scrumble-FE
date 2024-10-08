@@ -1,4 +1,4 @@
-import { generateTempSession } from '@/api/auth';
+import { generateTempSession } from '@/apis/auth';
 import { useAuthStore } from '@/stores/auth';
 import { pcMediaQuery } from '@/styles/breakpoints';
 import { css } from '@emotion/react';
@@ -43,6 +43,7 @@ const loginContainer = css`
   flex-direction: column;
   align-items: center;
   gap: 28px;
+  overflow: auto;
 `;
 
 const loginHomeImgStyle = css`
