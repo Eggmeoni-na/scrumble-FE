@@ -1,6 +1,7 @@
 import { CreateSquad } from '@/components/common/Modal/ModalContents';
+import { useCreateSquadMutation } from '@/hooks/mutations/useCreateSquad';
 import { useModal } from '@/hooks/useModal';
-import { useCreateSquadMutation } from '@/hooks/useMutations';
+
 import { useToastStore } from '@/stores/toast';
 import { useNavigate } from 'react-router-dom';
 

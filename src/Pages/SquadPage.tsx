@@ -1,6 +1,7 @@
 import Button from '@/components/common/Button/Button';
+import { squadQueryOptions } from '@/hooks/queries/useSquad';
 import useCreateSquad from '@/hooks/useCreateSquad';
-import { squadQueryOptions } from '@/hooks/useQueries';
+
 import { breakpoints, mobileMediaQuery, pcMediaQuery } from '@/styles/breakpoints';
 import { Squad } from '@/types/squad';
 import { css, Theme } from '@emotion/react';

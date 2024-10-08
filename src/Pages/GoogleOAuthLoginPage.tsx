@@ -1,4 +1,4 @@
-import { signInOrSignUp } from '@/api/auth';
+import { signInOrSignUp } from '@/apis/auth';
 import { OAuthRequestParams } from '@/types/auth';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';

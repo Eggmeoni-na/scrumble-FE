@@ -1,11 +1,12 @@
 import { HeaderTemplate } from '@/components/common/Header';
 import Sidebar from '@/components/common/Sidebar';
-import { squadByIdQueryOptions } from '@/hooks/useQueries';
+import { squadDetailQueryOptions } from '@/hooks/queries/useSquad';
+
 import useSidebar from '@/hooks/useSidebar';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
 const SquadHeader = ({ squadId }: { squadId: string }) => {
-  const { data } = useSuspenseQuery(squadByIdQueryOptions(Number(squadId))).data;
+  const { data } = useSuspenseQuery(squadDetailQueryOptions(Number(squadId))).data;
   const { isOpen, toggleSidebar } = useSidebar();
 
   return (
