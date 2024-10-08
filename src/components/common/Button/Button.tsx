@@ -46,7 +46,7 @@ const getVariantStyles = (variant: Variant) => {
     default:
       return css`
         background-color: var(--color-default-bg);
-        color: var(--color-text);
+        color: var(--color-text-gray);
       `;
   }
 };
