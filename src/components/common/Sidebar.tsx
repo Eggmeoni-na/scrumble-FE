@@ -1,10 +1,22 @@
-import { Close, Edit, Exit } from '@/assets/icons';
+import { Close, Edit } from '@/assets/icons';
 import IconWrapper from '@/components/common/IconWrapper';
+import { SidebarMemberList } from '@/components/common/Member';
 import { Overlay } from '@/components/common/Overlay';
+import { ROLE } from '@/constants/role';
+import { squadDetailQueryOptions } from '@/hooks/queries/useSquad';
 import { css, Theme } from '@emotion/react';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
 
 const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
-  const isLeader = false;
+  const { squadId } = useParams();
+  const { data: squadDetail } = useSuspenseQuery({
+    ...squadDetailQueryOptions(Number(squadId)),
+    refetchOnMount: false,
+  }).data;
+  const { squadName, squadMembers } = squadDetail;
+
+  const role = 'leader';
   return (
     <Overlay
       preventClick={false}
@@ -25,7 +37,7 @@ const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
         <section css={squadInfoStyle} aria-labelledby="squadInfoHeading">
           <h2 id="squadInfoHeading">스쿼드 정보</h2>
           <div>
-            <h3>스쿼드명</h3>
+            <h3>{squadName}</h3>
             <IconWrapper
               aria-label="Edit squad name"
               onClick={() => {
@@ -33,7 +45,7 @@ const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
               }}
               role="button"
               css={commonButtonStyle}
-              disabled={!isLeader}
+              disabled={role !== ROLE.LEADER}
             >
               <Edit />
             </IconWrapper>
@@ -43,20 +55,9 @@ const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
         <section css={membersStyle} aria-labelledby="membersHeading">
           <h2 id="membersHeading">멤버</h2>
           <ul>
-            <li>
-              <span>저유</span>
-              <IconWrapper
-                aria-label="Remove member from squad"
-                onClick={() => {
-                  // TODO: 멤버 강퇴 모달 열기
-                }}
-                role="button"
-                css={commonButtonStyle}
-                disabled={!isLeader}
-              >
-                <Exit />
-              </IconWrapper>
-            </li>
+            {squadMembers.map((members) => (
+              <SidebarMemberList key={members.memberId} members={members} />
+            ))}
           </ul>
         </section>
         <section css={settingsStyle} aria-labelledby="settingsHeading">
@@ -69,7 +70,7 @@ const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
             >
               멤버 초대
             </li>
-            {isLeader && (
+            {role === ROLE.LEADER && (
               <li
                 onClick={() => {
                   // TODO: 리더 권한 위임
@@ -78,7 +79,7 @@ const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
                 리더 변경
               </li>
             )}
-            {isLeader && (
+            {role === ROLE.LEADER && (
               <li
                 onClick={() => {
                   // TODO: 스쿼드 삭제
@@ -99,7 +100,7 @@ const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
 
 export default Sidebar;
 
-const commonButtonStyle = (theme: Theme) => css`
+export const commonButtonStyle = (theme: Theme) => css`
   width: 28px;
   height: 28px;
   color: ${theme.colors.text};
