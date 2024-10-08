@@ -16,7 +16,8 @@ const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
   }).data;
   const { squadName, squadMembers } = squadDetail;
 
-  const role = 'leader';
+  const role = 'LEADER';
+
   return (
     <Overlay
       preventClick={false}
@@ -54,11 +55,7 @@ const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
         </section>
         <section css={membersStyle} aria-labelledby="membersHeading">
           <h2 id="membersHeading">멤버</h2>
-          <ul>
-            {squadMembers.map((members) => (
-              <SidebarMemberList key={members.memberId} members={members} />
-            ))}
-          </ul>
+          <SidebarMemberList members={squadMembers} />
         </section>
         <section css={settingsStyle} aria-labelledby="settingsHeading">
           <h2 id="settingsHeading">설정</h2>

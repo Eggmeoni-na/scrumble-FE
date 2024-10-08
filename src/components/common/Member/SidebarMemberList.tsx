@@ -6,12 +6,24 @@ import { ROLE } from '@/constants/role';
 import { SquadMember } from '@/types';
 import { css } from '@emotion/react';
 
-const SidebarMemberList = ({ members }: { members: SquadMember }) => {
+const SidebarMemberList = ({ members }: { members: SquadMember[] }) => {
+  return (
+    <ul>
+      {members.map((member) => (
+        <Member key={member.memberId} member={member} />
+      ))}
+    </ul>
+  );
+};
+
+export default SidebarMemberList;
+
+const Member = ({ member }: { member: SquadMember }) => {
   const role = 'leader';
 
   return (
     <li>
-      <MemberProfile members={members} infoStyle={infoStyle} imgStyle={imgStyle} displayRole />
+      <MemberProfile member={member} infoStyle={infoStyle} imgStyle={imgStyle} displayRole />
       <IconWrapper
         aria-label="Remove member from squad"
         onClick={() => {
@@ -26,8 +38,6 @@ const SidebarMemberList = ({ members }: { members: SquadMember }) => {
     </li>
   );
 };
-
-export default SidebarMemberList;
 
 const imgStyle = css`
   width: 36px;

@@ -2,14 +2,14 @@ import { SquadMember } from '@/types';
 import { Interpolation, Theme } from '@emotion/react';
 
 type Props = {
-  members: SquadMember;
+  member: SquadMember;
   infoStyle: Interpolation<Theme>;
   imgStyle: Interpolation<Theme>;
   displayRole: boolean;
 };
 
-const MemberProfile = ({ members, infoStyle, imgStyle, displayRole }: Props) => {
-  const { name, profileImg } = members;
+const MemberProfile = ({ member, infoStyle, imgStyle, displayRole }: Props) => {
+  const { name, profileImg } = member;
 
   return (
     <div css={infoStyle}>
