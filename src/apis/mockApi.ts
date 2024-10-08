@@ -1,4 +1,4 @@
-import { createSquadParamType } from '@/hooks/useMutations';
+import { createSquadParamType } from '@/hooks/mutations/useCreateSquad';
 import { ApiResponse, Squad, SquadDetail } from '@/types';
 import { MutationFunction } from '@tanstack/react-query';
 import axios, { AxiosResponse } from 'axios';
