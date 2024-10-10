@@ -7,9 +7,9 @@ type Props = {
 };
 
 const ProtectedPage = ({ children }: Props) => {
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const user = useAuthStore((state) => state.user);
 
-  if (!isLoggedIn) {
+  if (!user) {
     return <Navigate to="/" />;
   }
 

@@ -14,7 +14,12 @@ export type OAuthRequestParams = {
   scope: string;
 };
 
-export type User = {
+export type UserProfile = {
   oauthType: OAuthType;
   email: 'string';
+};
+
+export type AuthUser = {
+  id: number;
+  name: string;
 };
