@@ -1,4 +1,4 @@
-import { createSquadParamType } from '@/hooks/mutations/useCreateSquad';
+import { createSquadParamType, updateSquadNameParamType } from '@/hooks/mutations/useSquad';
 import { ApiResponse, Squad, SquadDetail } from '@/types';
 import { MutationFunction } from '@tanstack/react-query';
 import axios, { AxiosResponse } from 'axios';
@@ -23,7 +23,15 @@ export const createSquadApi: MutationFunction<ApiResponse<Squad>, createSquadPar
   return response.data;
 };
 
-export const getSquadDetailApi = async (id: number): Promise<{ data: SquadDetail }> => {
-  const response = await mockInstance.get(`/squads/${id}`);
+export const getSquadDetailApi = async (squadId: number): Promise<{ data: SquadDetail }> => {
+  const response = await mockInstance.get(`/squads/${squadId}`);
+  return response.data;
+};
+
+export const updateSquadNameApi: MutationFunction<ApiResponse<Squad>, updateSquadNameParamType> = async ({
+  squadId,
+  squadName,
+}) => {
+  const response = await mockInstance.put(`/squads/${squadId}`, { squadName });
   return response.data;
 };
