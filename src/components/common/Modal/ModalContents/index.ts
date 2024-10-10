@@ -1,1 +1,1 @@
-export { default as CreateSquad } from './CreateSquad';
+export { default as SquadForm } from './SquadForm';
