@@ -4,19 +4,20 @@ import { SidebarMemberList } from '@/components/common/Member';
 import { Overlay } from '@/components/common/Overlay';
 import { ROLE } from '@/constants/role';
 import { squadDetailQueryOptions } from '@/hooks/queries/useSquad';
+import useUpdateSquadName from '@/hooks/useUpdateSquadName';
 import { css, Theme } from '@emotion/react';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 
 const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
-  const { squadId } = useParams();
+  const param = useParams();
+  const squadId = Number(param.squadId);
   const { data: squadDetail } = useSuspenseQuery({
-    ...squadDetailQueryOptions(Number(squadId)),
+    ...squadDetailQueryOptions(squadId),
     refetchOnMount: false,
   }).data;
-  const { squadName, squadMembers } = squadDetail;
-
-  const role = 'LEADER';
+  const { squadName, squadMembers, mySquadMemberRole } = squadDetail;
+  const { ModalContainer: EditNameModal, handleUpdateSquadName } = useUpdateSquadName(squadId);
 
   return (
     <Overlay
@@ -41,12 +42,10 @@ const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
             <h3>{squadName}</h3>
             <IconWrapper
               aria-label="Edit squad name"
-              onClick={() => {
-                // TODO: 스쿼드명 수정 모달 열기
-              }}
+              onClick={handleUpdateSquadName}
               role="button"
               css={commonButtonStyle}
-              disabled={role !== ROLE.LEADER}
+              disabled={mySquadMemberRole !== ROLE.LEADER}
             >
               <Edit />
             </IconWrapper>
@@ -55,7 +54,7 @@ const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
         </section>
         <section css={membersStyle} aria-labelledby="membersHeading">
           <h2 id="membersHeading">멤버</h2>
-          <SidebarMemberList members={squadMembers} />
+          <SidebarMemberList members={squadMembers} myRole={squadDetail.mySquadMemberRole} />
         </section>
         <section css={settingsStyle} aria-labelledby="settingsHeading">
           <h2 id="settingsHeading">설정</h2>
@@ -67,7 +66,7 @@ const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
             >
               멤버 초대
             </li>
-            {role === ROLE.LEADER && (
+            {mySquadMemberRole === ROLE.LEADER && (
               <li
                 onClick={() => {
                   // TODO: 리더 권한 위임
@@ -76,7 +75,7 @@ const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
                 리더 변경
               </li>
             )}
-            {role === ROLE.LEADER && (
+            {mySquadMemberRole === ROLE.LEADER && (
               <li
                 onClick={() => {
                   // TODO: 스쿼드 삭제
@@ -91,6 +90,7 @@ const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
           나가기
         </button>
       </div>
+      <EditNameModal />
     </Overlay>
   );
 };

@@ -1,5 +1,5 @@
-import { CreateSquad } from '@/components/common/Modal/ModalContents';
-import { useCreateSquadMutation } from '@/hooks/mutations/useCreateSquad';
+import { SquadForm } from '@/components/common/Modal/ModalContents';
+import { useCreateSquadMutation } from '@/hooks/mutations/useSquad';
 import { useModal } from '@/hooks/useModal';
 
 import { useToastStore } from '@/stores/toast';
@@ -20,7 +20,7 @@ const useCreateSquad = () => {
   });
 
   const handleCreateSquad = async () => {
-    const res = await openModal(CreateSquad);
+    const res = await openModal(SquadForm);
     if (!res.ok || !res.value) return;
     createSquad({ squadName: res.value });
   };
