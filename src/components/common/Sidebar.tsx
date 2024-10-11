@@ -3,7 +3,7 @@ import IconWrapper from '@/components/common/IconWrapper';
 import { SidebarMemberList } from '@/components/common/Member';
 import { Overlay } from '@/components/common/Overlay';
 import { ROLE } from '@/constants/role';
-import { useDeleteSquad, useUpdateSquadName } from '@/hooks/mutations';
+import { useDeleteSquad, useExitSquad, useUpdateSquadName } from '@/hooks/mutations';
 import { squadDetailQueryOptions, squadKeys } from '@/hooks/queries/useSquad';
 
 import { useToastStore } from '@/stores/toast';
@@ -34,13 +34,21 @@ const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
     onError: () => createToast({ type: 'failed', message: '스쿼드명 수정에 실패했어요 😢' }),
   });
 
-  const hasMembers = squadMembers.length > 1;
-  const { DeleteSquadModal, handleSquadDelete } = useDeleteSquad(squadId, hasMembers, {
+  const { DeleteSquadModal, handleSquadDelete } = useDeleteSquad(squadId, {
     onSuccess: () => {
       createToast({ type: 'success', message: '스쿼드 삭제 성공!' });
       navigate('/squads');
     },
     onError: () => createToast({ type: 'failed', message: '스쿼드 삭제에 실패했어요 😢' }),
+  });
+
+  const hasMembers = squadMembers.length > 1;
+  const { ExitSquadModal, handleSquadExit } = useExitSquad(squadId, hasMembers, {
+    onSuccess: () => {
+      createToast({ type: 'success', message: '스쿼드에서 나왔어요' });
+      navigate('/squads');
+    },
+    onError: () => createToast({ type: 'failed', message: '스쿼드 나가기에 실패했어요 😢' }),
   });
 
   return (
@@ -102,12 +110,13 @@ const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
             {mySquadMemberRole === ROLE.LEADER && <li onClick={handleSquadDelete}>스쿼드 삭제</li>}
           </ul>
         </section>
-        <button css={exitButtonStyle} onClick={() => console.log('나갈라우?')}>
+        <button css={exitButtonStyle} onClick={handleSquadExit}>
           나가기
         </button>
       </div>
       <UpdateSquadNameModal />
       <DeleteSquadModal />
+      <ExitSquadModal />
     </Overlay>
   );
 };

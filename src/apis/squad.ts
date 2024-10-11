@@ -1,5 +1,5 @@
 import { instance } from '@/apis';
-import { CreateSquadParamType, DeleteSquadNameParamType, UpdateSquadNameParamType } from '@/hooks/mutations';
+import { CreateSquadParamType, ExitAndDeleteSquadNameParamType, UpdateSquadNameParamType } from '@/hooks/mutations';
 
 import { ApiResponse, Squad, SquadDetail } from '@/types';
 import { MutationFunction } from '@tanstack/react-query';
@@ -29,9 +29,16 @@ export const updateSquadName: MutationFunction<ApiResponse<SquadDetail>, UpdateS
   return response.data;
 };
 
-export const deleteSquad: MutationFunction<ApiResponse<null>, DeleteSquadNameParamType> = async ({
+export const deleteSquad: MutationFunction<ApiResponse<null>, ExitAndDeleteSquadNameParamType> = async ({
   squadId,
 }): Promise<ApiResponse<null>> => {
   const response = await instance.delete(`/api/squads/${squadId}`);
+  return response.data;
+};
+
+export const exitSquad: MutationFunction<ApiResponse<null>, ExitAndDeleteSquadNameParamType> = async ({
+  squadId,
+}): Promise<ApiResponse<null>> => {
+  const response = await instance.delete(`/api/squads/${squadId}/members`);
   return response.data;
 };
