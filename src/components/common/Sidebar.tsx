@@ -104,8 +104,6 @@ export const commonButtonStyle = (theme: Theme) => css`
 `;
 
 const container = (theme: Theme) => css`
-  right: 0;
-  top: 0;
   width: 300px;
   height: 100%;
   background-color: ${theme.colors.background.white};
@@ -114,6 +112,7 @@ const container = (theme: Theme) => css`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  overflow: auto;
 
   & h2 {
     font-size: ${theme.typography.size_18};
@@ -178,7 +177,6 @@ const membersStyle = (theme: Theme) => css`
 
 const settingsStyle = css`
   padding: 0 16px;
-  margin-bottom: 64px;
   flex: 1;
 
   & li {
@@ -193,12 +191,12 @@ const settingsStyle = css`
 
 const exitButtonStyle = (theme: Theme) => css`
   background-color: ${theme.colors.background.white};
-  font-size: ${theme.typography.size_14};
+  ${theme.typography.size_14}
   color: ${theme.colors.gray.gray200};
   border-top: 1px solid ${theme.colors.gray.gray200};
   font-weight: 700;
   margin-top: auto;
   height: 56px;
   text-align: left;
-  padding: 0 16px;
+  padding: 12px 16px;
 `;
