@@ -1,3 +1,6 @@
+import { ROLE } from '@/constants/role';
+import useValidatedUser from '@/hooks/useValidatedUser';
+
 import { SquadMember } from '@/types';
 import { Interpolation, Theme } from '@emotion/react';
 
@@ -9,15 +12,16 @@ type Props = {
 };
 
 const MemberProfile = ({ member, infoStyle, imgStyle, displayRole }: Props) => {
-  const { name, profileImg } = member;
+  const user = useValidatedUser();
+  const { name, profileImg, memberId, squadMemberRole } = member;
 
   return (
     <div css={infoStyle}>
       <img css={imgStyle} src={profileImg ? profileImg : '/images/defaultImg.png'} alt="프로필 이미지" />
       <p>
         {name}
-        {displayRole && <span> 리더</span>}
-        {displayRole && <span> (나)</span>}
+        {displayRole && <span>{squadMemberRole === ROLE.LEADER && ' 리더'}</span>}
+        {displayRole && <span>{user.id === memberId && ' (나)'}</span>}
       </p>
     </div>
   );
