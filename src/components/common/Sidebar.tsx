@@ -101,7 +101,12 @@ const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
             {mySquadMemberRole === ROLE.LEADER && (
               <li
                 onClick={() => {
-                  // TODO: 리더 권한 위임
+                  closeSidebar();
+                  navigate(`/squads/${squadId}/members`, {
+                    state: {
+                      assignStep: true,
+                    },
+                  });
                 }}
               >
                 리더 변경
