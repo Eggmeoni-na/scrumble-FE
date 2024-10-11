@@ -28,8 +28,9 @@ export const useModal = () => {
             resolve({ ok: false, error: reason });
             closeModal();
           },
-          actionInfo: actionModal && {
+          actionModal: actionModal && {
             type: actionModal.type,
+            text: actionModal.text,
             message: actionModal.message,
             displayCancel: actionModal.displayCancel,
           },

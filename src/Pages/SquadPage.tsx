@@ -1,7 +1,7 @@
 import Button from '@/components/common/Button/Button';
+import { useCreateSquad } from '@/hooks/mutations';
 import { squadQueryOptions } from '@/hooks/queries/useSquad';
-import useCreateSquad from '@/hooks/useCreateSquad';
-
+import { useToastStore } from '@/stores/toast';
 import { breakpoints, mobileMediaQuery, pcMediaQuery } from '@/styles/breakpoints';
 import { Squad } from '@/types/squad';
 import { css, Theme } from '@emotion/react';
@@ -10,8 +10,18 @@ import { startTransition } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const SquadPage = () => {
+  const navigate = useNavigate();
+  const createToast = useToastStore((state) => state.createToast);
   const { data: squadList } = useSuspenseQuery(squadQueryOptions()).data;
-  const { ModalContainer, handleCreateSquad } = useCreateSquad();
+  const { CreateSquadModal, handleCreateSquad } = useCreateSquad({
+    onSuccess: async ({ data }) => {
+      navigate(`/squads/${data.squadId}`);
+      createToast({ type: 'success', message: '스쿼드가 생성되었어요 🎉', duration: 2000, showCloseButton: false });
+    },
+    onError: () => {
+      createToast({ type: 'failed', message: '스쿼드 생성에 실패했어요 😢' });
+    },
+  });
 
   return (
     <>
@@ -24,7 +34,7 @@ const SquadPage = () => {
           <SquadItem key={squad.squadId} squad={squad} />
         ))}
       </ul>
-      <ModalContainer />
+      <CreateSquadModal />
     </>
   );
 };

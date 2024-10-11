@@ -3,21 +3,45 @@ import IconWrapper from '@/components/common/IconWrapper';
 import { SidebarMemberList } from '@/components/common/Member';
 import { Overlay } from '@/components/common/Overlay';
 import { ROLE } from '@/constants/role';
-import { squadDetailQueryOptions } from '@/hooks/queries/useSquad';
-import useUpdateSquadName from '@/hooks/useUpdateSquadName';
+import { useDeleteSquad, useUpdateSquadName } from '@/hooks/mutations';
+import { squadDetailQueryOptions, squadKeys } from '@/hooks/queries/useSquad';
+
+import { useToastStore } from '@/stores/toast';
 import { css, Theme } from '@emotion/react';
-import { useSuspenseQuery } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
+import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
   const param = useParams();
   const squadId = Number(param.squadId);
+  const navigate = useNavigate();
+  const createToast = useToastStore((state) => state.createToast);
+
   const { data: squadDetail } = useSuspenseQuery({
     ...squadDetailQueryOptions(squadId),
     refetchOnMount: false,
   }).data;
   const { squadName, squadMembers, mySquadMemberRole } = squadDetail;
-  const { ModalContainer: EditNameModal, handleUpdateSquadName } = useUpdateSquadName(squadId);
+
+  const queryClient = useQueryClient();
+  const { UpdateSquadNameModal, handleUpdateSquadName } = useUpdateSquadName(squadId, {
+    onSuccess: async () => {
+      createToast({ type: 'success', message: '스쿼드명이 수정되었어요', duration: 2000, showCloseButton: false });
+      queryClient.refetchQueries({
+        queryKey: squadKeys.squadDetail(squadId),
+      });
+    },
+    onError: () => createToast({ type: 'failed', message: '스쿼드명 수정에 실패했어요 😢' }),
+  });
+
+  const hasMembers = squadMembers.length > 1;
+  const { DeleteSquadModal, handleSquadDelete } = useDeleteSquad(squadId, hasMembers, {
+    onSuccess: () => {
+      createToast({ type: 'success', message: '스쿼드 삭제 성공!' });
+      navigate('/squads');
+    },
+    onError: () => createToast({ type: 'failed', message: '스쿼드 삭제에 실패했어요 😢' }),
+  });
 
   return (
     <Overlay
@@ -75,22 +99,15 @@ const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
                 리더 변경
               </li>
             )}
-            {mySquadMemberRole === ROLE.LEADER && (
-              <li
-                onClick={() => {
-                  // TODO: 스쿼드 삭제
-                }}
-              >
-                스쿼드 삭제
-              </li>
-            )}
+            {mySquadMemberRole === ROLE.LEADER && <li onClick={handleSquadDelete}>스쿼드 삭제</li>}
           </ul>
         </section>
         <button css={exitButtonStyle} onClick={() => console.log('나갈라우?')}>
           나가기
         </button>
       </div>
-      <EditNameModal />
+      <UpdateSquadNameModal />
+      <DeleteSquadModal />
     </Overlay>
   );
 };
@@ -104,8 +121,6 @@ export const commonButtonStyle = (theme: Theme) => css`
 `;
 
 const container = (theme: Theme) => css`
-  right: 0;
-  top: 0;
   width: 300px;
   height: 100%;
   background-color: ${theme.colors.background.white};
@@ -114,6 +129,7 @@ const container = (theme: Theme) => css`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  overflow: auto;
 
   & h2 {
     font-size: ${theme.typography.size_18};
@@ -178,7 +194,6 @@ const membersStyle = (theme: Theme) => css`
 
 const settingsStyle = css`
   padding: 0 16px;
-  margin-bottom: 64px;
   flex: 1;
 
   & li {
@@ -193,12 +208,12 @@ const settingsStyle = css`
 
 const exitButtonStyle = (theme: Theme) => css`
   background-color: ${theme.colors.background.white};
-  font-size: ${theme.typography.size_14};
+  ${theme.typography.size_14}
   color: ${theme.colors.gray.gray200};
   border-top: 1px solid ${theme.colors.gray.gray200};
   font-weight: 700;
   margin-top: auto;
   height: 56px;
   text-align: left;
-  padding: 0 16px;
+  padding: 12px 16px;
 `;
