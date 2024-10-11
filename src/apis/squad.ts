@@ -1,5 +1,10 @@
 import { instance } from '@/apis';
-import { CreateSquadParamType, ExitAndDeleteSquadNameParamType, UpdateSquadNameParamType } from '@/hooks/mutations';
+import {
+  AssignSquadLeaderParamType,
+  CreateSquadParamType,
+  ExitAndDeleteSquadNameParamType,
+  UpdateSquadNameParamType,
+} from '@/hooks/mutations';
 
 import { ApiResponse, Squad, SquadDetail } from '@/types';
 import { MutationFunction } from '@tanstack/react-query';
@@ -40,5 +45,13 @@ export const exitSquad: MutationFunction<ApiResponse<null>, ExitAndDeleteSquadNa
   squadId,
 }): Promise<ApiResponse<null>> => {
   const response = await instance.delete(`/api/squads/${squadId}/members`);
+  return response.data;
+};
+
+export const assignSquadLeader: MutationFunction<ApiResponse<null>, AssignSquadLeaderParamType> = async ({
+  squadId,
+  memberId,
+}): Promise<ApiResponse<null>> => {
+  const response = await instance.put(`/api/squads/${squadId}/members/${memberId}`);
   return response.data;
 };
