@@ -1,5 +1,6 @@
 import { exitSquad } from '@/apis';
-import SquadActionWarning from '@/components/common/Modal/ModalContents/SquadActionWarning';
+import { ActionPrompt } from '@/components/common/Modal/ModalContents';
+
 import { ExitAndDeleteSquadNameParamType, MutateOptionsType } from '@/hooks/mutations';
 import { useModal } from '@/hooks/useModal';
 import { ApiResponse } from '@/types';
@@ -31,7 +32,7 @@ const useExitSquad = (
       displayCancel: true,
     } as const;
 
-    const res = await openModal(SquadActionWarning, undefined, hasMembers ? checkInfo : exitInfo);
+    const res = await openModal(ActionPrompt, undefined, hasMembers ? checkInfo : exitInfo);
     if (res.ok && !hasMembers) {
       exitSquadMutate({ squadId });
     }

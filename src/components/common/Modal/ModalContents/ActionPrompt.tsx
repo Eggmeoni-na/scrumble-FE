@@ -5,7 +5,7 @@ import ModalTemplate from '@/components/common/Modal/ModalTemplate/ModalTemplate
 import { ActionModalContentProps } from '@/types';
 import { css, Theme } from '@emotion/react';
 
-const SquadActionWarning = ({ onSubmit, onAbort, actionModal }: ActionModalContentProps) => {
+const ActionPrompt = ({ onSubmit, onAbort, actionModal }: ActionModalContentProps) => {
   return (
     <ModalTemplate isOverlay={true} onClose={onAbort}>
       <ModalContent>
@@ -27,7 +27,7 @@ const SquadActionWarning = ({ onSubmit, onAbort, actionModal }: ActionModalConte
   );
 };
 
-export default SquadActionWarning;
+export default ActionPrompt;
 
 const descStyle = (theme: Theme) => css`
   padding: 36px 0;

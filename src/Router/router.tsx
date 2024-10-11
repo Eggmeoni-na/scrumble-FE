@@ -3,6 +3,7 @@ import { MainLayout } from '@/components';
 import LoginLayout from '@/components/layouts/LoginLayout';
 import { HomePage, LoginPage, MyPage, ProtectedPage, SquadDetailPage, SquadPage } from '@/Pages';
 import GoogleOAuthCallbackPage from '@/Pages/GoogleOAuthLoginPage';
+import SelectMemberPage from '@/Pages/SelectMemberPage';
 import { Suspense } from 'react';
 
 import { createBrowserRouter, Outlet } from 'react-router-dom';
@@ -36,7 +37,15 @@ export const router = createBrowserRouter([
           },
           {
             path: '/squads/:squadId',
-            element: <SquadDetailPage />,
+            element: (
+              <Suspense fallback={<h1>로딩중</h1>}>
+                <SquadDetailPage />
+              </Suspense>
+            ),
+          },
+          {
+            path: '/squads/:squadId/members',
+            element: <SelectMemberPage />,
           },
           {
             path: '/me',

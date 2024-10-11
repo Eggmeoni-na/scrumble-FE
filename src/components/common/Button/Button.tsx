@@ -24,6 +24,10 @@ const buttonStyle = () => css`
   height: 36px;
   border-radius: 6px;
   font-weight: 700;
+
+  :hover {
+    opacity: 0.5;
+  }
 `;
 
 const getVariantStyles = (variant: Variant) => {
