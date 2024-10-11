@@ -26,12 +26,12 @@ export const typography = {
     fontFamily: 'Pretendard',
     fontSize: calcRem(14),
     lineHeight: 1.5,
-    fontWeight: 500,
+    fontWeight: 300,
   },
   size_10: {
     fontFamily: 'Pretendard',
     fontSize: calcRem(10),
     lineHeight: 1.5,
-    fontWeight: 500,
+    fontWeight: 300,
   },
 };
