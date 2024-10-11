@@ -28,7 +28,7 @@ export type ActionModalType = {
   type: ActionStatus;
   text: string;
   message: string;
-  displayCancel?: boolean;
+  displayCancel: boolean;
 };
 
 export type ActionModalContentProps<T = unknown> = {
