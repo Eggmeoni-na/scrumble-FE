@@ -26,6 +26,11 @@ export type ModalContentProps<T = unknown> = {
 
 export type ActionModalType = {
   type: ActionStatus;
+  text: string;
   message: string;
-  displayCancel: boolean;
+  displayCancel?: boolean;
 };
+
+export type ActionModalContentProps<T = unknown> = {
+  actionModal: ActionModalType;
+} & ModalContentProps<T>;
