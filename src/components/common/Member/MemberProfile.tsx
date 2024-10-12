@@ -1,5 +1,5 @@
 import { ROLE } from '@/constants/role';
-import useValidatedUser from '@/hooks/useValidatedUser';
+import useUserCookie from '@/hooks/useUserCookie';
 
 import { SquadMember } from '@/types';
 import { Interpolation, Theme } from '@emotion/react';
@@ -12,7 +12,7 @@ type Props = {
 };
 
 const MemberProfile = ({ member, infoStyle, imgStyle, displayRole }: Props) => {
-  const user = useValidatedUser();
+  const { user } = useUserCookie();
   const { name, profileImg, memberId, squadMemberRole } = member;
 
   return (
@@ -21,7 +21,7 @@ const MemberProfile = ({ member, infoStyle, imgStyle, displayRole }: Props) => {
       <p>
         {name}
         {displayRole && <span>{squadMemberRole === ROLE.LEADER && ' 리더'}</span>}
-        {displayRole && <span>{user.id === memberId && ' (나)'}</span>}
+        {displayRole && <span>{user?.id === memberId && ' (나)'}</span>}
       </p>
     </div>
   );
