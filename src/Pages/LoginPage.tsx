@@ -1,5 +1,5 @@
-import { generateTempSession } from '@/apis/auth';
-import { useAuthStore } from '@/stores/auth';
+import { generateTempSession } from '@/apis';
+import useUserCookie from '@/hooks/useUserCookie';
 import { pcMediaQuery } from '@/styles/breakpoints';
 import { AuthUser } from '@/types';
 import { css } from '@emotion/react';
@@ -8,7 +8,8 @@ import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const login = useAuthStore((state) => state.login);
+  const { setCookie } = useUserCookie();
+
   const handleGoogleLogin = async () => {
     try {
       // TODO: 테스트 완료 후 구글 로그인으로 변경 예정
@@ -16,7 +17,19 @@ const LoginPage = () => {
       const { status, data } = response;
       if (status === 200) {
         const { id, name } = data.data;
-        login({ id, name });
+
+        const time = 28 * 60; // 28분을 초 단위로 변환
+        const expiration = new Date(Date.now() + time * 1000);
+
+        setCookie(
+          'user',
+          { id, name },
+          {
+            path: '/',
+            sameSite: 'strict',
+            expires: expiration,
+          },
+        );
         navigate('/squads', { replace: true });
         return;
       } else {
