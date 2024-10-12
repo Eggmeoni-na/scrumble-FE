@@ -23,7 +23,11 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <HomePage />,
+            element: (
+              <ProtectedPage>
+                <HomePage />
+              </ProtectedPage>
+            ),
           },
           {
             path: '/squads',
@@ -66,5 +70,9 @@ export const router = createBrowserRouter([
         element: <GoogleOAuthCallbackPage />,
       },
     ],
+  },
+  {
+    path: '/*',
+    element: <h1>404 Page</h1>,
   },
 ]);
