@@ -1,4 +1,4 @@
-import { useAuthStore } from '@/stores/auth';
+import useUserCookie from '@/hooks/useUserCookie';
 import { ReactNode } from 'react';
 import { Navigate } from 'react-router-dom';
 
@@ -7,10 +7,10 @@ type Props = {
 };
 
 const ProtectedPage = ({ children }: Props) => {
-  const user = useAuthStore((state) => state.user);
+  const { user } = useUserCookie();
 
-  if (!user) {
-    return <Navigate to="/" />;
+  if (user === null) {
+    return <Navigate to="/login" />;
   }
 
   return <>{children}</>;
