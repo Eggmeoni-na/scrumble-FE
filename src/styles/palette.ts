@@ -7,6 +7,7 @@ export const lightColors = {
     white: '#ffffff',
     yellow: '#FFFACD',
     lightYellow: '#FFFEF6',
+    gray: '#F8F8F8',
   },
   text: '#24272B',
   black: {
@@ -15,7 +16,7 @@ export const lightColors = {
     black500: '#9e9e9e',
   },
   gray: {
-    gray100: '#e0e0e0',
+    gray100: '#F3F3F3',
     gray200: '#bdbdbd',
     gray300: '#252525',
   },
@@ -28,6 +29,7 @@ export const darkColors = {
     white: '#1B1C1D',
     yellow: '#34373B',
     lightYellow: '#24272B',
+    gray: '#24272B',
   },
   text: '#ffffff',
   black: {
