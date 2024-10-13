@@ -2,6 +2,15 @@
   color: aqua;
 }
 
+.sr-only {
+  position: absolute;
+  z-index: -1;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  visibility: hidden;
+}
+
 .modal-container {
   width: 360px;
   z-index: 999;

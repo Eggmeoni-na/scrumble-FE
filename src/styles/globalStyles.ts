@@ -50,6 +50,14 @@ export const globalStyles = (theme: Theme) => css`
     background-color: ${theme.colors.background.lightYellow};
   }
 
+  body {
+    -ms-overflow-style: none;
+  }
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
   html,
   body,
   div,
@@ -185,5 +193,36 @@ export const globalStyles = (theme: Theme) => css`
     color: inherit;
   }
 
+  input {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    background: none;
+  }
+
   /* Add global styles */
+`;
+
+export const scrollBarStyle = css`
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent;
+  }
+
+  &:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(212, 212, 212, 0.7);
+    border-radius: 10px;
+  }
+
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+
+  &:hover {
+    scrollbar-color: rgba(212, 212, 212, 0.7) transparent;
+  }
 `;

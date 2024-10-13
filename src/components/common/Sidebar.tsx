@@ -12,8 +12,8 @@ import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
-  const param = useParams();
-  const squadId = Number(param.squadId);
+  const params = useParams();
+  const squadId = Number(params.squadId);
   const navigate = useNavigate();
   const createToast = useToastStore((state) => state.createToast);
 
@@ -68,8 +68,8 @@ const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
             <Close />
           </IconWrapper>
         </header>
-        <section css={squadInfoStyle} aria-labelledby="squadInfoHeading">
-          <h2 id="squadInfoHeading">스쿼드 정보</h2>
+        <section css={squadInfoStyle} aria-labelledby="squad-detail">
+          <h2 id="squad-detail">스쿼드 정보</h2>
           <div>
             <h3>{squadName}</h3>
             <IconWrapper
@@ -84,12 +84,12 @@ const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
           </div>
           <span>생성일</span>
         </section>
-        <section css={membersStyle} aria-labelledby="membersHeading">
-          <h2 id="membersHeading">멤버</h2>
+        <section css={membersStyle} aria-labelledby="squad-members">
+          <h2 id="squad-members">멤버</h2>
           <SidebarMemberList members={squadMembers} myRole={squadDetail.mySquadMemberRole} />
         </section>
-        <section css={settingsStyle} aria-labelledby="settingsHeading">
-          <h2 id="settingsHeading">설정</h2>
+        <section css={settingsStyle} aria-labelledby="squad-settings">
+          <h2 id="squad-settings">설정</h2>
           <ul>
             <li
               onClick={() => {

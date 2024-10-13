@@ -61,9 +61,9 @@ const itemStyle = (theme: Theme) => css`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 82px;
+  height: 52px;
   padding: 12px;
-  margin: 16px;
+  margin: 8px 16px;
   border-radius: 8px;
   background-color: ${theme.colors.background.lightYellow};
   box-shadow: 0px 3px 28px 0px rgba(37, 37, 37, 0.05);
