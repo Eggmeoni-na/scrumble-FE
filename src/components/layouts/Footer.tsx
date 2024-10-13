@@ -33,16 +33,21 @@ const footerContainer = (theme: Theme) => css`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  height: 83px;
+  height: 56px;
   background-color: ${theme.colors.background.white};
+  -webkit-box-shadow: 0px -6px 17px -3px rgba(96, 96, 96, 0.16);
+  box-shadow: 0px -6px 17px -3px rgba(96, 96, 96, 0.16);
 `;
 
 const menuIcon = (theme: Theme) => css`
+  padding: 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
   color: ${theme.colors.primary};
+  ${theme.typography.size_10}
+  font-weight: 500;
 
   span {
     color: ${theme.colors.gray.gray300};
@@ -53,8 +58,8 @@ const homeIcon = css`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 64px;
-  height: 64px;
+  width: 42px;
+  height: 42px;
   background-image: linear-gradient(180deg, #fd0 0%, #fbb034 100%);
   border-radius: 50%;
   color: white;

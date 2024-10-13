@@ -24,8 +24,7 @@ export default IconWrapper;
 
 const icon = ({ disabled }: IconProps) => css`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  align-content: center;
   width: 32px;
   height: 32px;
   padding: 4px;

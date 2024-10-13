@@ -72,7 +72,7 @@ HeaderTemplate.AlarmButton = AlarmButton;
 HeaderTemplate.SidebarToggleButton = SidebarToggleButton;
 
 const headerContainer = (theme: Theme) => css`
-  height: 52px;
+  height: 48px;
   display: flex;
   justify-content: space-between;
   align-items: center;
