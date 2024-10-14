@@ -2,20 +2,20 @@ import { Check, More } from '@/assets/icons';
 import IconWrapper from '@/components/common/IconWrapper';
 import { TODO_STATUS } from '@/constants/todo';
 import { useTodoStore } from '@/stores/todo';
-import { ToDo, ToDoDetail } from '@/types';
+import { ToDoDetail } from '@/types';
 import { css, Theme, useTheme } from '@emotion/react';
 import { isEqual } from 'es-toolkit';
 import { useState } from 'react';
 
 type Props = {
-  todos: ToDo[];
+  todos: ToDoDetail[];
 };
 
 const TodoList = ({ todos }: Props) => {
   return (
     <ul css={todoContainerStyle}>
       {todos.map((todo) => (
-        <TodoItem key={todo.toDoDetails.toDoId} todo={todo.toDoDetails} />
+        <TodoItem key={todo.toDoId} todo={todo} />
       ))}
     </ul>
   );
