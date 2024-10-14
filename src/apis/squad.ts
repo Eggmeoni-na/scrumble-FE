@@ -3,6 +3,7 @@ import {
   AssignSquadLeaderParamType,
   CreateSquadParamType,
   ExitAndDeleteSquadNameParamType,
+  RemoveUserFromSquadParamType,
   UpdateSquadNameParamType,
 } from '@/hooks/mutations';
 
@@ -53,5 +54,13 @@ export const assignSquadLeader: MutationFunction<ApiResponse<null>, AssignSquadL
   memberId,
 }): Promise<ApiResponse<null>> => {
   const response = await instance.put(`/api/squads/${squadId}/members/${memberId}`);
+  return response.data;
+};
+
+export const removeUserFromSquad: MutationFunction<ApiResponse<null>, RemoveUserFromSquadParamType> = async ({
+  squadId,
+  memberId,
+}) => {
+  const response = await instance.delete(`/api/squads/${squadId}/members/${memberId}`);
   return response.data;
 };
