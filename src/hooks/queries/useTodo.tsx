@@ -1,13 +1,13 @@
-import { getMyTodoList } from '@/apis/mockApi';
+import { getTodoList } from '@/apis';
+import { GetTodoRequest } from '@/types';
 import { queryOptions } from '@tanstack/react-query';
 
 export const todoKeys = {
-  todos: ['todoList'] as const,
-  todoDetail: (todoId: number) => [todoKeys.todos, todoId] as const,
+  todos: (squadId: number) => [squadId, 'todoList'] as const,
 };
 
-export const todoQueryOptions = (squadId: number, memberId: number) =>
+export const todoQueryOptions = (params: GetTodoRequest) =>
   queryOptions({
-    queryKey: todoKeys.todos,
-    queryFn: () => getMyTodoList(squadId, memberId),
+    queryKey: todoKeys.todos(params.squadId),
+    queryFn: () => getTodoList(params),
   });

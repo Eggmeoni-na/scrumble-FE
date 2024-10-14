@@ -7,7 +7,9 @@ import { TODO_STATUS } from '@/constants/todo';
 import { squadDetailQueryOptions } from '@/hooks/queries/useSquad';
 import { todoQueryOptions } from '@/hooks/queries/useTodo';
 import useUserCookie from '@/hooks/useUserCookie';
+import { useTodoStore } from '@/stores/todo';
 import { scrollBarStyle } from '@/styles/globalStyles';
+import { formatDate } from '@/utils/formatDate';
 import { css, Theme } from '@emotion/react';
 import { useSuspenseQueries } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
@@ -17,6 +19,15 @@ const SquadDetailPage = () => {
   const params = useParams();
   const squadId = Number(params.squadId);
   const { user } = useUserCookie();
+  const [currentDate, setCurrentDate] = useState(formatDate(new Date()));
+  // TODO: 오늘 날짜를 기본값으로 캘린더 선택에 따라 refetch
+  // lastToDoId 계산
+  const queryParams = {
+    startDate: currentDate,
+    endDate: currentDate,
+    lastToDoId: 30,
+    pageSize: 30,
+  };
   const [{ data: squadDetail }, { data: todos }] = useSuspenseQueries({
     queries: [
       {
@@ -24,19 +35,21 @@ const SquadDetailPage = () => {
         staleTime: 300000,
       },
       {
-        ...todoQueryOptions(squadId, user!.id),
+        ...todoQueryOptions({ squadId, memberId: user!.id, queryParams }),
       },
     ],
   });
 
+  // TODO: 수정 API와 함께 개선 필요
+  const isTodoChanged = useTodoStore((state) => state.isTodoChanged);
   const [progressRate, setProgressRate] = useState(0);
   const todoCount = todos.data.length;
 
   useEffect(() => {
     let isCompleted = 0;
-    todos.data.forEach((todo) => todo.toDoDetails.todoStatus === TODO_STATUS.COMPLETED && isCompleted++);
+    todos.data.forEach((todo) => todo.todoStatus === TODO_STATUS.COMPLETED && isCompleted++);
 
-    setProgressRate(Math.floor((isCompleted / todoCount) * 100));
+    setProgressRate(!todoCount ? 0 : Math.floor((isCompleted / todoCount) * 100));
   }, [todos]);
 
   return (
@@ -61,7 +74,7 @@ const SquadDetailPage = () => {
       </section>
       <div css={headerStyle}>
         <span>달성률: {progressRate}%</span>
-        <Button text="저장" variant="confirm" />
+        <Button text="저장" variant="confirm" css={[saveButtonStyle(isTodoChanged)]} />
       </div>
       <TodoList todos={todos.data} />
       <form css={formStyle}>
@@ -91,7 +104,7 @@ const containerStyle = (them: Theme) => css`
 const calendarStyle = css`
   display: flex;
   gap: 4px;
-  margin: 8px 16px 0 16px;
+  margin: 8px 16px;
   overflow-x: auto;
 
   ${scrollBarStyle}
@@ -117,6 +130,12 @@ const headerStyle = (theme: Theme) => css`
   align-items: center;
   margin: 24px 24px 12px 32px;
   ${theme.typography.size_16}
+`;
+
+const saveButtonStyle = (isTodoChanged: boolean) => css`
+  width: 72px;
+  height: 28px;
+  opacity: ${isTodoChanged ? 1 : 0.3};
 `;
 
 const formStyle = (theme: Theme) => css`

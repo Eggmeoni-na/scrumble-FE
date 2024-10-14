@@ -43,7 +43,7 @@ const todoListParam = {
   pageSize: 0,
 };
 
-export const getMyTodoList = async (squadId: number, memberId: number): Promise<{ data: ToDo[] }> => {
+export const getMyTodoListApi = async (squadId: number, memberId: number): Promise<{ data: ToDo[] }> => {
   const response = await mockInstance.get(`/todos/squads/${squadId}/members/${memberId}`, {
     params: todoListParam,
   });
