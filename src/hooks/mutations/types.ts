@@ -8,3 +8,4 @@ export type CreateSquadParamType = { squadName: string };
 export type UpdateSquadNameParamType = { squadId: number; squadName: string };
 export type ExitAndDeleteSquadNameParamType = { squadId: number };
 export type AssignSquadLeaderParamType = { squadId: number; memberId: number };
+export type RemoveUserFromSquadParamType = { squadId: number; memberId: number };
