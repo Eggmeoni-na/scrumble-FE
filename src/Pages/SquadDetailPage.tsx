@@ -1,5 +1,6 @@
 import { Add } from '@/assets/icons';
 import Button from '@/components/common/Button/Button';
+import CalendarList from '@/components/common/Calendar/CalendarList';
 import IconWrapper from '@/components/common/IconWrapper';
 import SquadDetailMemberList from '@/components/common/Member/SquadDetailMemberList';
 import TodoList from '@/components/common/Todo/TodoList';
@@ -7,11 +8,11 @@ import { TODO_STATUS } from '@/constants/todo';
 import { squadDetailQueryOptions } from '@/hooks/queries/useSquad';
 import { todoQueryOptions } from '@/hooks/queries/useTodo';
 import useUserCookie from '@/hooks/useUserCookie';
-import { useTodoStore } from '@/stores/todo';
-import { scrollBarStyle } from '@/styles/globalStyles';
-import { formatDate } from '@/utils/formatDate';
+import { useDayStore, useTodoStore } from '@/stores/todo';
+import { breakpoints, mobileMediaQuery, pcMediaQuery } from '@/styles/breakpoints';
 import { css, Theme } from '@emotion/react';
 import { useSuspenseQueries } from '@tanstack/react-query';
+import { addMonths, format, subMonths } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -19,15 +20,16 @@ const SquadDetailPage = () => {
   const params = useParams();
   const squadId = Number(params.squadId);
   const { user } = useUserCookie();
-  const [currentDate, setCurrentDate] = useState(formatDate(new Date()));
-  // TODO: 오늘 날짜를 기본값으로 캘린더 선택에 따라 refetch
+  const { selectedDay, setSelectedDay } = useDayStore((state) => state);
+  const [currentMonth, setCurrentMonth] = useState(new Date(selectedDay));
   // lastToDoId 계산
   const queryParams = {
-    startDate: currentDate,
-    endDate: currentDate,
+    startDate: selectedDay,
+    endDate: selectedDay,
     lastToDoId: 30,
     pageSize: 30,
   };
+
   const [{ data: squadDetail }, { data: todos }] = useSuspenseQueries({
     queries: [
       {
@@ -45,6 +47,16 @@ const SquadDetailPage = () => {
   const [progressRate, setProgressRate] = useState(0);
   const todoCount = todos.data.length;
 
+  const handlePrevMonth = () => {
+    const prevMonth = subMonths(new Date(currentMonth), 1);
+    setCurrentMonth(prevMonth);
+  };
+
+  const handleNextMonth = () => {
+    const nextMonth = addMonths(new Date(currentMonth), 1);
+    setCurrentMonth(nextMonth);
+  };
+
   useEffect(() => {
     let isCompleted = 0;
     todos.data.forEach((todo) => todo.todoStatus === TODO_STATUS.COMPLETED && isCompleted++);
@@ -58,13 +70,12 @@ const SquadDetailPage = () => {
         <h2 id="calendar" className="sr-only">
           캘린더
         </h2>
-        <ul css={calendarStyle}>
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 29, 31].map((v) => (
-            <li key={v} css={calendarItemStyle}>
-              {v}
-            </li>
-          ))}
-        </ul>
+        <div css={monthNavButtonStyle}>
+          <button onClick={handlePrevMonth}>{'<'}</button>
+          <span>{format(currentMonth, 'yyyy년 MM월')}</span>
+          <button onClick={handleNextMonth}>{'>'}</button>
+        </div>
+        <CalendarList selectedDay={selectedDay} onSelectDay={setSelectedDay} currentMonth={currentMonth} />
       </section>
       <section aria-labelledby="squad-members">
         <h2 id="squad-members" className="sr-only">
@@ -101,27 +112,48 @@ const containerStyle = (them: Theme) => css`
   background-color: ${them.colors.background.white};
 `;
 
-const calendarStyle = css`
-  display: flex;
-  gap: 4px;
-  margin: 8px 16px;
-  overflow-x: auto;
-
-  ${scrollBarStyle}
-`;
-
-const calendarItemStyle = (theme: Theme) => css`
-  width: 32px;
-  height: 48px;
-  flex-shrink: 0;
-  border-radius: 14px;
-  color: ${theme.colors.text};
-  background-color: ${theme.colors.background.white};
-  border: 2px solid ${theme.colors.gray.gray100};
-  border-radius: 20px;
+const monthNavButtonStyle = (theme: Theme) => css`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  & span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    height: 28px;
+    border: 2px solid ${theme.colors.gray.gray100};
+    border-radius: 4px;
+    ${theme.typography.size_14}
+    font-weight: 500;
+  }
+
+  & button {
+    width: 28px;
+    height: 28px;
+    border: 2px solid ${theme.colors.gray.gray100};
+    border-radius: 4px;
+    color: ${theme.colors.text};
+    cursor: pointer;
+    margin: 0 16px;
+
+    transition: transform 0.3s ease-in-out;
+    :hover {
+      transform: scale(1.1);
+      background-color: #eeeeee70;
+    }
+  }
+
+  ${mobileMediaQuery(css`
+    max-width: ${breakpoints.mobile};
+    margin: 8px 36px;
+  `)}
+
+  ${pcMediaQuery(css`
+    max-width: ${breakpoints.pc};
+    margin: 8px 150px;
+  `)}
 `;
 
 const headerStyle = (theme: Theme) => css`
