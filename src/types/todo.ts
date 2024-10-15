@@ -1,4 +1,4 @@
-import { TODO_STATUS } from '@/constants/todo';
+import { TODO_STATUS, TODO_TYPES } from '@/constants/todo';
 
 export type ToDo = {
   toDoAt: string;
@@ -25,4 +25,12 @@ export type GetTodoRequest = {
     lastToDoId: number;
     pageSize: number;
   };
+};
+
+export type TodoTypes = (typeof TODO_TYPES)[keyof typeof TODO_TYPES];
+
+export type PostTodoRequest = {
+  toDoType: TodoTypes;
+  contents: string;
+  todoAt: string;
 };

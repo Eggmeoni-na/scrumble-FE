@@ -1,3 +1,4 @@
+import { PostTodoRequest } from '@/types';
 import { UseMutationOptions } from '@tanstack/react-query';
 
 /**
@@ -9,3 +10,8 @@ export type UpdateSquadNameParamType = { squadId: number; squadName: string };
 export type ExitAndDeleteSquadNameParamType = { squadId: number };
 export type AssignSquadLeaderParamType = { squadId: number; memberId: number };
 export type RemoveUserFromSquadParamType = { squadId: number; memberId: number };
+
+/**
+ * Todo
+ */
+export type CreateTodoParamType = { squadId: number; newTodo: PostTodoRequest };
