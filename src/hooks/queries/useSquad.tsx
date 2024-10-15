@@ -3,7 +3,7 @@ import { queryOptions } from '@tanstack/react-query';
 
 export const squadKeys = {
   squad: ['squadList'] as const,
-  squadDetail: (squadId: number) => [squadKeys.squad, squadId] as const,
+  squadDetail: (squadId: number) => [...squadKeys.squad, squadId] as const,
 };
 
 export const squadQueryOptions = () =>
