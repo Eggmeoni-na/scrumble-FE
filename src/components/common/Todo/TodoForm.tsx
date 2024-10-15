@@ -25,6 +25,13 @@ const TodoForm = ({ squadId, selectedDay }: { squadId: number; selectedDay: stri
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!contents.length) {
+      createToast({
+        type: 'warning',
+        message: '할일을 입력해주세요',
+      });
+      return;
+    }
     const newTodo: PostTodoRequest = {
       toDoType: TODO_TYPES.DAILY,
       contents,
