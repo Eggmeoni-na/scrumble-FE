@@ -1,8 +1,7 @@
-import { Add } from '@/assets/icons';
 import Button from '@/components/common/Button/Button';
 import CalendarList from '@/components/common/Calendar/CalendarList';
-import IconWrapper from '@/components/common/IconWrapper';
 import SquadDetailMemberList from '@/components/common/Member/SquadDetailMemberList';
+import TodoForm from '@/components/common/Todo/TodoForm';
 import TodoList from '@/components/common/Todo/TodoList';
 import { TODO_STATUS } from '@/constants/todo';
 import { squadDetailQueryOptions } from '@/hooks/queries/useSquad';
@@ -42,8 +41,7 @@ const SquadDetailPage = () => {
     ],
   });
 
-  // TODO: 수정 API와 함께 개선 필요
-  const isTodoChanged = useTodoStore((state) => state.isTodoChanged);
+  const { isTodoChanged, setIsTodoChanged } = useTodoStore((state) => state);
   const [progressRate, setProgressRate] = useState(0);
   const todoCount = todos.data.length;
 
@@ -88,17 +86,7 @@ const SquadDetailPage = () => {
         <Button text="저장" variant="confirm" css={[saveButtonStyle(isTodoChanged)]} />
       </div>
       <TodoList todos={todos.data} />
-      <form css={formStyle}>
-        <input type="text" />
-        <IconWrapper
-          css={addIconStyle}
-          onClick={() => {
-            // TODO: 투두 등록 API 연동
-          }}
-        >
-          <Add />
-        </IconWrapper>
-      </form>
+      <TodoForm squadId={squadId} selectedDay={selectedDay} onChangeTodo={setIsTodoChanged} />
     </div>
   );
 };

@@ -4,7 +4,7 @@ import { getDaysInMonth } from '@/utils/getDaysInMonth';
 import { css, Theme, useTheme } from '@emotion/react';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import { forwardRef, MouseEvent, useEffect, useMemo, useRef } from 'react';
+import { forwardRef, memo, MouseEvent, useEffect, useMemo, useRef } from 'react';
 
 type Props = {
   selectedDay: string;
@@ -52,14 +52,13 @@ const CalendarList = ({ selectedDay, onSelectDay, currentMonth }: Props) => {
   );
 };
 
-export default CalendarList;
+export default memo(CalendarList);
 
 const CalendarItem = forwardRef<HTMLLIElement, { day: string }>(({ day }, ref) => {
   const theme = useTheme();
   const selectedDay = useDayStore((state) => state.selectedDay);
   const isSelected = selectedDay === day;
   const isToday = format(new Date(), 'yyyy-MM-dd') === day;
-
   return (
     <li
       key={day}
