@@ -9,13 +9,22 @@ import { css, Theme } from '@emotion/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { ChangeEvent, FormEvent, KeyboardEventHandler, useCallback, useState } from 'react';
 
-const TodoForm = ({ squadId, selectedDay }: { squadId: number; selectedDay: string }) => {
+const TodoForm = ({
+  squadId,
+  selectedDay,
+  onChangeTodo,
+}: {
+  squadId: number;
+  selectedDay: string;
+  onChangeTodo: (changed: boolean) => void;
+}) => {
   const [contents, setContents] = useState('');
   const createToast = useToastStore((state) => state.createToast);
   const queryClient = useQueryClient();
   const { createTodoMutate } = useCreateTodo({
     onSuccess: async () => {
       createToast({ type: 'success', message: '투두가 등록되었어요 ✅', duration: 2000, showCloseButton: false });
+      onChangeTodo(true);
       queryClient.refetchQueries({
         queryKey: todoKeys.todos(squadId),
       });

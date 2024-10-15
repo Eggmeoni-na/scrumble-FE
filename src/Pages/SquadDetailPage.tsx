@@ -41,8 +41,7 @@ const SquadDetailPage = () => {
     ],
   });
 
-  // TODO: 수정 API와 함께 개선 필요
-  const isTodoChanged = useTodoStore((state) => state.isTodoChanged);
+  const { isTodoChanged, setIsTodoChanged } = useTodoStore((state) => state);
   const [progressRate, setProgressRate] = useState(0);
   const todoCount = todos.data.length;
 
@@ -87,7 +86,7 @@ const SquadDetailPage = () => {
         <Button text="저장" variant="confirm" css={[saveButtonStyle(isTodoChanged)]} />
       </div>
       <TodoList todos={todos.data} />
-      <TodoForm squadId={squadId} selectedDay={selectedDay} />
+      <TodoForm squadId={squadId} selectedDay={selectedDay} onChangeTodo={setIsTodoChanged} />
     </div>
   );
 };
