@@ -1,4 +1,3 @@
-import Button from '@/components/common/Button/Button';
 import CalendarList from '@/components/common/Calendar/CalendarList';
 import SquadDetailMemberList from '@/components/common/Member/SquadDetailMemberList';
 import TodoForm from '@/components/common/Todo/TodoForm';
@@ -22,14 +21,14 @@ const SquadDetailPage = () => {
   const squadId = Number(params.squadId);
   const setCurrentSquadId = useSquadStore((state) => state.setCurrentSquadId);
   const { user } = useUserCookie();
-
+  const lastToDoId = useTodoStore((state) => state.lastToDoId);
   const { selectedDay, setSelectedDay } = useDayStore((state) => state);
   const [currentMonth, setCurrentMonth] = useState(new Date(selectedDay));
-  // lastToDoId 계산
+
   const queryParams = {
     startDate: selectedDay,
     endDate: selectedDay,
-    lastToDoId: 30,
+    lastToDoId: lastToDoId,
     pageSize: 30,
   };
 
@@ -40,12 +39,13 @@ const SquadDetailPage = () => {
         staleTime: 300000,
       },
       {
-        ...todoQueryOptions({ squadId, memberId: user!.id, queryParams }),
+        ...todoQueryOptions(selectedDay, { squadId, memberId: user!.id, queryParams }),
+        refetchOnWindowFocus: false,
+        staleTime: 300000,
       },
     ],
   });
 
-  const { isTodoChanged, setIsTodoChanged } = useTodoStore((state) => state);
   const [progressRate, setProgressRate] = useState(0);
   const todoCount = todos.data.length;
 
@@ -61,7 +61,7 @@ const SquadDetailPage = () => {
 
   useEffect(() => {
     let isCompleted = 0;
-    todos.data.forEach((todo) => todo.todoStatus === TODO_STATUS.COMPLETED && isCompleted++);
+    todos.data.forEach((todo) => todo.toDoStatus === TODO_STATUS.COMPLETED && isCompleted++);
 
     setProgressRate(!todoCount ? 0 : Math.floor((isCompleted / todoCount) * 100));
   }, [todos]);
@@ -90,11 +90,11 @@ const SquadDetailPage = () => {
         <SquadDetailMemberList squadMembers={squadDetail.data.squadMembers} />
       </section>
       <div css={headerStyle}>
+        <span>{user?.name}</span>
         <span>달성률: {progressRate}%</span>
-        <Button text="저장" variant="confirm" css={[saveButtonStyle(isTodoChanged)]} />
       </div>
       <TodoList todos={todos.data} />
-      <TodoForm squadId={squadId} selectedDay={selectedDay} onChangeTodo={setIsTodoChanged} />
+      <TodoForm squadId={squadId} selectedDay={selectedDay} />
     </div>
   );
 };
