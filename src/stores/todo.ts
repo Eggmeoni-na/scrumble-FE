@@ -2,13 +2,13 @@ import { format } from 'date-fns';
 import { create } from 'zustand';
 
 type TodoState = {
-  isTodoChanged: boolean;
-  setIsTodoChanged: (changed: boolean) => void;
+  lastToDoId: number;
+  setLastToDoId: (todoId: number) => void;
 };
 
 export const useTodoStore = create<TodoState>((set) => ({
-  isTodoChanged: false,
-  setIsTodoChanged: (changed) => set({ isTodoChanged: changed }),
+  lastToDoId: Number.MAX_SAFE_INTEGER,
+  setLastToDoId: (lastToDoId) => set({ lastToDoId }),
 }));
 
 type DateState = {
