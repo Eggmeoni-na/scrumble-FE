@@ -4,6 +4,7 @@ import { useThemeStore } from '@/stores/theme';
 import { darkTheme, globalStyles, lightTheme } from '@/styles';
 import { Global, ThemeProvider } from '@emotion/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Outlet } from 'react-router-dom';
 
@@ -20,6 +21,7 @@ function App() {
             <Outlet />
             <ToastContainer />
           </ThemeProvider>
+          <ReactQueryDevtools initialIsOpen={true} />
         </QueryClientProvider>
       </ModalProvider>
     </ErrorBoundary>
