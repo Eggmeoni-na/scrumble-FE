@@ -1,11 +1,14 @@
 import { Check, More } from '@/assets/icons';
 import IconWrapper from '@/components/common/IconWrapper';
 import { TODO_STATUS } from '@/constants/todo';
-import { useTodoStore } from '@/stores/todo';
-import { ToDoDetail } from '@/types';
+import { useUpdateTodoStatus } from '@/hooks/mutations';
+import { todoKeys } from '@/hooks/queries/useTodo';
+import { useSquadStore } from '@/stores/squad';
+import { useDayStore } from '@/stores/todo';
+import { ToDoDetail, UpdateTodoRequest } from '@/types';
 import { css, Theme, useTheme } from '@emotion/react';
-import { isEqual } from 'es-toolkit';
-import { useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import { MouseEvent, useState } from 'react';
 
 type Props = {
   todos: ToDoDetail[];
@@ -24,36 +27,56 @@ const TodoList = ({ todos }: Props) => {
 export default TodoList;
 
 const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
+  const squadId = useSquadStore((state) => state.currentSquadId);
   const theme = useTheme();
-  const [currentTodoState, setCurrentState] = useState(todo);
-  const setIsTodoChanged = useTodoStore((state) => state.setIsTodoChanged);
-  const isCompleted = currentTodoState.todoStatus === TODO_STATUS.COMPLETED;
+  const { toDoAt, toDoId, contents, squadToDoId } = todo;
+  const [currentToDoStatus, setCurrentToDoStatus] = useState(todo.toDoStatus);
+  const selectedDay = useDayStore((state) => state.selectedDay);
+  const isCompleted = currentToDoStatus === TODO_STATUS.COMPLETED;
 
-  const toggleTodoStatus = () => {
-    const updatedTodo: ToDoDetail = {
-      ...todo,
-      todoStatus: isCompleted ? TODO_STATUS.PENDING : TODO_STATUS.COMPLETED,
+  const queryClient = useQueryClient();
+  const { updateTodoStatusMutate } = useUpdateTodoStatus(squadId, selectedDay, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: todoKeys.todos(squadToDoId, selectedDay),
+      });
+    },
+    onError: (error, data, context) => {
+      if (context) {
+        queryClient.setQueryData(todoKeys.todos(squadToDoId, selectedDay), context);
+      }
+    },
+  });
+
+  const toggleTodoStatus = (e: MouseEvent<HTMLLIElement>) => {
+    const newStatus = currentToDoStatus === TODO_STATUS.PENDING ? TODO_STATUS.COMPLETED : TODO_STATUS.PENDING;
+    const newTodo: UpdateTodoRequest = {
+      toDoAt,
+      toDoStatus: newStatus,
+      contents,
     };
-    setCurrentState(updatedTodo);
-    setIsTodoChanged(!isEqual(todo, updatedTodo));
+    setCurrentToDoStatus(newStatus);
+    updateTodoStatusMutate({ toDoId, newTodo });
   };
 
   return (
-    <li css={[todoItemStyle, getStatusStyles(isCompleted, theme)]} onClick={toggleTodoStatus}>
+    <li css={[todoItemStyle, getStatusStyles(isCompleted, theme)]} onClick={(e) => toggleTodoStatus(e)}>
       <div css={contentStyle}>
         <IconWrapper
-          aria-label={isCompleted ? 'Selected member' : 'Unselected member'}
+          aria-label={isCompleted ? 'Completed todo' : 'Uncompleted todo'}
           aria-checked={isCompleted}
           role="checkbox"
           css={[checkIconStyle, isCompleted && checkedStyle]}
         >
           {isCompleted && <Check />}
         </IconWrapper>
-        <p>{todo.contents}</p>
+        <p>{contents}</p>
       </div>
-      <IconWrapper style={{ color: `${theme.colors.gray.gray200}` }}>
-        <More />
-      </IconWrapper>
+      <div>
+        <IconWrapper style={{ color: `${theme.colors.gray.gray200}` }}>
+          <More />
+        </IconWrapper>
+      </div>
     </li>
   );
 };
