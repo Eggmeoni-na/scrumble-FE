@@ -3,7 +3,6 @@ import { Check } from '@/assets/icons';
 import IconWrapper from '@/components/common/IconWrapper';
 import MemberProfile from '@/components/common/Member/MemberProfile';
 import { ActionPrompt } from '@/components/common/Modal/ModalContents';
-
 import { ROLE } from '@/constants/role';
 import { squadDetailQueryOptions, squadKeys } from '@/hooks/queries/useSquad';
 import { useModal } from '@/hooks/useModal';

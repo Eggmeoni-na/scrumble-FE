@@ -4,9 +4,11 @@ import SquadDetailMemberList from '@/components/common/Member/SquadDetailMemberL
 import TodoForm from '@/components/common/Todo/TodoForm';
 import TodoList from '@/components/common/Todo/TodoList';
 import { TODO_STATUS } from '@/constants/todo';
+
 import { squadDetailQueryOptions } from '@/hooks/queries/useSquad';
 import { todoQueryOptions } from '@/hooks/queries/useTodo';
 import useUserCookie from '@/hooks/useUserCookie';
+import { useSquadStore } from '@/stores/squad';
 import { useDayStore, useTodoStore } from '@/stores/todo';
 import { breakpoints, mobileMediaQuery, pcMediaQuery } from '@/styles/breakpoints';
 import { css, Theme } from '@emotion/react';
@@ -18,7 +20,9 @@ import { useParams } from 'react-router-dom';
 const SquadDetailPage = () => {
   const params = useParams();
   const squadId = Number(params.squadId);
+  const setCurrentSquadId = useSquadStore((state) => state.setCurrentSquadId);
   const { user } = useUserCookie();
+
   const { selectedDay, setSelectedDay } = useDayStore((state) => state);
   const [currentMonth, setCurrentMonth] = useState(new Date(selectedDay));
   // lastToDoId 계산
@@ -61,6 +65,10 @@ const SquadDetailPage = () => {
 
     setProgressRate(!todoCount ? 0 : Math.floor((isCompleted / todoCount) * 100));
   }, [todos]);
+
+  useEffect(() => {
+    setCurrentSquadId(squadId);
+  }, [squadId]);
 
   return (
     <div css={containerStyle}>

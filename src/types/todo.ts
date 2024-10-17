@@ -7,11 +7,10 @@ export type ToDo = {
 
 export type ToDoDetail = {
   toDoId: number;
-  squadId: number;
-  squadName: string;
+  squadToDoId: number;
   contents: string;
-  todoAt: string;
-  todoStatus: TodoStatus;
+  toDoAt: string;
+  toDoStatus: TodoStatus;
 };
 
 export type TodoStatus = (typeof TODO_STATUS)[keyof typeof TODO_STATUS];
@@ -32,5 +31,5 @@ export type TodoTypes = (typeof TODO_TYPES)[keyof typeof TODO_TYPES];
 export type PostTodoRequest = {
   toDoType: TodoTypes;
   contents: string;
-  todoAt: string;
+  toDoAt: string;
 };
