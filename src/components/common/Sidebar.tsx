@@ -5,15 +5,15 @@ import { Overlay } from '@/components/common/Overlay';
 import { ROLE } from '@/constants/role';
 import { useDeleteSquad, useExitSquad, useUpdateSquadName } from '@/hooks/mutations';
 import { squadDetailQueryOptions, squadKeys } from '@/hooks/queries/useSquad';
+import { useSquadStore } from '@/stores/squad';
 
 import { useToastStore } from '@/stores/toast';
 import { css, Theme } from '@emotion/react';
 import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
-  const params = useParams();
-  const squadId = Number(params.squadId);
+  const squadId = useSquadStore((state) => state.currentSquadId);
   const navigate = useNavigate();
   const createToast = useToastStore((state) => state.createToast);
 

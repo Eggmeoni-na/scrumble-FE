@@ -6,11 +6,11 @@ import { ROLE } from '@/constants/role';
 import { useRemoveUserFromSquad } from '@/hooks/mutations';
 import { squadKeys } from '@/hooks/queries/useSquad';
 import useUserCookie from '@/hooks/useUserCookie';
+import { useSquadStore } from '@/stores/squad';
 import { useToastStore } from '@/stores/toast';
 import { SquadMember } from '@/types';
 import { css } from '@emotion/react';
 import { useQueryClient } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
 
 const SidebarMemberList = ({
   members,
@@ -36,8 +36,7 @@ const SidebarMemberList = ({
 export default SidebarMemberList;
 
 const Member = ({ member, showIcon }: { member: SquadMember; showIcon: boolean }) => {
-  const params = useParams();
-  const squadId = Number(params.squadId);
+  const squadId = useSquadStore((state) => state.currentSquadId);
   const createToast = useToastStore((state) => state.createToast);
   const queryClient = useQueryClient();
   const { RemoveUserActionPrompt, handleRemoveUser } = useRemoveUserFromSquad(squadId, member, {

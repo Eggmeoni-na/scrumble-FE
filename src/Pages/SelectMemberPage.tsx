@@ -1,10 +1,10 @@
 import SelectMemberList from '@/components/common/Member/SelectMemberList';
-import { useParams } from 'react-router-dom';
+import { useSquadStore } from '@/stores/squad';
 
 const SelectMemberPage = () => {
-  const params = useParams();
+  const squadId = useSquadStore((state) => state.currentSquadId);
 
-  return <SelectMemberList squadId={Number(params.squadId)} />;
+  return <SelectMemberList squadId={squadId} />;
 };
 
 export default SelectMemberPage;
