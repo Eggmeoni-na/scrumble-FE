@@ -4,29 +4,23 @@ import { TODO_TYPES } from '@/constants/todo';
 import { useCreateTodo } from '@/hooks/mutations';
 import { todoKeys } from '@/hooks/queries/useTodo';
 import { useToastStore } from '@/stores/toast';
+import { useTodoStore } from '@/stores/todo';
 import { PostTodoRequest } from '@/types';
 import { css, Theme } from '@emotion/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { ChangeEvent, FormEvent, KeyboardEventHandler, useCallback, useState } from 'react';
 
-const TodoForm = ({
-  squadId,
-  selectedDay,
-  onChangeTodo,
-}: {
-  squadId: number;
-  selectedDay: string;
-  onChangeTodo: (changed: boolean) => void;
-}) => {
+const TodoForm = ({ squadId, selectedDay }: { squadId: number; selectedDay: string }) => {
   const [contents, setContents] = useState('');
   const createToast = useToastStore((state) => state.createToast);
+  const setLastToDoId = useTodoStore((state) => state.setLastToDoId);
   const queryClient = useQueryClient();
   const { createTodoMutate } = useCreateTodo({
-    onSuccess: async () => {
+    onSuccess: async ({ data: { toDoId } }) => {
       createToast({ type: 'success', message: '투두가 등록되었어요 ✅', duration: 2000, showCloseButton: false });
-      onChangeTodo(true);
+      setLastToDoId(toDoId);
       queryClient.refetchQueries({
-        queryKey: todoKeys.todos(squadId),
+        queryKey: todoKeys.todos(squadId, selectedDay),
       });
     },
     onError: () => createToast({ type: 'failed', message: '투두 등록에 실패했어요 😢' }),
@@ -44,7 +38,7 @@ const TodoForm = ({
     const newTodo: PostTodoRequest = {
       toDoType: TODO_TYPES.DAILY,
       contents,
-      todoAt: selectedDay,
+      toDoAt: selectedDay,
     };
     createTodoMutate({ squadId, newTodo });
     setContents('');

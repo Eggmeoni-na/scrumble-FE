@@ -4,6 +4,7 @@ import Bell from './bell.svg?react';
 import Check from './check.svg?react';
 import Close from './close.svg?react';
 import Dark from './dark.svg?react';
+import Delete from './delete.svg?react';
 import Edit from './edit.svg?react';
 import Exit from './exit.svg?react';
 import Failed from './failed.svg?react';
@@ -23,6 +24,7 @@ export {
   Check,
   Close,
   Dark,
+  Delete,
   Edit,
   Exit,
   Failed,

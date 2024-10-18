@@ -33,3 +33,9 @@ export type PostTodoRequest = {
   contents: string;
   toDoAt: string;
 };
+
+export type UpdateTodoRequest = {
+  toDoStatus: TodoStatus;
+  contents: string;
+  toDoAt: string;
+};
