@@ -10,4 +10,6 @@ export const todoQueryOptions = (selectedDay: string, params: GetTodoRequest) =>
   queryOptions({
     queryKey: todoKeys.todos(params.squadId, selectedDay),
     queryFn: () => getTodoList(params),
+    refetchOnWindowFocus: false,
+    staleTime: 300000,
   });

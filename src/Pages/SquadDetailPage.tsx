@@ -3,7 +3,6 @@ import SquadDetailMemberList from '@/components/common/Member/SquadDetailMemberL
 import TodoForm from '@/components/common/Todo/TodoForm';
 import TodoList from '@/components/common/Todo/TodoList';
 import { TODO_STATUS } from '@/constants/todo';
-
 import { squadDetailQueryOptions } from '@/hooks/queries/useSquad';
 import { todoQueryOptions } from '@/hooks/queries/useTodo';
 import useUserCookie from '@/hooks/useUserCookie';
@@ -28,20 +27,17 @@ const SquadDetailPage = () => {
   const queryParams = {
     startDate: selectedDay,
     endDate: selectedDay,
-    lastToDoId: lastToDoId,
+    lastToDoId,
     pageSize: 30,
   };
 
   const [{ data: squadDetail }, { data: todos }] = useSuspenseQueries({
     queries: [
       {
-        ...squadDetailQueryOptions(Number(squadId)),
-        staleTime: 300000,
+        ...squadDetailQueryOptions(squadId),
       },
       {
         ...todoQueryOptions(selectedDay, { squadId, memberId: user!.id, queryParams }),
-        refetchOnWindowFocus: false,
-        staleTime: 300000,
       },
     ],
   });
