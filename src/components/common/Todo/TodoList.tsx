@@ -2,7 +2,7 @@ import { Check, Close, Delete, Edit } from '@/assets/icons';
 import Button from '@/components/common/Button/Button';
 import IconWrapper from '@/components/common/IconWrapper';
 import { TODO_STATUS } from '@/constants/todo';
-import { useUpdateTodoContents, useUpdateTodoStatus } from '@/hooks/mutations';
+import { useDeleteTodo, useUpdateTodoContents, useUpdateTodoStatus } from '@/hooks/mutations';
 import { todoKeys } from '@/hooks/queries/useTodo';
 import { useSquadStore } from '@/stores/squad';
 import { useToastStore } from '@/stores/toast';
@@ -74,6 +74,27 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
       });
     },
   });
+  const { deleteTodoMuate } = useDeleteTodo({
+    onSuccess: () => {
+      createToast({
+        type: 'success',
+        message: '삭제가 완료되었어요',
+        duration: 2000,
+        showCloseButton: false,
+      });
+      queryClient.refetchQueries({
+        queryKey: todoKeys.todos(squadId, selectedDay),
+      });
+    },
+    onError: () => {
+      createToast({
+        type: 'failed',
+        message: '삭제에 실패했어요',
+        duration: 2000,
+        showCloseButton: false,
+      });
+    },
+  });
 
   const toggleTodoStatus = (e: MouseEvent<HTMLLIElement>) => {
     const newStatus = currentToDoStatus === TODO_STATUS.PENDING ? TODO_STATUS.COMPLETED : TODO_STATUS.PENDING;
@@ -104,9 +125,11 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
     setIsEditMode(false);
   };
 
-  const handleDeleteTodo = () => {
-    setIsDeleteMode(true);
-    // TODO: Issue - 69 삭제 API 연동
+  const handleDeleteTodo = () => setIsDeleteMode(true);
+
+  const handleConfirmDelete = () => {
+    deleteTodoMuate({ toDoId, squadId });
+    setIsDeleteMode(false);
   };
 
   return (
@@ -154,7 +177,7 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
           )}
         </li>
       ) : (
-        <li css={todoItemStyle(isDeleteMode)} onClick={() => console.log('삭제')}>
+        <li css={todoItemStyle(isDeleteMode)} onClick={handleConfirmDelete}>
           <p>등록된 할일을 삭제할까요?</p>
           <IconWrapper style={{ marginRight: '8px' }}>
             <Close
