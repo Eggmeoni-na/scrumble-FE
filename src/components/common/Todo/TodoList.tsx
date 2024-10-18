@@ -2,14 +2,15 @@ import { Check, Delete, Edit } from '@/assets/icons';
 import Button from '@/components/common/Button/Button';
 import IconWrapper from '@/components/common/IconWrapper';
 import { TODO_STATUS } from '@/constants/todo';
-import { useUpdateTodoStatus } from '@/hooks/mutations';
+import { useUpdateTodoContents, useUpdateTodoStatus } from '@/hooks/mutations';
 import { todoKeys } from '@/hooks/queries/useTodo';
 import { useSquadStore } from '@/stores/squad';
+import { useToastStore } from '@/stores/toast';
 import { useDayStore } from '@/stores/todo';
 import { ToDoDetail, UpdateTodoRequest } from '@/types';
 import { css, Theme, useTheme } from '@emotion/react';
 import { useQueryClient } from '@tanstack/react-query';
-import { MouseEvent, useState } from 'react';
+import { KeyboardEvent, MouseEvent, useState } from 'react';
 
 type Props = {
   todos: ToDoDetail[];
@@ -30,9 +31,10 @@ export default TodoList;
 const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
   const squadId = useSquadStore((state) => state.currentSquadId);
   const theme = useTheme();
-  const { toDoAt, toDoId, contents, squadToDoId } = todo;
+  const { toDoAt, toDoId, contents, squadToDoId, toDoStatus } = todo;
   const [currentToDoStatus, setCurrentToDoStatus] = useState(todo.toDoStatus);
   const selectedDay = useDayStore((state) => state.selectedDay);
+  const createToast = useToastStore((state) => state.createToast);
   const [isEdit, setIsEdit] = useState(false);
   const [newContents, setNewContents] = useState(contents);
   const isCompleted = currentToDoStatus === TODO_STATUS.COMPLETED;
@@ -41,13 +43,34 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
   const { updateTodoStatusMutate } = useUpdateTodoStatus(squadId, selectedDay, {
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: todoKeys.todos(squadToDoId, selectedDay),
+        queryKey: todoKeys.todos(squadId, selectedDay),
       });
     },
     onError: (error, data, context) => {
       if (context) {
         queryClient.setQueryData(todoKeys.todos(squadToDoId, selectedDay), context);
       }
+    },
+  });
+  const { updateTodoContentsMutate } = useUpdateTodoContents({
+    onSuccess: () => {
+      createToast({
+        type: 'success',
+        message: '수정이 완료되었어요',
+        duration: 2000,
+        showCloseButton: false,
+      });
+      queryClient.refetchQueries({
+        queryKey: todoKeys.todos(squadId, selectedDay),
+      });
+    },
+    onError: () => {
+      createToast({
+        type: 'failed',
+        message: '수정에 실패했어요',
+        duration: 2000,
+        showCloseButton: false,
+      });
     },
   });
 
@@ -62,13 +85,26 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
     updateTodoStatusMutate({ toDoId, newTodo });
   };
 
+  const handleKeyPressForEdit = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key !== 'Enter') return;
+    if (!e.nativeEvent.isComposing) {
+      e.preventDefault();
+      document.getElementById('edit-btn')?.click();
+    }
+  };
+
   const handleEditContents = () => {
-    // 수정 로직
+    const newTodo: UpdateTodoRequest = {
+      toDoAt: selectedDay,
+      toDoStatus,
+      contents: newContents,
+    };
+    updateTodoContentsMutate({ toDoId, newTodo });
     setIsEdit(false);
   };
 
   const handleDeleteTodo = () => {
-    // 삭제
+    // TODO: Issue - 69 삭제 API 연동
   };
 
   return (
@@ -90,6 +126,7 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
             value={newContents}
             onChange={(e) => setNewContents(e.target.value)}
             onClick={(e) => e.stopPropagation()}
+            onKeyDown={handleKeyPressForEdit}
             autoFocus
             css={editInputStyle}
           />
@@ -107,8 +144,8 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
       )}
       {isEdit && (
         <div css={editActionStyle} onClick={(e) => e.stopPropagation()}>
-          <Button text="수정" variant="confirm" type="submit" onClick={handleEditContents} />
-          <Button text="취소" variant="default" type="button" onClick={() => setIsEdit(false)} />
+          <Button id="edit-btn" text="수정" variant="confirm" onClick={handleEditContents} />
+          <Button text="취소" variant="default" onClick={() => setIsEdit(false)} />
         </div>
       )}
     </li>
