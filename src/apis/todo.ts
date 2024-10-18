@@ -1,5 +1,5 @@
 import { instance } from '@/apis';
-import { CreateTodoParamType, UpdateTodoParamType } from '@/hooks/mutations';
+import { CreateTodoParamType, DeleteTodoParamType, UpdateTodoParamType } from '@/hooks/mutations';
 import { ApiResponse, GetTodoRequest, ToDoDetail } from '@/types';
 import { MutationFunction } from '@tanstack/react-query';
 
@@ -21,5 +21,10 @@ export const createTodo: MutationFunction<ApiResponse<{ toDoId: number }>, Creat
 
 export const updateTodo: MutationFunction<ApiResponse<null>, UpdateTodoParamType> = async ({ toDoId, newTodo }) => {
   const response = await instance.put(`/api/todos/${toDoId}`, newTodo);
+  return response.data;
+};
+
+export const deleteTodo: MutationFunction<ApiResponse<null>, DeleteTodoParamType> = async ({ toDoId, squadId }) => {
+  const response = await instance.delete(`/api/todos/${toDoId}/squads/${squadId}`);
   return response.data;
 };

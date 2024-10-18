@@ -16,3 +16,4 @@ export type RemoveUserFromSquadParamType = { squadId: number; memberId: number }
  */
 export type CreateTodoParamType = { squadId: number; newTodo: PostTodoRequest };
 export type UpdateTodoParamType = { toDoId: number; newTodo: UpdateTodoRequest };
+export type DeleteTodoParamType = { toDoId: number; squadId: number };

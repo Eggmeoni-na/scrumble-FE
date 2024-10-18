@@ -35,8 +35,8 @@ export default ToastContainer;
 const Toast = ({ message, type, onRemove, showCloseButton }: Omit<Toast, 'id'> & { onRemove: VoidFunction }) => (
   <div css={[toastStyle, [getStatusStyles(type)]]}>
     <div css={messageWrapper}>
-      <span>{toastType[type]}</span>
-      <span>{message}</span>
+      {toastType[type]}
+      <p>{message}</p>
     </div>
     <IconWrapper
       customStyle={() => closeButton(showCloseButton)}
@@ -84,6 +84,15 @@ const messageWrapper = css`
   display: flex;
   align-items: center;
   gap: 8px;
+
+  & p {
+    font-size: 16px;
+  }
+
+  & svg {
+    width: 28px;
+    height: 28px;
+  }
 `;
 
 const closeButton = (showCloseButton?: boolean) => css`

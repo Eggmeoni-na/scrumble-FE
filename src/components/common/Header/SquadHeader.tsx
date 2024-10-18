@@ -6,8 +6,8 @@ import useSidebar from '@/hooks/useSidebar';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useLocation } from 'react-router-dom';
 
-const SquadHeader = ({ squadId }: { squadId: string }) => {
-  const { data } = useSuspenseQuery(squadDetailQueryOptions(Number(squadId))).data;
+const SquadHeader = ({ squadId }: { squadId: number }) => {
+  const { data } = useSuspenseQuery(squadDetailQueryOptions(squadId)).data;
   const { isOpen, toggleSidebar } = useSidebar();
   const { state } = useLocation();
 

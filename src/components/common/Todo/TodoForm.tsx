@@ -17,13 +17,13 @@ const TodoForm = ({ squadId, selectedDay }: { squadId: number; selectedDay: stri
   const queryClient = useQueryClient();
   const { createTodoMutate } = useCreateTodo({
     onSuccess: async ({ data: { toDoId } }) => {
-      createToast({ type: 'success', message: '투두가 등록되었어요 ✅', duration: 2000, showCloseButton: false });
+      createToast({ type: 'success', message: '투두가 등록되었어요', duration: 2000, showCloseButton: false });
       setLastToDoId(toDoId);
       queryClient.refetchQueries({
         queryKey: todoKeys.todos(squadId, selectedDay),
       });
     },
-    onError: () => createToast({ type: 'failed', message: '투두 등록에 실패했어요 😢' }),
+    onError: () => createToast({ type: 'failed', message: '투두 등록에 실패했어요' }),
   });
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
