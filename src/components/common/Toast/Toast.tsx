@@ -36,7 +36,7 @@ const Toast = ({ message, type, onRemove, showCloseButton }: Omit<Toast, 'id'> &
   <div css={[toastStyle, [getStatusStyles(type)]]}>
     <div css={messageWrapper}>
       {toastType[type]}
-      <span>{message}</span>
+      <p>{message}</p>
     </div>
     <IconWrapper
       customStyle={() => closeButton(showCloseButton)}
@@ -84,6 +84,10 @@ const messageWrapper = css`
   display: flex;
   align-items: center;
   gap: 8px;
+
+  & p {
+    font-size: 16px;
+  }
 
   & svg {
     width: 28px;
