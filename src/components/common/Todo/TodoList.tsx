@@ -1,4 +1,4 @@
-import { Check, Delete, Edit } from '@/assets/icons';
+import { Check, Close, Delete, Edit } from '@/assets/icons';
 import Button from '@/components/common/Button/Button';
 import IconWrapper from '@/components/common/IconWrapper';
 import { TODO_STATUS } from '@/constants/todo';
@@ -8,7 +8,7 @@ import { useSquadStore } from '@/stores/squad';
 import { useToastStore } from '@/stores/toast';
 import { useDayStore } from '@/stores/todo';
 import { ToDoDetail, UpdateTodoRequest } from '@/types';
-import { css, Theme, useTheme } from '@emotion/react';
+import { css, keyframes, Theme, useTheme } from '@emotion/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { KeyboardEvent, MouseEvent, useState } from 'react';
 
@@ -110,47 +110,63 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
   };
 
   return (
-    <li css={[todoItemStyle, getStatusStyles(isCompleted, theme)]} onClick={(e) => toggleTodoStatus(e)}>
-      <div css={contentStyle}>
-        <IconWrapper
-          aria-label={isCompleted ? 'Completed todo' : 'Uncompleted todo'}
-          aria-checked={isCompleted}
-          role="checkbox"
-          css={[checkIconStyle, isCompleted && checkedStyle]}
-        >
-          {isCompleted && <Check />}
-        </IconWrapper>
-        {!isEditMode ? (
-          <p>{contents}</p>
-        ) : (
-          <input
-            type="text"
-            value={newContents}
-            onChange={(e) => setNewContents(e.target.value)}
-            onClick={(e) => e.stopPropagation()}
-            onKeyDown={handleKeyPressForEdit}
-            autoFocus
-            css={editInputStyle}
-          />
-        )}
-      </div>
-      {!isEditMode && (
-        <div css={actionStyle} onClick={(e) => e.stopPropagation()}>
-          <IconWrapper onClick={() => setIsEditMode(true)}>
-            <Edit />
+    <>
+      {!isDeleteMode ? (
+        <li css={[todoItemStyle(), getStatusStyles(isCompleted, theme)]} onClick={(e) => toggleTodoStatus(e)}>
+          <div css={contentStyle}>
+            <IconWrapper
+              aria-label={isCompleted ? 'Completed todo' : 'Uncompleted todo'}
+              aria-checked={isCompleted}
+              role="checkbox"
+              css={[checkIconStyle, isCompleted && checkedStyle]}
+            >
+              {isCompleted && <Check />}
+            </IconWrapper>
+            {!isEditMode ? (
+              <p>{contents}</p>
+            ) : (
+              <input
+                type="text"
+                value={newContents}
+                onChange={(e) => setNewContents(e.target.value)}
+                onClick={(e) => e.stopPropagation()}
+                onKeyDown={handleKeyPressForEdit}
+                autoFocus
+                css={editInputStyle}
+              />
+            )}
+          </div>
+          {!isEditMode && (
+            <div css={actionStyle} onClick={(e) => e.stopPropagation()}>
+              <IconWrapper onClick={() => setIsEditMode(true)}>
+                <Edit />
+              </IconWrapper>
+              <IconWrapper onClick={handleDeleteTodo}>
+                <Delete />
+              </IconWrapper>
+            </div>
+          )}
+          {isEditMode && (
+            <div css={editActionStyle} onClick={(e) => e.stopPropagation()}>
+              <Button id="edit-btn" text="수정" variant="confirm" onClick={handleEditContents} />
+              <Button text="취소" variant="default" onClick={() => setIsEditMode(false)} />
+            </div>
+          )}
+        </li>
+      ) : (
+        <li css={todoItemStyle(isDeleteMode)} onClick={() => console.log('삭제')}>
+          <p>등록된 할일을 삭제할까요?</p>
+          <IconWrapper style={{ marginRight: '8px' }}>
+            <Close
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsDeleteMode(false);
+              }}
+            />
           </IconWrapper>
-          <IconWrapper onClick={handleDeleteTodo}>
-            <Delete />
-          </IconWrapper>
-        </div>
+        </li>
       )}
-      {isEditMode && (
-        <div css={editActionStyle} onClick={(e) => e.stopPropagation()}>
-          <Button id="edit-btn" text="수정" variant="confirm" onClick={handleEditContents} />
-          <Button text="취소" variant="default" onClick={() => setIsEditMode(false)} />
-        </div>
-      )}
-    </li>
+    </>
   );
 };
 
@@ -168,7 +184,18 @@ const todoContainerStyle = (theme: Theme) => css`
   box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.1);
 `;
 
-const todoItemStyle = (theme: Theme) => css`
+const slideInFromRight = keyframes`
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+`;
+
+const todoItemStyle = (isDeleteMode?: boolean) => css`
+  background-color: ${isDeleteMode && '#ff5a5a'};
+  color: ${isDeleteMode && 'white'};
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -179,6 +206,12 @@ const todoItemStyle = (theme: Theme) => css`
   height: 48px;
   flex-shrink: 0;
   cursor: pointer;
+  transition: transform 0.3s ease-out;
+
+  ${isDeleteMode &&
+  css`
+    animation: ${slideInFromRight} 0.3s ease-out;
+  `}
 `;
 
 const getStatusStyles = (isChecked: boolean, theme: Theme) => {
