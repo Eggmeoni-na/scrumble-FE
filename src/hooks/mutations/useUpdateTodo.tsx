@@ -36,3 +36,11 @@ export const useUpdateTodoStatus = (
   });
   return { updateTodoStatusMutate };
 };
+
+export const useUpdateTodoContents = (options: MutateOptionsType<ApiResponse<null>, UpdateTodoParamType>) => {
+  const { mutate: updateTodoContentsMutate } = useMutation({
+    mutationFn: updateTodo,
+    ...options,
+  });
+  return { updateTodoContentsMutate };
+};

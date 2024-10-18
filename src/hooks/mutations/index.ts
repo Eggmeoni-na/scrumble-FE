@@ -6,4 +6,4 @@ export { default as useDeleteSquad } from './useDeleteSquad';
 export { default as useExitSquad } from './useExitSquad';
 export { default as useRemoveUserFromSquad } from './useRemoveUserFromSquad';
 export { default as useUpdateSquadName } from './useUpdateSquadName';
-export { useUpdateTodoStatus } from './useUpdateTodo';
+export { useUpdateTodoContents, useUpdateTodoStatus } from './useUpdateTodo';
