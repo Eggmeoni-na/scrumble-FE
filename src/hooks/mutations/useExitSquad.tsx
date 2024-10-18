@@ -8,6 +8,7 @@ import { useMutation } from '@tanstack/react-query';
 
 const useExitSquad = (
   squadId: number,
+  isLeader: boolean,
   hasMembers: boolean,
   options: MutateOptionsType<ApiResponse<null>, ExitAndDeleteSquadNameParamType>,
 ) => {
@@ -32,7 +33,7 @@ const useExitSquad = (
       displayCancel: true,
     } as const;
 
-    const res = await openModal(ActionPrompt, undefined, hasMembers ? checkInfo : exitInfo);
+    const res = await openModal(ActionPrompt, undefined, hasMembers && isLeader ? checkInfo : exitInfo);
     if (res.ok && !hasMembers) {
       exitSquadMutate({ squadId });
     }

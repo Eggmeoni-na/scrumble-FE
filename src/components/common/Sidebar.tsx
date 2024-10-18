@@ -22,6 +22,7 @@ const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
     refetchOnMount: false,
   }).data;
   const { squadName, squadMembers, mySquadMemberRole } = squadDetail;
+  const isLeader = mySquadMemberRole === ROLE.LEADER;
 
   const queryClient = useQueryClient();
   const { UpdateSquadNameModal, handleUpdateSquadName } = useUpdateSquadName(squadId, {
@@ -43,7 +44,7 @@ const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
   });
 
   const hasMembers = squadMembers.length > 1;
-  const { ExitSquadModal, handleSquadExit } = useExitSquad(squadId, hasMembers, {
+  const { ExitSquadModal, handleSquadExit } = useExitSquad(squadId, isLeader, hasMembers, {
     onSuccess: () => {
       createToast({ type: 'success', message: '스쿼드에서 나왔어요' });
       navigate('/squads');
@@ -77,7 +78,7 @@ const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
               onClick={handleUpdateSquadName}
               role="button"
               css={commonButtonStyle}
-              disabled={mySquadMemberRole !== ROLE.LEADER}
+              disabled={!isLeader}
             >
               <Edit />
             </IconWrapper>
@@ -98,7 +99,7 @@ const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
             >
               멤버 초대
             </li>
-            {mySquadMemberRole === ROLE.LEADER && (
+            {isLeader && (
               <li
                 onClick={() => {
                   closeSidebar();
@@ -112,7 +113,7 @@ const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
                 리더 변경
               </li>
             )}
-            {mySquadMemberRole === ROLE.LEADER && <li onClick={handleSquadDelete}>스쿼드 삭제</li>}
+            {isLeader && <li onClick={handleSquadDelete}>스쿼드 삭제</li>}
           </ul>
         </section>
         <button css={exitButtonStyle} onClick={handleSquadExit}>

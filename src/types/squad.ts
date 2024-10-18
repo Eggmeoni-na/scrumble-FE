@@ -1,5 +1,7 @@
 import { ROLE } from '@/constants/role';
 
+export type squadRoleType = (typeof ROLE)[keyof typeof ROLE];
+
 export type Squad = {
   squadId: number;
   squadName: string;
@@ -7,12 +9,12 @@ export type Squad = {
 
 export type SquadDetail = {
   squadMembers: SquadMember[];
-  mySquadMemberRole: (typeof ROLE)[keyof typeof ROLE];
+  mySquadMemberRole: squadRoleType;
 } & Squad;
 
 export type SquadMember = {
   memberId: number;
   profileImg: string | null;
   name: string;
-  squadMemberRole: (typeof ROLE)[keyof typeof ROLE];
+  squadMemberRole: squadRoleType;
 };
