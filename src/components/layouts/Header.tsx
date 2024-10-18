@@ -6,7 +6,7 @@ const Header = () => {
   const { squadId } = useParams();
 
   if (location.pathname.includes(`/squads/${squadId}`)) {
-    return <SquadHeader squadId={squadId ?? '0'} />;
+    return <SquadHeader squadId={Number(squadId) ?? 0} />;
   }
 
   return <DefaultHeader />;
