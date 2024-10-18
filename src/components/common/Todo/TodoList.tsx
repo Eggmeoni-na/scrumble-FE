@@ -1,4 +1,5 @@
-import { Check, More } from '@/assets/icons';
+import { Check, Delete, Edit } from '@/assets/icons';
+import Button from '@/components/common/Button/Button';
 import IconWrapper from '@/components/common/IconWrapper';
 import { TODO_STATUS } from '@/constants/todo';
 import { useUpdateTodoStatus } from '@/hooks/mutations';
@@ -32,6 +33,8 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
   const { toDoAt, toDoId, contents, squadToDoId } = todo;
   const [currentToDoStatus, setCurrentToDoStatus] = useState(todo.toDoStatus);
   const selectedDay = useDayStore((state) => state.selectedDay);
+  const [isEdit, setIsEdit] = useState(false);
+  const [newContents, setNewContents] = useState(contents);
   const isCompleted = currentToDoStatus === TODO_STATUS.COMPLETED;
 
   const queryClient = useQueryClient();
@@ -59,6 +62,15 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
     updateTodoStatusMutate({ toDoId, newTodo });
   };
 
+  const handleEditContents = () => {
+    // 수정 로직
+    setIsEdit(false);
+  };
+
+  const handleDeleteTodo = () => {
+    // 삭제
+  };
+
   return (
     <li css={[todoItemStyle, getStatusStyles(isCompleted, theme)]} onClick={(e) => toggleTodoStatus(e)}>
       <div css={contentStyle}>
@@ -70,13 +82,35 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
         >
           {isCompleted && <Check />}
         </IconWrapper>
-        <p>{contents}</p>
+        {!isEdit ? (
+          <p>{contents}</p>
+        ) : (
+          <input
+            type="text"
+            value={newContents}
+            onChange={(e) => setNewContents(e.target.value)}
+            onClick={(e) => e.stopPropagation()}
+            autoFocus
+            css={editInputStyle}
+          />
+        )}
       </div>
-      <div>
-        <IconWrapper style={{ color: `${theme.colors.gray.gray200}` }}>
-          <More />
-        </IconWrapper>
-      </div>
+      {!isEdit && (
+        <div css={actionStyle} onClick={(e) => e.stopPropagation()}>
+          <IconWrapper onClick={() => setIsEdit(true)}>
+            <Edit />
+          </IconWrapper>
+          <IconWrapper onClick={handleDeleteTodo}>
+            <Delete />
+          </IconWrapper>
+        </div>
+      )}
+      {isEdit && (
+        <div css={editActionStyle} onClick={(e) => e.stopPropagation()}>
+          <Button text="수정" variant="confirm" type="submit" onClick={handleEditContents} />
+          <Button text="취소" variant="default" type="button" onClick={() => setIsEdit(false)} />
+        </div>
+      )}
     </li>
   );
 };
@@ -102,7 +136,7 @@ const todoItemStyle = (theme: Theme) => css`
   gap: 8px;
   border-radius: 16px;
   margin: 0 8px;
-  padding: 0 4px 0 12px;
+  padding: 0 8px 0 12px;
   height: 48px;
   flex-shrink: 0;
   cursor: pointer;
@@ -129,6 +163,7 @@ const contentStyle = css`
   align-items: center;
   flex: 1;
   gap: 8px;
+  height: 100%;
 `;
 
 const checkIconStyle = (theme: Theme) => css`
@@ -150,5 +185,31 @@ const checkedStyle = (theme: Theme) => css`
     color: white;
     width: 12px;
     height: 12px;
+  }
+`;
+
+const actionStyle = css`
+  display: flex;
+  gap: 4px;
+  margin-right: 8px;
+
+  & button {
+    color: #bbbbbb;
+  }
+`;
+
+const editInputStyle = (theme: Theme) => css`
+  ${theme.typography.size_16}
+  color: var(--color-text-gray);
+  flex: 1;
+  height: 100%;
+`;
+
+const editActionStyle = css`
+  width: 122px;
+  display: flex;
+  gap: 4px;
+  & button {
+    border-radius: 12px;
   }
 `;
