@@ -35,7 +35,8 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
   const [currentToDoStatus, setCurrentToDoStatus] = useState(todo.toDoStatus);
   const selectedDay = useDayStore((state) => state.selectedDay);
   const createToast = useToastStore((state) => state.createToast);
-  const [isEdit, setIsEdit] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [newContents, setNewContents] = useState(contents);
   const isCompleted = currentToDoStatus === TODO_STATUS.COMPLETED;
 
@@ -100,10 +101,11 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
       contents: newContents,
     };
     updateTodoContentsMutate({ toDoId, newTodo });
-    setIsEdit(false);
+    setIsEditMode(false);
   };
 
   const handleDeleteTodo = () => {
+    setIsDeleteMode(true);
     // TODO: Issue - 69 삭제 API 연동
   };
 
@@ -118,7 +120,7 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
         >
           {isCompleted && <Check />}
         </IconWrapper>
-        {!isEdit ? (
+        {!isEditMode ? (
           <p>{contents}</p>
         ) : (
           <input
@@ -132,9 +134,9 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
           />
         )}
       </div>
-      {!isEdit && (
+      {!isEditMode && (
         <div css={actionStyle} onClick={(e) => e.stopPropagation()}>
-          <IconWrapper onClick={() => setIsEdit(true)}>
+          <IconWrapper onClick={() => setIsEditMode(true)}>
             <Edit />
           </IconWrapper>
           <IconWrapper onClick={handleDeleteTodo}>
@@ -142,10 +144,10 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
           </IconWrapper>
         </div>
       )}
-      {isEdit && (
+      {isEditMode && (
         <div css={editActionStyle} onClick={(e) => e.stopPropagation()}>
           <Button id="edit-btn" text="수정" variant="confirm" onClick={handleEditContents} />
-          <Button text="취소" variant="default" onClick={() => setIsEdit(false)} />
+          <Button text="취소" variant="default" onClick={() => setIsEditMode(false)} />
         </div>
       )}
     </li>
