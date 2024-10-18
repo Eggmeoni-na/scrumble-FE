@@ -8,6 +8,7 @@ import { useSquadStore } from '@/stores/squad';
 import { useToastStore } from '@/stores/toast';
 import { useDayStore } from '@/stores/todo';
 import { ToDoDetail, UpdateTodoRequest } from '@/types';
+import { handleMutationWithRefetch } from '@/utils/handleMutationWithRefetch';
 import { css, keyframes, Theme, useTheme } from '@emotion/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { KeyboardEvent, MouseEvent, useState } from 'react';
@@ -53,47 +54,13 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
       }
     },
   });
+
+  const todoKey = todoKeys.todos(squadId, selectedDay);
   const { updateTodoContentsMutate } = useUpdateTodoContents({
-    onSuccess: () => {
-      createToast({
-        type: 'success',
-        message: '수정이 완료되었어요',
-        duration: 2000,
-        showCloseButton: false,
-      });
-      queryClient.refetchQueries({
-        queryKey: todoKeys.todos(squadId, selectedDay),
-      });
-    },
-    onError: () => {
-      createToast({
-        type: 'failed',
-        message: '수정에 실패했어요',
-        duration: 2000,
-        showCloseButton: false,
-      });
-    },
+    ...handleMutationWithRefetch('수정', todoKey),
   });
   const { deleteTodoMuate } = useDeleteTodo({
-    onSuccess: () => {
-      createToast({
-        type: 'success',
-        message: '삭제가 완료되었어요',
-        duration: 2000,
-        showCloseButton: false,
-      });
-      queryClient.refetchQueries({
-        queryKey: todoKeys.todos(squadId, selectedDay),
-      });
-    },
-    onError: () => {
-      createToast({
-        type: 'failed',
-        message: '삭제에 실패했어요',
-        duration: 2000,
-        showCloseButton: false,
-      });
-    },
+    ...handleMutationWithRefetch('삭제', todoKey),
   });
 
   const toggleTodoStatus = (e: MouseEvent<HTMLLIElement>) => {
@@ -241,7 +208,7 @@ const getStatusStyles = (isChecked: boolean, theme: Theme) => {
   switch (isChecked) {
     case true:
       return css`
-        border: 1px solid ${theme.colors.primary};
+        outline: 1.5px solid ${theme.colors.primary};
         background-color: ${theme.colors.background.lightYellow};
         color: var(--color-primary);
       `;
@@ -278,6 +245,7 @@ const checkedStyle = (theme: Theme) => css`
 
   & svg {
     color: white;
+    stroke-width: 2;
     width: 12px;
     height: 12px;
   }
