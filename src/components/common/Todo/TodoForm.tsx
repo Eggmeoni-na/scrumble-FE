@@ -2,37 +2,47 @@ import { Add } from '@/assets/icons';
 import IconWrapper from '@/components/common/IconWrapper';
 import { TODO_TYPES } from '@/constants/todo';
 import { useCreateTodo } from '@/hooks/mutations';
+import { InfiniteQueryData } from '@/hooks/queries/types';
 import { todoKeys } from '@/hooks/queries/useTodo';
-import { useToastStore } from '@/stores/toast';
-import { useTodoStore } from '@/stores/todo';
-import { PostTodoRequest } from '@/types';
+import useToastHandler from '@/hooks/useToastHandler';
+import { ApiResponse, PostTodoRequest, ToDoDetail } from '@/types';
 import { css, Theme } from '@emotion/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { ChangeEvent, FormEvent, KeyboardEventHandler, useCallback, useState } from 'react';
 
 const TodoForm = ({ squadId, selectedDay }: { squadId: number; selectedDay: string }) => {
   const [contents, setContents] = useState('');
-  const createToast = useToastStore((state) => state.createToast);
-  const setLastToDoId = useTodoStore((state) => state.setLastToDoId);
+  const { successToast, failedToast, warningToast } = useToastHandler();
   const queryClient = useQueryClient();
-  const { createTodoMutate } = useCreateTodo({
-    onSuccess: async ({ data: { toDoId } }) => {
-      createToast({ type: 'success', message: '투두가 등록되었어요', duration: 2000, showCloseButton: false });
-      setLastToDoId(toDoId);
-      queryClient.refetchQueries({
-        queryKey: todoKeys.todos(squadId, selectedDay),
-      });
+  const { createTodoMutate } = useCreateTodo(squadId, selectedDay, {
+    onSuccess: async (data) => {
+      successToast('투두 등록에 성공했어요');
+      queryClient.setQueryData(
+        todoKeys.todos(squadId, selectedDay),
+        (prevData: InfiniteQueryData<ApiResponse<ToDoDetail[]>>) => {
+          if (!prevData || !prevData.pages.length) return prevData;
+          return {
+            ...prevData,
+            pages: prevData.pages.map((page, index) => {
+              if (index === 0) {
+                return {
+                  ...page,
+                  data: [data.data, ...page.data],
+                };
+              }
+              return page;
+            }),
+          };
+        },
+      );
     },
-    onError: () => createToast({ type: 'failed', message: '투두 등록에 실패했어요' }),
+    onError: () => failedToast('투두 등록에 실패했어요'),
   });
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!contents.length) {
-      createToast({
-        type: 'warning',
-        message: '할일을 입력해주세요',
-      });
+      warningToast('할일을 입력해주세요');
       return;
     }
     const newTodo: PostTodoRequest = {
