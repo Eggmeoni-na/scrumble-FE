@@ -14,17 +14,10 @@ export const useUpdateTodo = (
   const queryClient = useQueryClient();
   const { mutate: updateTodoMutate } = useMutation({
     mutationFn: updateTodo,
-    onMutate: (data) =>
+    onMutate: () =>
       optimisticUpdateMutateHandler<InfiniteQueryData<ApiResponse<ToDoDetail[]>>>(
         queryClient,
         todoKeys.todos(squadId, selectedDay),
-        (prevData) => ({
-          ...prevData,
-          pages: prevData.pages.map((page) => ({
-            ...page,
-            data: page.data.map((todo) => (todo.toDoId === data.toDoId ? data.newTodo : todo)),
-          })),
-        }),
       ),
     ...options,
   });
