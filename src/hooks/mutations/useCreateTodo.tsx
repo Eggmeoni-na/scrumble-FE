@@ -1,7 +1,8 @@
 import { createTodo } from '@/apis';
 import { CreateTodoParamType, MutateOptionsType } from '@/hooks/mutations/types';
 import { todoKeys } from '@/hooks/queries/useTodo';
-import { ApiResponse, CreateAndUpdateResponseType, ToDoDetail } from '@/types';
+import { ApiResponse, CreateAndUpdateResponseType } from '@/types';
+import { optimisticUpdateMutateHandler } from '@/utils/optimisticUpdateMutateHandler';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const useCreateTodo = (
@@ -12,19 +13,7 @@ const useCreateTodo = (
   const queryClient = useQueryClient();
   const { mutate: createTodoMutate } = useMutation({
     mutationFn: createTodo,
-    onMutate: async () => {
-      try {
-        await queryClient.cancelQueries({
-          queryKey: todoKeys.todos(squadId, selectedDay),
-        });
-
-        const oldData = queryClient.getQueryData<ToDoDetail[]>(todoKeys.todos(squadId, selectedDay)) ?? [];
-
-        return oldData;
-      } catch (error) {
-        console.error('Optimistic Update Error:', error);
-      }
-    },
+    onMutate: () => optimisticUpdateMutateHandler(queryClient, todoKeys.todos(squadId, selectedDay)),
     ...options,
   });
   return { createTodoMutate };
