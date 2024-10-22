@@ -39,3 +39,10 @@ export type UpdateTodoRequest = {
   contents: string;
   toDoAt: string;
 };
+
+export type CreateAndUpdateResponseType = {
+  toDoId: number;
+  contents: string;
+  toDoAt: string;
+  toDoStatus: TodoStatus;
+};
