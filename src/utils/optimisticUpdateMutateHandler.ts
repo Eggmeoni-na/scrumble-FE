@@ -3,7 +3,7 @@ import { QueryClient } from '@tanstack/react-query';
 export const optimisticUpdateMutateHandler = async <T>(
   queryClient: QueryClient,
   queryKeys: readonly unknown[],
-  updateFn: (prevData: T) => void,
+  updateFn?: (prevData: T) => void,
 ) => {
   try {
     await queryClient.cancelQueries({
@@ -12,7 +12,7 @@ export const optimisticUpdateMutateHandler = async <T>(
 
     const oldData = queryClient.getQueryData<T>(queryKeys) ?? [];
 
-    queryClient.setQueryData(queryKeys, (prevData: T) => updateFn(prevData));
+    updateFn && queryClient.setQueryData(queryKeys, (prevData: T) => updateFn(prevData));
 
     return oldData;
   } catch (error) {
