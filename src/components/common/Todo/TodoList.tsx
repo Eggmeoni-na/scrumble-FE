@@ -2,27 +2,57 @@ import { Check, Close, Delete, Edit } from '@/assets/icons';
 import Button from '@/components/common/Button/Button';
 import IconWrapper from '@/components/common/IconWrapper';
 import { TODO_STATUS } from '@/constants/todo';
-import { useDeleteTodo, useUpdateTodoContents, useUpdateTodoStatus } from '@/hooks/mutations';
+import { useDeleteTodo, useUpdateTodo } from '@/hooks/mutations';
 import { todoKeys } from '@/hooks/queries/useTodo';
+import useToastHandler from '@/hooks/useToastHandler';
 import { useSquadStore } from '@/stores/squad';
-import { useToastStore } from '@/stores/toast';
 import { useDayStore } from '@/stores/todo';
 import { ToDoDetail, UpdateTodoRequest } from '@/types';
-import { handleMutationWithRefetch } from '@/utils/handleMutationWithRefetch';
 import { css, keyframes, Theme, useTheme } from '@emotion/react';
 import { useQueryClient } from '@tanstack/react-query';
-import { KeyboardEvent, MouseEvent, useState } from 'react';
+import { KeyboardEvent, MouseEvent, useEffect, useRef, useState } from 'react';
 
 type Props = {
   todos: ToDoDetail[];
+  loadMoreTodos: VoidFunction;
 };
 
-const TodoList = ({ todos }: Props) => {
+const TodoList = ({ todos, loadMoreTodos }: Props) => {
+  const loadMoreRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          try {
+            loadMoreTodos();
+          } catch (err) {
+            console.log(err);
+          }
+        }
+      },
+      { threshold: 1.0 },
+    );
+
+    // 타겟이 마운트되서 ref 객체에 참조 객체가 생기면
+    const ref = loadMoreRef.current;
+    if (ref) {
+      observer.observe(ref);
+    }
+    return () => {
+      if (ref) {
+        observer.unobserve(ref);
+      }
+    };
+  }, [loadMoreTodos]);
+
   return (
     <ul css={todoContainerStyle}>
       {todos.map((todo) => (
         <TodoItem key={todo.toDoId} todo={todo} />
       ))}
+      <br />
+      <div ref={loadMoreRef} />
     </ul>
   );
 };
@@ -35,32 +65,32 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
   const { toDoAt, toDoId, contents, squadToDoId, toDoStatus } = todo;
   const [currentToDoStatus, setCurrentToDoStatus] = useState(todo.toDoStatus);
   const selectedDay = useDayStore((state) => state.selectedDay);
-  const createToast = useToastStore((state) => state.createToast);
   const [isEditMode, setIsEditMode] = useState(false);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [newContents, setNewContents] = useState(contents);
   const isCompleted = currentToDoStatus === TODO_STATUS.COMPLETED;
+  const { successToast, failedToast } = useToastHandler();
 
   const queryClient = useQueryClient();
-  const { updateTodoStatusMutate } = useUpdateTodoStatus(squadId, selectedDay, {
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: todoKeys.todos(squadId, selectedDay),
-      });
-    },
+  // TODO 상태 및 내용 수정 로직 공유
+  const { updateTodoMutate } = useUpdateTodo(squadId, selectedDay, {
+    onSuccess: () => successToast('수정에 성공했어요'),
     onError: (error, data, context) => {
+      failedToast('수정에 실패했어요');
       if (context) {
         queryClient.setQueryData(todoKeys.todos(squadToDoId, selectedDay), context);
       }
     },
   });
 
-  const todoKey = todoKeys.todos(squadId, selectedDay);
-  const { updateTodoContentsMutate } = useUpdateTodoContents({
-    ...handleMutationWithRefetch('수정', todoKey),
-  });
-  const { deleteTodoMuate } = useDeleteTodo({
-    ...handleMutationWithRefetch('삭제', todoKey),
+  const { deleteTodoMuate } = useDeleteTodo(squadId, selectedDay, {
+    onSuccess: () => successToast('삭제에 성공했어요'),
+    onError: (error, data, context) => {
+      failedToast('삭제에 실패했어요');
+      if (context) {
+        queryClient.setQueryData(todoKeys.todos(squadToDoId, selectedDay), context);
+      }
+    },
   });
 
   const toggleTodoStatus = (e: MouseEvent<HTMLLIElement>) => {
@@ -71,7 +101,7 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
       contents,
     };
     setCurrentToDoStatus(newStatus);
-    updateTodoStatusMutate({ toDoId, newTodo });
+    updateTodoMutate({ toDoId, newTodo });
   };
 
   const handleKeyPressForEdit = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -88,7 +118,7 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
       toDoStatus,
       contents: newContents,
     };
-    updateTodoContentsMutate({ toDoId, newTodo });
+    updateTodoMutate({ toDoId, newTodo });
     setIsEditMode(false);
   };
 
@@ -160,7 +190,7 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
   );
 };
 
-const todoContainerStyle = (theme: Theme) => css`
+export const todoContainerStyle = (theme: Theme) => css`
   background-color: ${theme.colors.background.gray};
   display: flex;
   flex-direction: column;
@@ -183,7 +213,7 @@ const slideInFromRight = keyframes`
   }
 `;
 
-const todoItemStyle = (isDeleteMode?: boolean) => css`
+export const todoItemStyle = (isDeleteMode?: boolean) => css`
   background-color: ${isDeleteMode && '#ff5a5a'};
   color: ${isDeleteMode && 'white'};
   display: flex;
@@ -204,7 +234,7 @@ const todoItemStyle = (isDeleteMode?: boolean) => css`
   `}
 `;
 
-const getStatusStyles = (isChecked: boolean, theme: Theme) => {
+export const getStatusStyles = (isChecked: boolean, theme: Theme) => {
   switch (isChecked) {
     case true:
       return css`
@@ -220,7 +250,7 @@ const getStatusStyles = (isChecked: boolean, theme: Theme) => {
   }
 };
 
-const contentStyle = css`
+export const contentStyle = css`
   display: flex;
   align-items: center;
   flex: 1;
@@ -228,7 +258,7 @@ const contentStyle = css`
   height: 100%;
 `;
 
-const checkIconStyle = (theme: Theme) => css`
+export const checkIconStyle = (theme: Theme) => css`
   width: 20px;
   height: 20px;
   background-color: ${theme.colors.background.white};
@@ -239,7 +269,7 @@ const checkIconStyle = (theme: Theme) => css`
   align-items: center;
 `;
 
-const checkedStyle = (theme: Theme) => css`
+export const checkedStyle = (theme: Theme) => css`
   background-color: ${theme.colors.primary};
   border: none;
 
