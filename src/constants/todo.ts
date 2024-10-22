@@ -8,3 +8,5 @@ export const TODO_TYPES = {
   WEEKLY: 'WEEKLY',
   MONTHLY: 'MONTHLY',
 } as const;
+
+export const TODO_PAGE_SIZE = 30;

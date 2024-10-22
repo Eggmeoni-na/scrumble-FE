@@ -1,16 +1,15 @@
+import { getTodoList } from '@/apis';
 import CalendarList from '@/components/common/Calendar/CalendarList';
-import SquadDetailMemberList from '@/components/common/Member/SquadDetailMemberList';
 import TodoForm from '@/components/common/Todo/TodoForm';
 import TodoList from '@/components/common/Todo/TodoList';
-import { TODO_STATUS } from '@/constants/todo';
-import { squadDetailQueryOptions } from '@/hooks/queries/useSquad';
-import { todoQueryOptions } from '@/hooks/queries/useTodo';
+import { TODO_PAGE_SIZE, TODO_STATUS } from '@/constants/todo';
+import { todoKeys } from '@/hooks/queries/useTodo';
 import useUserCookie from '@/hooks/useUserCookie';
 import { useSquadStore } from '@/stores/squad';
-import { useDayStore, useTodoStore } from '@/stores/todo';
+import { useDayStore } from '@/stores/todo';
 import { breakpoints, mobileMediaQuery, pcMediaQuery } from '@/styles/breakpoints';
 import { css, Theme } from '@emotion/react';
-import { useSuspenseQueries } from '@tanstack/react-query';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import { addMonths, format, subMonths } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -20,30 +19,39 @@ const SquadDetailPage = () => {
   const squadId = Number(params.squadId);
   const setCurrentSquadId = useSquadStore((state) => state.setCurrentSquadId);
   const { user } = useUserCookie();
-  const lastToDoId = useTodoStore((state) => state.lastToDoId);
   const { selectedDay, setSelectedDay } = useDayStore((state) => state);
   const [currentMonth, setCurrentMonth] = useState(new Date(selectedDay));
+  const queryClient = useQueryClient();
 
-  const queryParams = {
-    startDate: selectedDay,
-    endDate: selectedDay,
-    lastToDoId,
-    pageSize: 30,
-  };
-
-  const [{ data: squadDetail }, { data: todos }] = useSuspenseQueries({
-    queries: [
-      {
-        ...squadDetailQueryOptions(squadId),
-      },
-      {
-        ...todoQueryOptions(selectedDay, { squadId, memberId: user!.id, queryParams }),
-      },
-    ],
+  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
+    queryKey: todoKeys.todos(squadId, selectedDay),
+    queryFn: ({ pageParam }) =>
+      getTodoList({
+        squadId,
+        memberId: user!.id,
+        queryParams: {
+          startDate: selectedDay,
+          endDate: selectedDay,
+          lastToDoId: pageParam,
+          pageSize: TODO_PAGE_SIZE,
+        },
+      }),
+    getNextPageParam: (lastPage) => {
+      if (!lastPage?.data || lastPage.data.length === 0) {
+        return null;
+      }
+      const lastToDoId = lastPage?.data[lastPage.data.length - 1].toDoId ?? null;
+      return lastToDoId;
+    },
+    initialPageParam: 1,
+    select: (data) => (data.pages ?? []).flatMap((page) => page.data),
+    refetchOnWindowFocus: false,
   });
 
+  const todos = data ?? [];
+
   const [progressRate, setProgressRate] = useState(0);
-  const todoCount = todos.data.length;
+  const todoCount = todos.length;
 
   const handlePrevMonth = () => {
     const prevMonth = subMonths(new Date(currentMonth), 1);
@@ -55,9 +63,15 @@ const SquadDetailPage = () => {
     setCurrentMonth(nextMonth);
   };
 
+  const loadMoreTodos = () => {
+    if (hasNextPage) {
+      fetchNextPage();
+    }
+  };
+
   useEffect(() => {
     let isCompleted = 0;
-    todos.data.forEach((todo) => todo.toDoStatus === TODO_STATUS.COMPLETED && isCompleted++);
+    todos.forEach((todo) => todo.toDoStatus === TODO_STATUS.COMPLETED && isCompleted++);
 
     setProgressRate(!todoCount ? 0 : Math.floor((isCompleted / todoCount) * 100));
   }, [todos]);
@@ -65,6 +79,14 @@ const SquadDetailPage = () => {
   useEffect(() => {
     setCurrentSquadId(squadId);
   }, [squadId]);
+
+  useEffect(
+    () => () =>
+      queryClient.removeQueries({
+        queryKey: todoKeys.todos(squadId, selectedDay),
+      }),
+    [selectedDay],
+  );
 
   return (
     <div css={containerStyle}>
@@ -83,13 +105,12 @@ const SquadDetailPage = () => {
         <h2 id="squad-members" className="sr-only">
           멤버
         </h2>
-        <SquadDetailMemberList squadMembers={squadDetail.data.squadMembers} />
       </section>
       <div css={headerStyle}>
         <span>{user?.name}</span>
         <span>달성률: {progressRate}%</span>
       </div>
-      <TodoList todos={todos.data} />
+      <TodoList todos={todos} loadMoreTodos={loadMoreTodos} />
       <TodoForm squadId={squadId} selectedDay={selectedDay} />
     </div>
   );
@@ -154,39 +175,4 @@ const headerStyle = (theme: Theme) => css`
   align-items: center;
   margin: 24px 24px 12px 32px;
   ${theme.typography.size_16}
-`;
-
-const saveButtonStyle = (isTodoChanged: boolean) => css`
-  width: 72px;
-  height: 28px;
-  opacity: ${isTodoChanged ? 1 : 0.3};
-`;
-
-const formStyle = (theme: Theme) => css`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: ${theme.colors.background.gray};
-  border-radius: 12px;
-  margin: 16px;
-
-  & input {
-    height: 40px;
-    flex: 1;
-    padding-left: 16px;
-  }
-`;
-
-const addIconStyle = (theme: Theme) => css`
-  width: 32px;
-  height: 32px;
-  background-color: ${theme.colors.secondary};
-  border-radius: 50%;
-  margin-right: 8px;
-
-  & svg {
-    color: white;
-    width: 24px;
-    height: 24px;
-  }
 `;
