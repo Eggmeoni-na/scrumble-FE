@@ -75,7 +75,7 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
   const queryClient = useQueryClient();
   // TODO 상태 및 내용 수정 로직 공유
   const { updateTodoMutate } = useUpdateTodo(squadId, selectedDay, {
-    onSuccess: (data) => {
+    onSuccess: ({ data }) => {
       successToast('수정에 성공했어요');
       queryClient.setQueryData(
         todoKeys.todos(squadId, selectedDay),
@@ -83,7 +83,7 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
           ...prevData,
           pages: prevData.pages.map((page) => ({
             ...page,
-            data: page.data.map((todo) => (todo.toDoId === data.data.toDoId ? data.data : todo)),
+            data: page.data.map((todo) => (todo.toDoId === data.toDoId ? data : todo)),
           })),
         }),
       );

@@ -15,25 +15,14 @@ const TodoForm = ({ squadId, selectedDay }: { squadId: number; selectedDay: stri
   const { successToast, failedToast, warningToast } = useToastHandler();
   const queryClient = useQueryClient();
   const { createTodoMutate } = useCreateTodo(squadId, selectedDay, {
-    onSuccess: async (data) => {
+    onSuccess: async ({ data }) => {
       successToast('투두 등록에 성공했어요');
       queryClient.setQueryData(
         todoKeys.todos(squadId, selectedDay),
-        (prevData: InfiniteQueryData<ApiResponse<ToDoDetail[]>>) => {
-          if (!prevData || !prevData.pages.length) return prevData;
-          return {
-            ...prevData,
-            pages: prevData.pages.map((page, index) => {
-              if (index === 0) {
-                return {
-                  ...page,
-                  data: [data.data, ...page.data],
-                };
-              }
-              return page;
-            }),
-          };
-        },
+        (prevData: InfiniteQueryData<ApiResponse<ToDoDetail[]>>) => ({
+          ...prevData,
+          pages: prevData.pages.map((page, index) => (index === 0 ? { ...page, data: [data, ...page.data] } : page)),
+        }),
       );
     },
     onError: () => failedToast('투두 등록에 실패했어요'),
