@@ -1,46 +1,25 @@
 import { updateTodo } from '@/apis';
 import { MutateOptionsType, UpdateTodoParamType } from '@/hooks/mutations/types';
+import { InfiniteQueryData } from '@/hooks/queries/types';
 import { todoKeys } from '@/hooks/queries/useTodo';
-import { ApiResponse, ToDoDetail } from '@/types';
+import { ApiResponse, CreateAndUpdateResponseType, ToDoDetail } from '@/types';
+import { optimisticUpdateMutateHandler } from '@/utils/optimisticUpdateMutateHandler';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-export const useUpdateTodoStatus = (
+export const useUpdateTodo = (
   squadId: number,
   selectedDay: string,
-  options: MutateOptionsType<ApiResponse<null>, UpdateTodoParamType>,
+  options: MutateOptionsType<ApiResponse<CreateAndUpdateResponseType>, UpdateTodoParamType>,
 ) => {
   const queryClient = useQueryClient();
-  const { mutate: updateTodoStatusMutate } = useMutation({
+  const { mutate: updateTodoMutate } = useMutation({
     mutationFn: updateTodo,
-    onMutate: async (data) => {
-      try {
-        await queryClient.cancelQueries({
-          queryKey: todoKeys.todos(squadId, selectedDay),
-        });
-
-        const oldData = queryClient.getQueryData<ToDoDetail[]>(todoKeys.todos(squadId, selectedDay)) ?? [];
-        queryClient.setQueryData(
-          todoKeys.todos(squadId, selectedDay),
-          (prevData: ApiResponse<ToDoDetail[]> | undefined) =>
-            prevData && {
-              ...prevData,
-              data: prevData.data.map((todo) => (todo.toDoId === data.toDoId ? { ...todo, ...data.newTodo } : todo)),
-            },
-        );
-        return oldData;
-      } catch (error) {
-        console.error('Optimistic Update Error:', error);
-      }
-    },
+    onMutate: () =>
+      optimisticUpdateMutateHandler<InfiniteQueryData<ApiResponse<ToDoDetail[]>>>(
+        queryClient,
+        todoKeys.todos(squadId, selectedDay),
+      ),
     ...options,
   });
-  return { updateTodoStatusMutate };
-};
-
-export const useUpdateTodoContents = (options: MutateOptionsType<ApiResponse<null>, UpdateTodoParamType>) => {
-  const { mutate: updateTodoContentsMutate } = useMutation({
-    mutationFn: updateTodo,
-    ...options,
-  });
-  return { updateTodoContentsMutate };
+  return { updateTodoMutate };
 };

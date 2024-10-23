@@ -15,15 +15,17 @@ export type ToDoDetail = {
 
 export type TodoStatus = (typeof TODO_STATUS)[keyof typeof TODO_STATUS];
 
-export type GetTodoRequest = {
+export type GetTodoRequestParams = {
   squadId: number;
   memberId: number;
-  queryParams: {
-    startDate: string;
-    endDate: string;
-    lastToDoId: number;
-    pageSize: number;
-  };
+  queryParams: GetTodoRequestPayload;
+};
+
+export type GetTodoRequestPayload = {
+  startDate: string;
+  endDate: string;
+  lastToDoId: number;
+  pageSize: number;
 };
 
 export type TodoTypes = (typeof TODO_TYPES)[keyof typeof TODO_TYPES];
@@ -38,4 +40,11 @@ export type UpdateTodoRequest = {
   toDoStatus: TodoStatus;
   contents: string;
   toDoAt: string;
+};
+
+export type CreateAndUpdateResponseType = {
+  toDoId: number;
+  contents: string;
+  toDoAt: string;
+  toDoStatus: TodoStatus;
 };
