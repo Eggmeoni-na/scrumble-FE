@@ -1,6 +1,6 @@
 import { Back, Bell, Dark, Light, Menu } from '@/assets/icons';
 import IconWrapper from '@/components/common/IconWrapper';
-import { useThemeStore } from '@/stores/theme';
+import { useThemeStore } from '@/stores';
 import { css, Theme } from '@emotion/react';
 import { PropsWithChildren } from 'react';
 import { useNavigate } from 'react-router-dom';

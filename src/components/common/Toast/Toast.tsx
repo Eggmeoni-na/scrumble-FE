@@ -1,7 +1,7 @@
 import { Close, Failed, Success, Warning } from '@/assets/icons';
 import IconWrapper from '@/components/common/IconWrapper';
 import ToastPortal from '@/components/common/Toast/ToastPortal';
-import { Toast, useToastStore } from '@/stores/toast';
+import { Toast, useToastStore } from '@/stores';
 import { Status } from '@/types';
 import { css } from '@emotion/react';
 

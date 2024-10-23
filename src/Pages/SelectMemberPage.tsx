@@ -1,5 +1,5 @@
-import SelectMemberList from '@/components/common/Member/SelectMemberList';
-import { useSquadStore } from '@/stores/squad';
+import { SelectMemberList } from '@/components/common/Member';
+import { useSquadStore } from '@/stores';
 
 const SelectMemberPage = () => {
   const squadId = useSquadStore((state) => state.currentSquadId);

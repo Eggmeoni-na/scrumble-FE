@@ -6,7 +6,7 @@ import { ActionPrompt } from '@/components/common/Modal/ModalContents';
 import { ROLE } from '@/constants/role';
 import { squadDetailQueryOptions, squadKeys } from '@/hooks/queries/useSquad';
 import { useModal } from '@/hooks/useModal';
-import { useToastStore } from '@/stores/toast';
+import { useToastStore } from '@/stores';
 import { SquadMember } from '@/types';
 import { css, Theme } from '@emotion/react';
 import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';

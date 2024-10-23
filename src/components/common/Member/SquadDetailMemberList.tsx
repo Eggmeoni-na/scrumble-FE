@@ -1,5 +1,5 @@
 import MemberProfile from '@/components/common/Member/MemberProfile';
-import { useMemberStore } from '@/stores/member';
+import { useMemberStore } from '@/stores';
 import { scrollBarStyle } from '@/styles/globalStyles';
 import { SquadMember } from '@/types';
 import { css, Theme } from '@emotion/react';

@@ -1,4 +1,4 @@
-import { useDayStore } from '@/stores/todo';
+import { useDayStore } from '@/stores';
 import { scrollBarStyle } from '@/styles/globalStyles';
 import { getDaysInMonth } from '@/utils/getDaysInMonth';
 import { css, Theme, useTheme } from '@emotion/react';

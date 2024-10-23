@@ -5,9 +5,7 @@ import { Overlay } from '@/components/common/Overlay';
 import { ROLE } from '@/constants/role';
 import { useDeleteSquad, useExitSquad, useUpdateSquadName } from '@/hooks/mutations';
 import { squadDetailQueryOptions, squadKeys } from '@/hooks/queries/useSquad';
-import { useSquadStore } from '@/stores/squad';
-
-import { useToastStore } from '@/stores/toast';
+import { useSquadStore, useToastStore } from '@/stores';
 import { css, Theme } from '@emotion/react';
 import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';

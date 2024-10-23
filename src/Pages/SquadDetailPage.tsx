@@ -1,14 +1,12 @@
 import CalendarList from '@/components/common/Calendar/CalendarList';
-import SquadDetailMemberList from '@/components/common/Member/SquadDetailMemberList';
+import { SquadDetailMemberList } from '@/components/common/Member';
 import TodoForm from '@/components/common/Todo/TodoForm';
 import TodoList from '@/components/common/Todo/TodoList';
 import { TODO_PAGE_SIZE, TODO_STATUS } from '@/constants/todo';
 import { squadDetailQueryOptions } from '@/hooks/queries/useSquad';
 import { todoInfiniteQueryOptions, todoKeys } from '@/hooks/queries/useTodo';
 import useUserCookie from '@/hooks/useUserCookie';
-import { useMemberStore } from '@/stores/member';
-import { useSquadStore } from '@/stores/squad';
-import { useDayStore } from '@/stores/todo';
+import { useDayStore, useMemberStore, useSquadStore } from '@/stores';
 import { breakpoints, mobileMediaQuery, pcMediaQuery } from '@/styles/breakpoints';
 import { css, Theme } from '@emotion/react';
 import { useInfiniteQuery, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';

@@ -1,4 +1,4 @@
-import { useAuthStore } from '@/stores/auth';
+import { useAuthStore } from '@/stores';
 
 const useValidatedUser = () => {
   const user = useAuthStore((state) => state.user);

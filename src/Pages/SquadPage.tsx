@@ -1,7 +1,7 @@
 import Button from '@/components/common/Button/Button';
 import { useCreateSquad } from '@/hooks/mutations';
 import { squadQueryOptions } from '@/hooks/queries/useSquad';
-import { useToastStore } from '@/stores/toast';
+import { useToastStore } from '@/stores';
 import { breakpoints, mobileMediaQuery, pcMediaQuery } from '@/styles/breakpoints';
 import { Squad } from '@/types/squad';
 import { css, Theme } from '@emotion/react';
