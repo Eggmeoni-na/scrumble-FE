@@ -1,6 +1,7 @@
 import { Check, Close, Delete, Edit } from '@/assets/icons';
 import Button from '@/components/common/Button/Button';
 import IconWrapper from '@/components/common/IconWrapper';
+import { MemberTodoItem } from '@/components/common/Member';
 import { TODO_STATUS } from '@/constants/todo';
 import { useDeleteTodo, useUpdateTodo } from '@/hooks/mutations';
 import { InfiniteQueryData } from '@/hooks/queries/types';
@@ -16,9 +17,10 @@ import { KeyboardEvent, MouseEvent, useEffect, useRef, useState } from 'react';
 type Props = {
   todos: ToDoDetail[];
   loadMoreTodos: VoidFunction;
+  isMeSelected: boolean;
 };
 
-const TodoList = ({ todos, loadMoreTodos }: Props) => {
+const TodoList = ({ todos, loadMoreTodos, isMeSelected }: Props) => {
   const loadMoreRef = useRef(null);
 
   useEffect(() => {
@@ -48,10 +50,10 @@ const TodoList = ({ todos, loadMoreTodos }: Props) => {
   }, [loadMoreTodos]);
 
   return (
-    <ul css={todoContainerStyle}>
-      {todos.map((todo) => (
-        <TodoItem key={todo.toDoId} todo={todo} />
-      ))}
+    <ul css={[todoContainerStyle, !isMeSelected && memberTodoListStyle]}>
+      {todos.map((todo) =>
+        isMeSelected ? <TodoItem key={todo.toDoId} todo={todo} /> : <MemberTodoItem key={todo.toDoId} todo={todo} />,
+      )}
       <br />
       <div ref={loadMoreRef} />
     </ul>
@@ -215,6 +217,10 @@ export const todoContainerStyle = (theme: Theme) => css`
   overflow-y: auto;
   -webkit-box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.1);
   box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.1);
+`;
+
+const memberTodoListStyle = css`
+  margin-bottom: 24px;
 `;
 
 const slideInFromRight = keyframes`

@@ -1,4 +1,5 @@
 import MemberProfile from '@/components/common/Member/MemberProfile';
+import { useMemberStore } from '@/stores/member';
 import { scrollBarStyle } from '@/styles/globalStyles';
 import { SquadMember } from '@/types';
 import { css, Theme } from '@emotion/react';
@@ -20,8 +21,9 @@ const SquadDetailMemberList = ({ squadMembers }: Props) => {
 export default SquadDetailMemberList;
 
 const Member = ({ member }: { member: SquadMember }) => {
+  const setSelectedMember = useMemberStore((state) => state.setSelectedMember);
   return (
-    <li>
+    <li onClick={() => setSelectedMember(member)} css={memberStyle}>
       <MemberProfile member={member} infoStyle={infoStyle} imgStyle={imgStyle} displayRole={false} />
     </li>
   );
@@ -35,6 +37,10 @@ const containerStyle = css`
   margin: 0 16px;
   overflow-x: auto;
   ${scrollBarStyle}
+`;
+
+const memberStyle = css`
+  cursor: pointer;
 `;
 
 const imgStyle = css`

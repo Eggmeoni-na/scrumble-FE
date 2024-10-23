@@ -4,9 +4,9 @@ import { ApiResponse, CreateAndUpdateResponseType, GetTodoRequestParams, ToDoDet
 import { MutationFunction } from '@tanstack/react-query';
 
 export const getTodoList = async (params: GetTodoRequestParams): Promise<{ data: ToDoDetail[] }> => {
-  const { squadId, memberId, queryParams } = params;
+  const { squadId, memberId, payload } = params;
   const response = await instance.get(`/api/todos/squads/${squadId}/members/${memberId}`, {
-    params: queryParams,
+    params: payload,
   });
   return response.data;
 };
