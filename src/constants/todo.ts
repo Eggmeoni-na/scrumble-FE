@@ -9,4 +9,4 @@ export const TODO_TYPES = {
   MONTHLY: 'MONTHLY',
 } as const;
 
-export const TODO_PAGE_SIZE = 5;
+export const TODO_PAGE_SIZE = 30;
