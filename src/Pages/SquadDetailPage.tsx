@@ -1,14 +1,17 @@
 import CalendarList from '@/components/common/Calendar/CalendarList';
+import SquadDetailMemberList from '@/components/common/Member/SquadDetailMemberList';
 import TodoForm from '@/components/common/Todo/TodoForm';
 import TodoList from '@/components/common/Todo/TodoList';
 import { TODO_PAGE_SIZE, TODO_STATUS } from '@/constants/todo';
+import { squadDetailQueryOptions } from '@/hooks/queries/useSquad';
 import { todoInfiniteQueryOptions, todoKeys } from '@/hooks/queries/useTodo';
 import useUserCookie from '@/hooks/useUserCookie';
+import { useMemberStore } from '@/stores/member';
 import { useSquadStore } from '@/stores/squad';
 import { useDayStore } from '@/stores/todo';
 import { breakpoints, mobileMediaQuery, pcMediaQuery } from '@/styles/breakpoints';
 import { css, Theme } from '@emotion/react';
-import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { addMonths, format, subMonths } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -19,17 +22,24 @@ const SquadDetailPage = () => {
   const setCurrentSquadId = useSquadStore((state) => state.setCurrentSquadId);
   const { user } = useUserCookie();
   const { selectedDay, setSelectedDay } = useDayStore((state) => state);
+  const selectedMember = useMemberStore((state) => state.selectedMember);
   const [currentMonth, setCurrentMonth] = useState(new Date(selectedDay));
+  const isMeSelected = !selectedMember || selectedMember.memberId === user!.id;
+
   const queryClient = useQueryClient();
 
-  const queryParams = {
+  const { data: squadDetail } = useSuspenseQuery({
+    ...squadDetailQueryOptions(squadId),
+  }).data;
+
+  const payload = {
     startDate: selectedDay,
     endDate: selectedDay,
     pageSize: TODO_PAGE_SIZE,
   };
 
   const { data, fetchNextPage, hasNextPage } = useInfiniteQuery(
-    todoInfiniteQueryOptions(user!.id, squadId, selectedDay, queryParams),
+    todoInfiniteQueryOptions(isMeSelected ? user!.id : selectedMember.memberId, squadId, selectedDay, payload),
   );
 
   const todos = data ?? [];
@@ -54,22 +64,22 @@ const SquadDetailPage = () => {
   };
 
   useEffect(() => {
+    setCurrentSquadId(squadId);
+  }, [squadId]);
+
+  useEffect(() => {
     let isCompleted = 0;
     todos.forEach((todo) => todo.toDoStatus === TODO_STATUS.COMPLETED && isCompleted++);
 
     setProgressRate(!todoCount ? 0 : Math.floor((isCompleted / todoCount) * 100));
   }, [todos]);
 
-  useEffect(() => {
-    setCurrentSquadId(squadId);
-  }, [squadId]);
-
   useEffect(
     () => () =>
       queryClient.removeQueries({
         queryKey: todoKeys.todos(squadId, selectedDay),
       }),
-    [selectedDay],
+    [selectedDay, selectedMember],
   );
 
   return (
@@ -89,13 +99,14 @@ const SquadDetailPage = () => {
         <h2 id="squad-members" className="sr-only">
           멤버
         </h2>
+        <SquadDetailMemberList squadMembers={squadDetail.squadMembers} />
       </section>
       <div css={headerStyle}>
-        <span>{user?.name}</span>
+        <span>{!selectedMember ? user?.name : selectedMember.name}</span>
         <span>달성률: {progressRate}%</span>
       </div>
-      <TodoList todos={todos} loadMoreTodos={loadMoreTodos} />
-      <TodoForm squadId={squadId} selectedDay={selectedDay} />
+      <TodoList todos={todos} loadMoreTodos={loadMoreTodos} isMeSelected={isMeSelected} />
+      {isMeSelected && <TodoForm squadId={squadId} selectedDay={selectedDay} />}
     </div>
   );
 };
