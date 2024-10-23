@@ -1,9 +1,8 @@
-import { getTodoList } from '@/apis';
 import CalendarList from '@/components/common/Calendar/CalendarList';
 import TodoForm from '@/components/common/Todo/TodoForm';
 import TodoList from '@/components/common/Todo/TodoList';
 import { TODO_PAGE_SIZE, TODO_STATUS } from '@/constants/todo';
-import { todoKeys } from '@/hooks/queries/useTodo';
+import { todoInfiniteQueryOptions, todoKeys } from '@/hooks/queries/useTodo';
 import useUserCookie from '@/hooks/useUserCookie';
 import { useSquadStore } from '@/stores/squad';
 import { useDayStore } from '@/stores/todo';
@@ -23,30 +22,15 @@ const SquadDetailPage = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date(selectedDay));
   const queryClient = useQueryClient();
 
-  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
-    queryKey: todoKeys.todos(squadId, selectedDay),
-    queryFn: ({ pageParam }) =>
-      getTodoList({
-        squadId,
-        memberId: user!.id,
-        queryParams: {
-          startDate: selectedDay,
-          endDate: selectedDay,
-          lastToDoId: pageParam,
-          pageSize: TODO_PAGE_SIZE,
-        },
-      }),
-    getNextPageParam: (lastPage) => {
-      if (!lastPage?.data || lastPage.data.length === 0) {
-        return null;
-      }
-      const lastToDoId = lastPage?.data[lastPage.data.length - 1].toDoId ?? null;
-      return lastToDoId;
-    },
-    initialPageParam: 1,
-    select: (data) => (data.pages ?? []).flatMap((page) => page.data),
-    refetchOnWindowFocus: false,
-  });
+  const queryParams = {
+    startDate: selectedDay,
+    endDate: selectedDay,
+    pageSize: TODO_PAGE_SIZE,
+  };
+
+  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery(
+    todoInfiniteQueryOptions(user!.id, squadId, selectedDay, queryParams),
+  );
 
   const todos = data ?? [];
 
