@@ -1,9 +1,9 @@
 import { instance } from '@/apis';
 import { CreateTodoParamType, DeleteTodoParamType, UpdateTodoParamType } from '@/hooks/mutations';
-import { ApiResponse, CreateAndUpdateResponseType, GetTodoRequest, ToDoDetail } from '@/types';
+import { ApiResponse, CreateAndUpdateResponseType, GetTodoRequestParams, ToDoDetail } from '@/types';
 import { MutationFunction } from '@tanstack/react-query';
 
-export const getTodoList = async (params: GetTodoRequest): Promise<{ data: ToDoDetail[] }> => {
+export const getTodoList = async (params: GetTodoRequestParams): Promise<{ data: ToDoDetail[] }> => {
   const { squadId, memberId, queryParams } = params;
   const response = await instance.get(`/api/todos/squads/${squadId}/members/${memberId}`, {
     params: queryParams,
