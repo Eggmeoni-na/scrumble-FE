@@ -18,7 +18,7 @@ export type TodoStatus = (typeof TODO_STATUS)[keyof typeof TODO_STATUS];
 export type GetTodoRequestParams = {
   squadId: number;
   memberId: number;
-  queryParams: GetTodoRequestPayload;
+  payload: GetTodoRequestPayload;
 };
 
 export type GetTodoRequestPayload = {
