@@ -1,18 +1,33 @@
+import { getSearchMember } from '@/apis';
 import { Check } from '@/assets/icons';
 import Button from '@/components/common/Button/Button';
 import Form from '@/components/common/Form';
 import IconWrapper from '@/components/common/IconWrapper';
 import { checkedStyle, checkIconStyle } from '@/components/common/Todo/TodoList';
+import useToastHandler from '@/hooks/useToastHandler';
+import { SearchMemberResponse } from '@/types';
 import { css, Theme, useTheme } from '@emotion/react';
 import { FormEvent, KeyboardEventHandler, useState } from 'react';
 
 const InvitePage = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
+  const [searchResult, setSearchResult] = useState<SearchMemberResponse | null>(null);
   const [isSelected, setIsSelected] = useState(false);
   const theme = useTheme();
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const { warningToast, failedToast } = useToastHandler();
+
+  const handleSearch = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(searchKeyword);
+    if (!searchKeyword.length) {
+      warningToast('이메일을 입력해주세요');
+      return;
+    }
+    const res = await getSearchMember(searchKeyword);
+    if (res.statusCodeValue !== 200) {
+      failedToast('잠시 후 다시 시도해주세요');
+      return;
+    }
+    setSearchResult(res.data);
     setSearchKeyword('');
   };
 
@@ -20,33 +35,38 @@ const InvitePage = () => {
     if (e.key !== 'Enter') return;
     if (!e.nativeEvent.isComposing) {
       e.preventDefault();
-      handleSubmit(e);
+      handleSearch(e);
     }
   };
   return (
     <section css={containerStyle}>
       <Form
-        onSubmit={handleSubmit}
+        type="email"
+        onSubmit={handleSearch}
         onKeyDown={handleEnterSubmit}
         value={searchKeyword}
         onChange={(e) => setSearchKeyword(e.target.value)}
         style={formStyle}
         placeholder="초대할 멤버의 이메일을 입력해주세요"
       />
-      <div css={[searchResultStyle(theme, isSelected)]} onClick={() => setIsSelected(!isSelected)}>
-        <IconWrapper
-          aria-label={isSelected ? 'Selected member' : 'Unselected member'}
-          aria-checked={isSelected}
-          role="checkbox"
-          css={[checkIconStyle, isSelected && checkedStyle, isSelected && customCheckedStyle]}
-        >
-          {isSelected && <Check />}
-        </IconWrapper>
-        <p>김둘리</p>
-      </div>
+      {searchResult && (
+        <div css={[searchResultStyle(theme, isSelected)]} onClick={() => setIsSelected(!isSelected)}>
+          <IconWrapper
+            aria-label={isSelected ? 'Selected member' : 'Unselected member'}
+            aria-checked={isSelected}
+            role="checkbox"
+            css={[checkIconStyle, isSelected && checkedStyle, isSelected && customCheckedStyle]}
+          >
+            {isSelected && <Check />}
+          </IconWrapper>
+          <p>{searchResult.name}</p>
+        </div>
+      )}
       <Button
         text="초대하기"
-        onClick={() => {}}
+        onClick={() => {
+          console.log('초대할게유');
+        }}
         style={{
           marginTop: 'auto',
           height: '56px',

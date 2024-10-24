@@ -1,21 +1,22 @@
 import { Add } from '@/assets/icons';
 import IconWrapper from '@/components/common/IconWrapper';
 import { css, SerializedStyles, Theme } from '@emotion/react';
-import { ChangeEvent, FormEvent, KeyboardEvent } from 'react';
+import { ChangeEvent, FormEvent, HTMLInputTypeAttribute, KeyboardEvent } from 'react';
 
 type Props = {
+  type: HTMLInputTypeAttribute;
   onSubmit: (e: FormEvent<HTMLFormElement>) => void;
   onKeyDown: (e: KeyboardEvent<HTMLFormElement>) => void;
   value: string | number;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  placeholder?: string;
   style?: (theme: Theme) => SerializedStyles;
-  placeholder: string;
 };
 
-const Form = ({ onSubmit, onKeyDown, value, onChange, placeholder, style }: Props) => {
+const Form = ({ type, onSubmit, onKeyDown, value, onChange, placeholder, style }: Props) => {
   return (
     <form css={[formStyle, style]} onSubmit={onSubmit}>
-      <input type="text" value={value} onChange={onChange} autoFocus placeholder={placeholder} />
+      <input type={type} value={value} onChange={onChange} autoFocus placeholder={placeholder} />
       <IconWrapper
         css={addIconStyle}
         onClick={() => {

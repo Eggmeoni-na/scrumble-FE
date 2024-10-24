@@ -7,7 +7,7 @@ import {
   UpdateSquadNameParamType,
 } from '@/hooks/mutations';
 
-import { ApiResponse, Squad, SquadDetail } from '@/types';
+import { ApiResponse, SearchMemberResponse, Squad, SquadDetail } from '@/types';
 import { MutationFunction } from '@tanstack/react-query';
 
 export const getSquadList = async (): Promise<{ data: Squad[] }> => {
@@ -62,5 +62,10 @@ export const removeUserFromSquad: MutationFunction<ApiResponse<null>, RemoveUser
   memberId,
 }) => {
   const response = await instance.delete(`/api/squads/${squadId}/members/${memberId}`);
+  return response.data;
+};
+
+export const getSearchMember = async (email: string): Promise<ApiResponse<SearchMemberResponse>> => {
+  const response = await instance.get(`/api/users/${email}`);
   return response.data;
 };
