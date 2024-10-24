@@ -3,6 +3,7 @@ import Button from '@/components/common/Button/Button';
 import Form from '@/components/common/Form';
 import IconWrapper from '@/components/common/IconWrapper';
 import { checkedStyle, checkIconStyle } from '@/components/common/Todo/TodoList';
+import useToastHandler from '@/hooks/useToastHandler';
 import { css, Theme, useTheme } from '@emotion/react';
 import { FormEvent, KeyboardEventHandler, useState } from 'react';
 
@@ -10,9 +11,15 @@ const InvitePage = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [isSelected, setIsSelected] = useState(false);
   const theme = useTheme();
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const { warningToast } = useToastHandler();
+
+  const handleSearch = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(searchKeyword);
+    if (!searchKeyword.length) {
+      warningToast('이메일을 입력해주세요');
+      return;
+    }
+
     setSearchKeyword('');
   };
 
@@ -20,13 +27,14 @@ const InvitePage = () => {
     if (e.key !== 'Enter') return;
     if (!e.nativeEvent.isComposing) {
       e.preventDefault();
-      handleSubmit(e);
+      handleSearch(e);
     }
   };
   return (
     <section css={containerStyle}>
       <Form
-        onSubmit={handleSubmit}
+        type="email"
+        onSubmit={handleSearch}
         onKeyDown={handleEnterSubmit}
         value={searchKeyword}
         onChange={(e) => setSearchKeyword(e.target.value)}
