@@ -18,3 +18,9 @@ export type SquadMember = {
   name: string;
   squadMemberRole: squadRoleType;
 };
+
+export type SearchMemberResponse = {
+  memberId: number;
+  name: string;
+  profileImage: string;
+};
