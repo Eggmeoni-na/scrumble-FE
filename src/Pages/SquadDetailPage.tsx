@@ -81,7 +81,7 @@ const SquadDetailPage = () => {
   );
 
   return (
-    <div css={containerStyle}>
+    <section css={containerStyle}>
       <section aria-labelledby="calendar">
         <h2 id="calendar" className="sr-only">
           캘린더
@@ -105,7 +105,7 @@ const SquadDetailPage = () => {
       </div>
       <TodoList todos={todos} loadMoreTodos={loadMoreTodos} isMeSelected={isMeSelected} />
       {isMeSelected && <TodoForm squadId={squadId} selectedDay={selectedDay} />}
-    </div>
+    </section>
   );
 };
 
