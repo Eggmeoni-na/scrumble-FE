@@ -1,5 +1,10 @@
-import { CreateSquadParamType, UpdateSquadNameParamType } from '@/hooks/mutations';
-import { ApiResponse, Squad, SquadDetail, ToDo } from '@/types';
+import {
+  CreateSquadParamType,
+  CreateTodoParamType,
+  UpdateSquadNameParamType,
+  UpdateTodoParamType,
+} from '@/hooks/mutations';
+import { ApiResponse, Squad, SquadDetail } from '@/types';
 import { MutationFunction } from '@tanstack/react-query';
 import axios, { AxiosResponse } from 'axios';
 
@@ -36,16 +41,15 @@ export const updateSquadNameApi: MutationFunction<ApiResponse<Squad>, UpdateSqua
   return response.data;
 };
 
-const todoListParam = {
-  startDate: '2024-10-13',
-  endDate: '2024-10-13',
-  lastToDoId: 0,
-  pageSize: 0,
+export const createTodoApi: MutationFunction<ApiResponse<{ toDoId: number }>, CreateTodoParamType> = async ({
+  squadId,
+  newTodo,
+}) => {
+  const response = await mockInstance.post(`/api/todos/squads/${squadId}`, newTodo);
+  return response.data;
 };
 
-export const getMyTodoListApi = async (squadId: number, memberId: number): Promise<{ data: ToDo[] }> => {
-  const response = await mockInstance.get(`/todos/squads/${squadId}/members/${memberId}`, {
-    params: todoListParam,
-  });
+export const updateTodoApi: MutationFunction<ApiResponse<null>, UpdateTodoParamType> = async ({ toDoId, newTodo }) => {
+  const response = await mockInstance.put(`/api/todos/${toDoId}`, newTodo);
   return response.data;
 };

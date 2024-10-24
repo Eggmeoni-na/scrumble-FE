@@ -1,4 +1,4 @@
-import { squadHandler, todoHandler } from '@/mocks/handler';
+import { squadHandler } from '@/mocks/handler';
 import { setupWorker } from 'msw/browser';
 
 const initMocks = async () => {
@@ -6,7 +6,7 @@ const initMocks = async () => {
     return;
   }
 
-  const worker = setupWorker(...squadHandler, ...todoHandler);
+  const worker = setupWorker(...squadHandler);
   await worker.start({
     onUnhandledRequest: 'bypass',
   });
