@@ -1,5 +1,5 @@
 import { instance } from '@/apis';
-import { OAuthRequestParams, OAuthUrl, User } from '@/types';
+import { OAuthRequestParams, OAuthUrl, UserProfile } from '@/types';
 import { AxiosResponse } from 'axios';
 
 // 개발기용 임시 로그인 API
@@ -10,7 +10,8 @@ export const generateEmptySession = async () => {
 
 export const generateTempSession = async () => {
   const response = await instance.post('/api/test/session/session', {
-    email: 'scrumble@email.com',
+    email: 'testA@email.com',
+    // email: 'scrumble@email.com',
   });
   return response;
 };
@@ -41,7 +42,7 @@ export const logoutUser = async () => {
   return response;
 };
 
-export const getUser = async (): Promise<{ data: User }> => {
+export const getUser = async (): Promise<{ data: UserProfile }> => {
   const response = await instance.get('/api/users/me');
   return response.data;
 };
