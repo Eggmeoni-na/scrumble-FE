@@ -1,5 +1,4 @@
-import { Add } from '@/assets/icons';
-import IconWrapper from '@/components/common/IconWrapper';
+import Form from '@/components/common/Form';
 import { TODO_TYPES } from '@/constants/todo';
 import { useCreateTodo } from '@/hooks/mutations';
 import { InfiniteQueryData } from '@/hooks/queries/types';
@@ -8,7 +7,7 @@ import useToastHandler from '@/hooks/useToastHandler';
 import { ApiResponse, PostTodoRequest, ToDoDetail } from '@/types';
 import { css, Theme } from '@emotion/react';
 import { useQueryClient } from '@tanstack/react-query';
-import { ChangeEvent, FormEvent, KeyboardEventHandler, useCallback, useState } from 'react';
+import { FormEvent, KeyboardEventHandler, useCallback, useState } from 'react';
 
 const TodoForm = ({ squadId, selectedDay }: { squadId: number; selectedDay: string }) => {
   const [contents, setContents] = useState('');
@@ -52,54 +51,19 @@ const TodoForm = ({ squadId, selectedDay }: { squadId: number; selectedDay: stri
   }, []);
 
   return (
-    <form css={formStyle} onSubmit={handleSubmit}>
-      <input
-        type="text"
-        value={contents}
-        onChange={(e: ChangeEvent<HTMLInputElement>) => setContents(e.target.value)}
-        autoFocus
-      />
-      <IconWrapper
-        css={addIconStyle}
-        onClick={() => {
-          // Button 태그로 인식하기 위한 로직
-        }}
-        onKeyDown={handleEnterSubmit}
-      >
-        <Add />
-      </IconWrapper>
-    </form>
+    <Form
+      onSubmit={handleSubmit}
+      onKeyDown={handleEnterSubmit}
+      value={contents}
+      onChange={(e) => setContents(e.target.value)}
+      placeholder="할일을 입력해주세요"
+      style={formStyle}
+    />
   );
 };
 
 export default TodoForm;
 
 const formStyle = (theme: Theme) => css`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: ${theme.colors.background.gray};
-  border-radius: 12px;
   margin: 16px;
-
-  & input {
-    height: 40px;
-    flex: 1;
-    padding-left: 16px;
-    color: ${theme.colors.text};
-  }
-`;
-
-const addIconStyle = (theme: Theme) => css`
-  width: 32px;
-  height: 32px;
-  background-color: ${theme.colors.secondary};
-  border-radius: 50%;
-  margin-right: 8px;
-
-  & svg {
-    color: white;
-    width: 24px;
-    height: 24px;
-  }
 `;

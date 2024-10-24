@@ -3,6 +3,7 @@ import { MainLayout } from '@/components';
 import LoginLayout from '@/components/layouts/LoginLayout';
 import { HomePage, LoginPage, MyPage, ProtectedPage, SquadDetailPage, SquadPage } from '@/Pages';
 import GoogleOAuthCallbackPage from '@/Pages/GoogleOAuthLoginPage';
+import InvitePage from '@/Pages/InvitePage';
 import SelectMemberPage from '@/Pages/SelectMemberPage';
 import { Suspense } from 'react';
 
@@ -50,6 +51,10 @@ export const router = createBrowserRouter([
           {
             path: '/squads/:squadId/members',
             element: <SelectMemberPage />,
+          },
+          {
+            path: '/squads/:squadId/invite',
+            element: <InvitePage />,
           },
           {
             path: '/me',

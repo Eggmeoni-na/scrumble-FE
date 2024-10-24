@@ -92,7 +92,8 @@ const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
           <ul>
             <li
               onClick={() => {
-                // TODO: 검색창 연결
+                closeSidebar();
+                navigate(`/squads/${squadId}/invite?step=invite`);
               }}
             >
               멤버 초대
@@ -101,11 +102,7 @@ const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
               <li
                 onClick={() => {
                   closeSidebar();
-                  navigate(`/squads/${squadId}/members`, {
-                    state: {
-                      assignStep: true,
-                    },
-                  });
+                  navigate(`/squads/${squadId}/members?step=assign`);
                 }}
               >
                 리더 변경
