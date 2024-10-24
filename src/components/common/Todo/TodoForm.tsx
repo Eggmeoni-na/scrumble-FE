@@ -52,6 +52,7 @@ const TodoForm = ({ squadId, selectedDay }: { squadId: number; selectedDay: stri
 
   return (
     <Form
+      type="text"
       onSubmit={handleSubmit}
       onKeyDown={handleEnterSubmit}
       value={contents}
