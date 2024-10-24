@@ -1,6 +1,6 @@
 import { ToastContainer } from '@/components/common/Toast';
 import { ModalProvider } from '@/context/ModalContext';
-import { useThemeStore } from '@/stores/theme';
+import { useThemeStore } from '@/stores';
 import { darkTheme, globalStyles, lightTheme } from '@/styles';
 import { Global, ThemeProvider } from '@emotion/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
