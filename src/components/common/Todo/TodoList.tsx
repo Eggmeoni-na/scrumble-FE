@@ -19,7 +19,7 @@ type Props = {
   isMeSelected: boolean;
 };
 
-const TodoList = ({ todos, loadMoreTodos, isMeSelected }: Props) => {
+export const TodoList = ({ todos, loadMoreTodos, isMeSelected }: Props) => {
   const loadMoreRef = useRef(null);
 
   useEffect(() => {
@@ -58,8 +58,6 @@ const TodoList = ({ todos, loadMoreTodos, isMeSelected }: Props) => {
     </ul>
   );
 };
-
-export default TodoList;
 
 const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
   const squadId = useSquadStore((state) => state.currentSquadId);

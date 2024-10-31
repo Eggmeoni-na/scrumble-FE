@@ -1,5 +1,5 @@
 import { HeaderTemplate } from '@/components/common/Header';
-import Sidebar from '@/components/common/Sidebar';
+import { Sidebar } from '@/components/common/Sidebar';
 import { squadDetailQueryOptions } from '@/hooks/queries/useSquad';
 
 import useSidebar from '@/hooks/useSidebar';

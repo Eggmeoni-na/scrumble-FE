@@ -10,7 +10,7 @@ import { css, Theme } from '@emotion/react';
 import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
-const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
+export const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
   const squadId = useSquadStore((state) => state.currentSquadId);
   const navigate = useNavigate();
   const createToast = useToastStore((state) => state.createToast);
@@ -121,8 +121,6 @@ const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
     </Overlay>
   );
 };
-
-export default Sidebar;
 
 export const commonButtonStyle = (theme: Theme) => css`
   width: 28px;
