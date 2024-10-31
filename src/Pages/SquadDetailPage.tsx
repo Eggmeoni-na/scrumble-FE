@@ -1,7 +1,7 @@
 import CalendarList from '@/components/common/Calendar/CalendarList';
 import { SquadDetailMemberList } from '@/components/common/Member';
 import TodoForm from '@/components/common/Todo/TodoForm';
-import TodoList from '@/components/common/Todo/TodoList';
+import { TodoList } from '@/components/common/Todo/TodoList';
 import { TODO_PAGE_SIZE, TODO_STATUS } from '@/constants/todo';
 import { squadDetailQueryOptions } from '@/hooks/queries/useSquad';
 import { todoInfiniteQueryOptions, todoKeys } from '@/hooks/queries/useTodo';
