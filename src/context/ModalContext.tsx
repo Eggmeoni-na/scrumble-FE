@@ -57,9 +57,7 @@ export const useModalContext = () => {
 
 const modalConatiner = css`
   position: relative;
-  height: 100vh;
   margin: 0 auto;
-  background-color: #f0f0f0;
   overflow: hidden;
 
   ${mobileMediaQuery(css`
