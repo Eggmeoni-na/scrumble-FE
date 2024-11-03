@@ -10,6 +10,7 @@ module.exports = {
   rules: {
     'prettier/prettier': 'off',
     'no-console': import.meta.env.NODE_ENV === 'production' ? 'error' : 'warn',
+    'react-refresh/only-export-components': ["warn", { allowConstantExport: true }],
   },
   settings: {
     react: {
