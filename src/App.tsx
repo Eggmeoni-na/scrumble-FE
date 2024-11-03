@@ -1,30 +1,40 @@
+import RootErrorFallback from '@/components/common/ErrorBoundary/RootErrorFallback';
 import { ToastContainer } from '@/components/common/Toast';
 import { ModalProvider } from '@/context/ModalContext';
 import { useThemeStore } from '@/stores';
 import { darkTheme, globalStyles, lightTheme } from '@/styles';
 import { Global, ThemeProvider } from '@emotion/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider, useQueryErrorResetBoundary } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Outlet } from 'react-router-dom';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 0,
+      throwOnError: true,
+    },
+  },
+});
 
 function App() {
   const isDarkMode = useThemeStore((state) => state.isDarkMode);
+  const { reset } = useQueryErrorResetBoundary();
+
   return (
-    <ErrorBoundary fallback={<h1>에러났슈</h1>}>
-      <ModalProvider>
-        <QueryClientProvider client={queryClient}>
-          <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
-            <Global styles={globalStyles} />
+    <ModalProvider>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+          <Global styles={globalStyles} />
+          <ErrorBoundary FallbackComponent={RootErrorFallback} onReset={reset}>
             <Outlet />
-            <ToastContainer />
-          </ThemeProvider>
-          <ReactQueryDevtools initialIsOpen={true} />
-        </QueryClientProvider>
-      </ModalProvider>
-    </ErrorBoundary>
+          </ErrorBoundary>
+          <ToastContainer />
+        </ThemeProvider>
+        <ReactQueryDevtools initialIsOpen={true} />
+      </QueryClientProvider>
+    </ModalProvider>
   );
 }
 

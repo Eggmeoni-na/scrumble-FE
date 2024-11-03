@@ -4,6 +4,7 @@ import LoginLayout from '@/components/layouts/LoginLayout';
 import { HomePage, LoginPage, MyPage, ProtectedPage, SquadDetailPage, SquadPage } from '@/Pages';
 import GoogleOAuthCallbackPage from '@/Pages/GoogleOAuthLoginPage';
 import InvitePage from '@/Pages/InvitePage';
+import NotFoundPage from '@/Pages/NotFoundPage';
 import SelectMemberPage from '@/Pages/SelectMemberPage';
 import { Suspense } from 'react';
 
@@ -33,11 +34,9 @@ export const router = createBrowserRouter([
           {
             path: '/squads',
             element: (
-              <ProtectedPage>
-                <Suspense fallback={<h1>로딩중</h1>}>
-                  <SquadPage />
-                </Suspense>
-              </ProtectedPage>
+              <Suspense fallback={<h1>로딩중</h1>}>
+                <SquadPage />
+              </Suspense>
             ),
           },
           {
@@ -58,7 +57,11 @@ export const router = createBrowserRouter([
           },
           {
             path: '/me',
-            element: <MyPage />,
+            element: (
+              <ProtectedPage>
+                <MyPage />
+              </ProtectedPage>
+            ),
           },
         ],
       },
@@ -78,6 +81,6 @@ export const router = createBrowserRouter([
   },
   {
     path: '/*',
-    element: <h1>404 Page</h1>,
+    element: <NotFoundPage />,
   },
 ]);
