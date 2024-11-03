@@ -18,18 +18,15 @@ const LoginPage = () => {
       if (status === 200) {
         const { id, name } = data.data;
 
-        const time = 28 * 60; // 28분을 초 단위로 변환
-        const expiration = new Date(Date.now() + time * 1000);
-
         setCookie(
           'user',
           { id, name },
           {
             path: '/',
             sameSite: 'strict',
-            expires: expiration,
           },
         );
+
         navigate('/squads', { replace: true });
         return;
       } else {
@@ -43,11 +40,13 @@ const LoginPage = () => {
   };
 
   return (
-    <div css={loginContainer}>
-      <img css={loginHomeImgStyle} src="/images/login.png" alt="login_image" />
-      <button onClick={handleGoogleLogin} aria-label="Login with Google">
-        <img css={googleLoginImgStyle} src="/images/google_login.png" alt="google_login" />
-      </button>
+    <div>
+      <div css={loginContainer}>
+        <img css={loginHomeImgStyle} src="/images/login.png" alt="login_image" />
+        <button onClick={handleGoogleLogin} aria-label="Login with Google">
+          <img css={googleLoginImgStyle} src="/images/google_login.png" alt="google_login" />
+        </button>
+      </div>
     </div>
   );
 };
@@ -57,6 +56,7 @@ export default LoginPage;
 const loginContainer = css`
   height: 100vh;
   display: flex;
+  justify-content: center;
   flex-direction: column;
   align-items: center;
   gap: 28px;
@@ -65,7 +65,6 @@ const loginContainer = css`
 
 const loginHomeImgStyle = css`
   width: 70%;
-  margin-top: 112px;
 
   ${pcMediaQuery(css`
     width: 80%;
@@ -74,6 +73,7 @@ const loginHomeImgStyle = css`
 
 const googleLoginImgStyle = css`
   height: 48px;
+  flex: 1;
 
   ${pcMediaQuery(css`
     height: 64px;
