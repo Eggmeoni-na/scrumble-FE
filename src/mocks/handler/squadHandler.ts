@@ -1,3 +1,4 @@
+import { InviteMemberParamType } from '@/hooks/mutations';
 import { ApiResponse, Squad, SquadDetail } from '@/types';
 import { http, HttpResponse } from 'msw';
 
@@ -68,11 +69,20 @@ export const squadHandler = [
       {
         status: 200,
       },
-      // {
-      //   statusCodeValue: 401,
-      //   message: '허용할 수 없는 접근입니다.',
-      //   data: null,
-      // },
     );
   }),
+
+  http.post(`${import.meta.env.VITE_MOCK_API_URL}/api/squads/2/members/2`, async () =>
+    HttpResponse.json<ApiResponse<InviteMemberParamType>>(
+      {
+        data: {
+          squadId: 2,
+          memberId: 2,
+        },
+        message: 'POST 요청 성공!',
+        statusCodeValue: 0,
+      },
+      { status: 201 },
+    ),
+  ),
 ];

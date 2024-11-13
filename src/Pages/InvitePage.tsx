@@ -4,17 +4,26 @@ import Button from '@/components/common/Button/Button';
 import Form from '@/components/common/Form';
 import IconWrapper from '@/components/common/IconWrapper';
 import { checkedStyle, checkIconStyle } from '@/components/common/Todo/TodoList';
+import useInviteMember from '@/hooks/mutations/useInviteMember';
 import useToastHandler from '@/hooks/useToastHandler';
+import { useSquadStore } from '@/stores';
 import { SearchMemberResponse } from '@/types';
 import { css, Theme, useTheme } from '@emotion/react';
 import { FormEvent, KeyboardEventHandler, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const InvitePage = () => {
+  const squadId = useSquadStore((state) => state.currentSquadId);
   const [searchKeyword, setSearchKeyword] = useState('');
   const [searchResult, setSearchResult] = useState<SearchMemberResponse | null>(null);
   const [isSelected, setIsSelected] = useState(false);
+  const { successToast, warningToast, failedToast } = useToastHandler();
   const theme = useTheme();
-  const { warningToast, failedToast } = useToastHandler();
+  const navigate = useNavigate();
+  const { searchMemberMutate } = useInviteMember({
+    onSuccess: (data) => successToast('멤버 초대에 성공했어요.'),
+    onError: () => failedToast('멤버 초대에 실패했어요.'),
+  });
 
   const handleSearch = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -38,6 +47,16 @@ const InvitePage = () => {
       handleSearch(e);
     }
   };
+
+  const handleInvite = () => {
+    if (!searchResult) {
+      warningToast('초대할 멤버를 확인해주세요.');
+      return;
+    }
+    searchMemberMutate({ squadId, memberId: searchResult.memberId });
+    navigate(-1);
+  };
+
   return (
     <section css={containerStyle}>
       <Form
@@ -64,9 +83,7 @@ const InvitePage = () => {
       )}
       <Button
         text="초대하기"
-        onClick={() => {
-          console.log('초대할게유');
-        }}
+        onClick={handleInvite}
         style={{
           marginTop: 'auto',
           height: '56px',
