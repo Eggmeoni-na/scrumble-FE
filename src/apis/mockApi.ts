@@ -1,6 +1,7 @@
 import {
   CreateSquadParamType,
   CreateTodoParamType,
+  InviteMemberParamType,
   UpdateSquadNameParamType,
   UpdateTodoParamType,
 } from '@/hooks/mutations';
@@ -51,5 +52,16 @@ export const createTodoApi: MutationFunction<ApiResponse<{ toDoId: number }>, Cr
 
 export const updateTodoApi: MutationFunction<ApiResponse<null>, UpdateTodoParamType> = async ({ toDoId, newTodo }) => {
   const response = await mockInstance.put(`/api/todos/${toDoId}`, newTodo);
+  return response.data;
+};
+
+export const inviteMemberApi: MutationFunction<ApiResponse<null>, InviteMemberParamType> = async ({
+  squadId,
+  memberId,
+}) => {
+  const response = await mockInstance.post(`/api/squads/${squadId}/members/${memberId}`, {
+    squadId,
+    memberId,
+  });
   return response.data;
 };
