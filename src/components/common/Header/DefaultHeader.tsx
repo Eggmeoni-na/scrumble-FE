@@ -6,7 +6,7 @@ const DefaultHeader = () => {
       <HeaderTemplate.BackButton />
       <HeaderTemplate.RightMenuWrapper>
         <HeaderTemplate.ToggleThemeButton />
-        <HeaderTemplate.AlarmButton />
+        <HeaderTemplate.NotificationsButton />
       </HeaderTemplate.RightMenuWrapper>
     </HeaderTemplate>
   );

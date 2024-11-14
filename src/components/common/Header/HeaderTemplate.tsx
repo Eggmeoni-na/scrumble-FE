@@ -37,7 +37,7 @@ const ToggleThemeButton = () => {
   );
 };
 
-const AlarmButton = () => {
+const NotificationsButton = () => {
   return (
     <IconWrapper
       aria-label="alarm"
@@ -68,7 +68,7 @@ const SidebarToggleButton = ({ toggleSidebar }: { toggleSidebar: VoidFunction })
 HeaderTemplate.BackButton = BackButton;
 HeaderTemplate.RightMenuWrapper = RightMenuWrapper;
 HeaderTemplate.ToggleThemeButton = ToggleThemeButton;
-HeaderTemplate.AlarmButton = AlarmButton;
+HeaderTemplate.NotificationsButton = NotificationsButton;
 HeaderTemplate.SidebarToggleButton = SidebarToggleButton;
 
 const headerContainer = (theme: Theme) => css`

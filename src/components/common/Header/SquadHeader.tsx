@@ -27,7 +27,7 @@ const SquadHeader = ({ squadId }: { squadId: number }) => {
         <span>{title}</span>
         <HeaderTemplate.RightMenuWrapper>
           <HeaderTemplate.ToggleThemeButton />
-          <HeaderTemplate.AlarmButton />
+          <HeaderTemplate.NotificationsButton />
           <HeaderTemplate.SidebarToggleButton toggleSidebar={toggleOpen} />
         </HeaderTemplate.RightMenuWrapper>
       </HeaderTemplate>
