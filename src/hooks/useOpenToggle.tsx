@@ -1,13 +1,13 @@
 import { useCallback, useState } from 'react';
 
-const useSidebar = () => {
+const useOpenToggle = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const toggleSidebar = useCallback(() => {
+  const toggleOpen = useCallback(() => {
     setIsOpen((prev) => !prev);
   }, []);
 
-  return { isOpen, toggleSidebar };
+  return { isOpen, toggleOpen };
 };
 
-export default useSidebar;
+export default useOpenToggle;
