@@ -55,12 +55,11 @@ export const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
       preventClick={false}
       onClose={closeSidebar}
       style={{
-        flexDirection: 'row-reverse',
-        justifyContent: 'flex-start',
+        justifyContent: 'flex-end',
       }}
       role="dialog"
     >
-      <div css={container} onClick={(e) => e.stopPropagation()}>
+      <div css={sidebarContainer} onClick={(e) => e.stopPropagation()}>
         <header css={headerStyle}>
           <h1>스쿼드 관리</h1>
           <IconWrapper aria-label="Close sidebar" onClick={closeSidebar} role="button" css={commonButtonStyle}>
@@ -128,7 +127,7 @@ export const commonButtonStyle = (theme: Theme) => css`
   color: ${theme.colors.text};
 `;
 
-const container = (theme: Theme) => css`
+export const sidebarContainer = (theme: Theme) => css`
   width: 300px;
   height: 100%;
   background-color: ${theme.colors.background.white};
@@ -155,7 +154,7 @@ const container = (theme: Theme) => css`
   }
 `;
 
-const headerStyle = (theme: Theme) => css`
+export const headerStyle = (theme: Theme) => css`
   font-size: ${theme.typography.size_24};
   display: flex;
   justify-content: space-between;
