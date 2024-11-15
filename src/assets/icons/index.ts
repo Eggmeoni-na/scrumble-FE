@@ -1,3 +1,4 @@
+import ActiveBell from './activeBell.svg?react';
 import Add from './add.svg?react';
 import Back from './back.svg?react';
 import Bell from './bell.svg?react';
@@ -18,6 +19,7 @@ import User from './user.svg?react';
 import Warning from './warning.svg?react';
 
 export {
+  ActiveBell,
   Add,
   Back,
   Bell,

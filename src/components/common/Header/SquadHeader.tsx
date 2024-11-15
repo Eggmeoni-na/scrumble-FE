@@ -1,8 +1,8 @@
 import { HeaderTemplate } from '@/components/common/Header';
 import { Sidebar } from '@/components/common/Sidebar';
 import { squadDetailQueryOptions } from '@/hooks/queries/useSquad';
+import useOpenToggle from '@/hooks/useOpenToggle';
 
-import useSidebar from '@/hooks/useSidebar';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useLocation } from 'react-router-dom';
 
@@ -13,7 +13,7 @@ const HEADER_TITLE: Record<string, string> = {
 
 const SquadHeader = ({ squadId }: { squadId: number }) => {
   const { data } = useSuspenseQuery(squadDetailQueryOptions(squadId)).data;
-  const { isOpen, toggleSidebar } = useSidebar();
+  const { isOpen, toggleOpen } = useOpenToggle();
   const { search } = useLocation();
   const params = new URLSearchParams(search);
   const step = params.get('step');
@@ -27,11 +27,11 @@ const SquadHeader = ({ squadId }: { squadId: number }) => {
         <span>{title}</span>
         <HeaderTemplate.RightMenuWrapper>
           <HeaderTemplate.ToggleThemeButton />
-          <HeaderTemplate.AlarmButton />
-          <HeaderTemplate.SidebarToggleButton toggleSidebar={toggleSidebar} />
+          <HeaderTemplate.NotificationsButton />
+          <HeaderTemplate.SidebarToggleButton toggleSidebar={toggleOpen} />
         </HeaderTemplate.RightMenuWrapper>
       </HeaderTemplate>
-      {isOpen && <Sidebar closeSidebar={toggleSidebar} />}
+      {isOpen && <Sidebar closeSidebar={toggleOpen} />}
     </div>
   );
 };

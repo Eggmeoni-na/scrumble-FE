@@ -1,5 +1,8 @@
-import { Back, Bell, Dark, Light, Menu } from '@/assets/icons';
+import { ActiveBell, Back, Bell, Dark, Light, Menu } from '@/assets/icons';
 import IconWrapper from '@/components/common/IconWrapper';
+import Notifications from '@/components/common/Notifications';
+
+import useOpenToggle from '@/hooks/useOpenToggle';
 import { useThemeStore } from '@/stores';
 import { css, Theme } from '@emotion/react';
 import { PropsWithChildren } from 'react';
@@ -37,17 +40,18 @@ const ToggleThemeButton = () => {
   );
 };
 
-const AlarmButton = () => {
+const NotificationsButton = () => {
+  const { isOpen, toggleOpen } = useOpenToggle();
+  const isActive = true;
+  // TODO: 이벤트 수신 및 읽음 여부에 따라 종 아이콘 조건부 렌더링
+
   return (
-    <IconWrapper
-      aria-label="alarm"
-      onClick={() => {
-        // TODO: 알림 이벤트 연동
-      }}
-      role="button"
-    >
-      <Bell />
-    </IconWrapper>
+    <>
+      <IconWrapper aria-label="alarm" onClick={() => toggleOpen()} role="button">
+        {!isActive ? <Bell /> : <ActiveBell />}
+      </IconWrapper>
+      {isOpen && <Notifications toggleOpen={toggleOpen} />}
+    </>
   );
 };
 
@@ -68,7 +72,7 @@ const SidebarToggleButton = ({ toggleSidebar }: { toggleSidebar: VoidFunction })
 HeaderTemplate.BackButton = BackButton;
 HeaderTemplate.RightMenuWrapper = RightMenuWrapper;
 HeaderTemplate.ToggleThemeButton = ToggleThemeButton;
-HeaderTemplate.AlarmButton = AlarmButton;
+HeaderTemplate.NotificationsButton = NotificationsButton;
 HeaderTemplate.SidebarToggleButton = SidebarToggleButton;
 
 const headerContainer = (theme: Theme) => css`

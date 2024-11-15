@@ -1,9 +1,9 @@
 import { css, Theme } from '@emotion/react';
-import { ElementType, HTMLAttributes, ReactNode } from 'react';
+import { ElementType, HTMLAttributes, MouseEventHandler, ReactNode } from 'react';
 
 type Props = {
   children: ReactNode;
-  onClick?: () => void;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
   disabled?: boolean;
   customStyle?: (theme: Theme) => ReturnType<typeof css>;
 } & HTMLAttributes<HTMLElement>;

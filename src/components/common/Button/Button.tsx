@@ -6,7 +6,6 @@ type Variant = 'default' | 'primary' | 'confirm' | 'delete';
 type ButtonProps = {
   text: string;
   variant?: Variant;
-  onClick?: () => void | Promise<void>;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 const Button = ({ text, variant = 'default', onClick, ...rest }: ButtonProps) => {
