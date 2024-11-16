@@ -1,5 +1,6 @@
 import App from '@/App';
 import { MainLayout } from '@/components';
+import Loading from '@/components/common/Loading';
 import LoginLayout from '@/components/layouts/LoginLayout';
 import { HomePage, LoginPage, MyPage, ProtectedPage, SquadDetailPage, SquadPage } from '@/Pages';
 import GoogleOAuthCallbackPage from '@/Pages/GoogleOAuthLoginPage';
@@ -34,7 +35,7 @@ export const router = createBrowserRouter([
           {
             path: '/squads',
             element: (
-              <Suspense fallback={<h1>로딩중</h1>}>
+              <Suspense fallback={<Loading />}>
                 <SquadPage />
               </Suspense>
             ),
@@ -42,7 +43,7 @@ export const router = createBrowserRouter([
           {
             path: '/squads/:squadId',
             element: (
-              <Suspense fallback={<h1>로딩중</h1>}>
+              <Suspense fallback={<Loading />}>
                 <SquadDetailPage />
               </Suspense>
             ),

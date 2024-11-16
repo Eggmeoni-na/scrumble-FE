@@ -1,49 +1,104 @@
-import { startTransition } from 'react';
+import { css } from '@emotion/react';
 import type { FallbackProps } from 'react-error-boundary';
 import { useNavigate } from 'react-router-dom';
 
-const AuthErrorFallback = ({ reset }: { reset: VoidFunction }) => {
-  const handleClick = () => {
-    startTransition(() => {
-      reset();
-      window.location.replace('/login');
-    });
+type Props = {
+  statusCode: number;
+  message: string;
+  reset: VoidFunction;
+};
+
+const GeneralErrorFallback = ({ statusCode, message, reset }: Props) => {
+  const navigate = useNavigate();
+
+  const resetErrorAndRedirect = () => {
+    reset();
+    if (statusCode === 401) {
+      navigate('/login', { replace: true });
+      return;
+    }
+  };
+
+  const resetErrorAndGoHome = () => {
+    reset();
+    navigate('/');
   };
 
   return (
-    <div>
-      <h1>로그인이 필요해요</h1>
-      <button onClick={handleClick}>로그인</button>
-    </div>
-  );
-};
-
-const GeneralErrorFallback = ({ message, reset }: { message: string; reset: VoidFunction }) => {
-  return (
-    <div>
-      <h1>오류가 발생했습니다.</h1>
-      <p>{message}</p>
-      <button onClick={reset}>새로고침</button>
+    <div css={fallbackWrapperStyle}>
+      <div css={eggIconStyle}>🐣</div>
+      <p css={errorMessageStyle}>{message}</p>
+      <div css={buttonGroupStyle}>
+        {statusCode !== 401 && (
+          <button css={[buttonStyle, homeButton]} onClick={resetErrorAndGoHome}>
+            홈으로
+          </button>
+        )}
+        <button css={buttonStyle} onClick={resetErrorAndRedirect}>
+          {statusCode === 401 ? '로그인' : '새로고침'}
+        </button>
+      </div>
     </div>
   );
 };
 
 const RootErrorFallback = ({ error, resetErrorBoundary }: FallbackProps) => {
   const statusCode = error.response?.status;
-  const navigate = useNavigate();
+  const message = statusCode === 401 ? '로그인이 필요해요' : '잠시 후 다시 시도해주세요.';
 
-  const handleReset = () => {
-    startTransition(() => {
-      resetErrorBoundary();
-      navigate(-1);
-    });
-  };
-
-  return statusCode === 401 ? (
-    <AuthErrorFallback reset={resetErrorBoundary} />
-  ) : (
-    <GeneralErrorFallback message={error.message} reset={handleReset} />
-  );
+  return <GeneralErrorFallback statusCode={statusCode} message={message} reset={resetErrorBoundary} />;
 };
 
 export default RootErrorFallback;
+
+const fallbackWrapperStyle = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: #fff5e6;
+  color: #333;
+  text-align: center;
+  font-family: 'Arial', sans-serif;
+`;
+
+const errorMessageStyle = css`
+  font-size: 1.2rem;
+  line-height: 1.8;
+  max-width: 500px;
+  margin-bottom: 2rem;
+  color: #ffa502;
+  font-weight: 700;
+`;
+
+const buttonGroupStyle = css`
+  display: flex;
+  gap: 8px;
+`;
+
+const buttonStyle = css`
+  padding: 8px 16px;
+  background: #ffa502;
+  color: white;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+
+  &:hover {
+    background: #ffbd43;
+  }
+`;
+
+const homeButton = css`
+  background-color: white;
+  color: #ffa502;
+  border: 1px solid #ffa502;
+`;
+
+const eggIconStyle = css`
+  font-size: 5rem;
+  margin-bottom: 1rem;
+`;
