@@ -1,6 +1,6 @@
 import { ActiveBell, Back, Bell, Dark, Light, Menu } from '@/assets/icons';
 import IconWrapper from '@/components/common/IconWrapper';
-import Notifications from '@/components/common/Notifications';
+import Notification from '@/components/common/Notification';
 
 import useOpenToggle from '@/hooks/useOpenToggle';
 import { useThemeStore } from '@/stores';
@@ -50,7 +50,7 @@ const NotificationsButton = () => {
       <IconWrapper aria-label="alarm" onClick={() => toggleOpen()} role="button">
         {!isActive ? <Bell /> : <ActiveBell />}
       </IconWrapper>
-      {isOpen && <Notifications toggleOpen={toggleOpen} />}
+      {isOpen && <Notification toggleOpen={toggleOpen} />}
     </>
   );
 };

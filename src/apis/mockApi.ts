@@ -6,6 +6,7 @@ import {
   UpdateTodoParamType,
 } from '@/hooks/mutations';
 import { ApiResponse, Squad, SquadDetail } from '@/types';
+import { NotificationRequestPayload, NotificationResponse } from '@/types/notification';
 import { MutationFunction } from '@tanstack/react-query';
 import axios, { AxiosResponse } from 'axios';
 
@@ -63,5 +64,12 @@ export const inviteMemberApi: MutationFunction<ApiResponse<null>, InviteMemberPa
     squadId,
     memberId,
   });
+  return response.data;
+};
+
+export const getNotificationsApi = async (
+  params: NotificationRequestPayload,
+): Promise<{ data: NotificationResponse[] }> => {
+  const response = await mockInstance.get(`/api/notifications/me`, { params });
   return response.data;
 };
