@@ -27,8 +27,7 @@ const useRemoveUserFromSquad = (
 
     const res = await openModal(ActionPrompt, undefined, removeInfo);
     if (res.ok) {
-      deleteSquadMutate({ squadId, memberId: member.memberId });
-      console.log(member.memberId);
+      deleteSquadMutate({ squadId, kickedMemberId: member.memberId });
     }
   };
 

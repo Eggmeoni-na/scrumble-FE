@@ -18,8 +18,7 @@ export const todoInfiniteQueryOptions = (
     queryKey: todoKeys.todos(squadId, selectedDay),
     queryFn: ({ pageParam }) =>
       getTodoList({
-        squadId,
-        memberId,
+        squadMemberId: memberId,
         payload: {
           ...queryParams,
           lastToDoId: pageParam,

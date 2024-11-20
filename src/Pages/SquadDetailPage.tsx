@@ -11,7 +11,7 @@ import { breakpoints, mobileMediaQuery, pcMediaQuery } from '@/styles/breakpoint
 import { css, Theme } from '@emotion/react';
 import { useInfiniteQuery, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { addMonths, format, subMonths } from 'date-fns';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 const SquadDetailPage = () => {
@@ -22,7 +22,11 @@ const SquadDetailPage = () => {
   const { selectedDay, setSelectedDay } = useDayStore((state) => state);
   const selectedMember = useMemberStore((state) => state.selectedMember);
   const [currentMonth, setCurrentMonth] = useState(new Date(selectedDay));
-  const isMeSelected = !selectedMember || selectedMember.memberId === user!.id;
+
+  const isMeSelected = useMemo(
+    () => !selectedMember || selectedMember.memberId === user?.id,
+    [selectedMember, user?.id],
+  );
 
   const queryClient = useQueryClient();
 
@@ -37,7 +41,7 @@ const SquadDetailPage = () => {
   };
 
   const { data, fetchNextPage, hasNextPage } = useInfiniteQuery(
-    todoInfiniteQueryOptions(isMeSelected ? user!.id : selectedMember.memberId, squadId, selectedDay, payload),
+    todoInfiniteQueryOptions(isMeSelected ? user!.id : selectedMember!.memberId, squadId, selectedDay, payload),
   );
 
   const todos = data ?? [];
@@ -45,15 +49,15 @@ const SquadDetailPage = () => {
   const [progressRate, setProgressRate] = useState(0);
   const todoCount = todos.length;
 
-  const handlePrevMonth = () => {
-    const prevMonth = subMonths(new Date(currentMonth), 1);
+  const handlePrevMonth = useCallback(() => {
+    const prevMonth = subMonths(new Date(selectedDay), 1);
     setCurrentMonth(prevMonth);
-  };
+  }, []);
 
-  const handleNextMonth = () => {
-    const nextMonth = addMonths(new Date(currentMonth), 1);
+  const handleNextMonth = useCallback(() => {
+    const nextMonth = addMonths(new Date(selectedDay), 1);
     setCurrentMonth(nextMonth);
-  };
+  }, []);
 
   const loadMoreTodos = () => {
     if (hasNextPage) {
@@ -61,16 +65,19 @@ const SquadDetailPage = () => {
     }
   };
 
+  // 스쿼드 목록에서 클릭 후 들어왔을 때 현재 스쿼드 id 재설정
   useEffect(() => {
     setCurrentSquadId(squadId);
   }, [squadId]);
 
   useEffect(() => {
-    let isCompleted = 0;
-    todos.forEach((todo) => todo.toDoStatus === TODO_STATUS.COMPLETED && isCompleted++);
+    const isCompleted = todos.filter((todo) => todo.toDoStatus === TODO_STATUS.COMPLETED).length;
+    const newProgressRate = !todoCount ? 0 : Math.floor((isCompleted / todoCount) * 100);
 
-    setProgressRate(!todoCount ? 0 : Math.floor((isCompleted / todoCount) * 100));
-  }, [todos]);
+    if (newProgressRate !== progressRate) {
+      setProgressRate(newProgressRate);
+    }
+  }, [todos, todoCount, progressRate]);
 
   useEffect(
     () => () =>

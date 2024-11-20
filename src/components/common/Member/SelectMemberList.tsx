@@ -62,7 +62,7 @@ const Member = ({ squadId, member }: { squadId: number; member: SquadMember }) =
 
     const res = await openModal(ActionPrompt, undefined, assignInfo);
     if (res.ok) {
-      assignSquadLeaderMutate({ squadId, memberId: member.memberId });
+      assignSquadLeaderMutate({ squadId, newLeaderId: member.memberId });
     } else {
       setIsChecked(false);
     }
