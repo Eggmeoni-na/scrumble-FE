@@ -45,23 +45,27 @@ export const deleteSquad: MutationFunction<ApiResponse<null>, ExitAndDeleteSquad
 export const exitSquad: MutationFunction<ApiResponse<null>, ExitAndDeleteSquadNameParamType> = async ({
   squadId,
 }): Promise<ApiResponse<null>> => {
-  const response = await instance.delete(`/api/squads/${squadId}/members`);
+  const response = await instance.delete(`/api/squads/${squadId}/withdraw`);
   return response.data;
 };
 
 export const assignSquadLeader: MutationFunction<ApiResponse<null>, AssignSquadLeaderParamType> = async ({
   squadId,
-  memberId,
+  newLeaderId,
 }): Promise<ApiResponse<null>> => {
-  const response = await instance.put(`/api/squads/${squadId}/members/${memberId}`);
+  const response = await instance.put(`/api/squads/${squadId}/leader`, { newLeaderId });
   return response.data;
 };
 
 export const removeUserFromSquad: MutationFunction<ApiResponse<null>, RemoveUserFromSquadParamType> = async ({
   squadId,
-  memberId,
+  kickedMemberId,
 }) => {
-  const response = await instance.delete(`/api/squads/${squadId}/members/${memberId}`);
+  const response = await instance.delete(`/api/squads/${squadId}/kick`, {
+    data: {
+      kickedMemberId,
+    },
+  });
   return response.data;
 };
 
