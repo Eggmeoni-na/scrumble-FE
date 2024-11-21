@@ -1,5 +1,7 @@
 import { instance } from '@/apis';
+import { INVITATION_RESPONSE_STATUS } from '@/constants/squad';
 import {
+  AcceptSquadInvitationParams,
   AssignSquadLeaderParamType,
   CreateSquadParamType,
   ExitAndDeleteSquadNameParamType,
@@ -81,6 +83,15 @@ export const inviteMember: MutationFunction<ApiResponse<null>, InviteMemberParam
 }) => {
   const response = await instance.post(`/api/squads/${squadId}/invitations`, {
     newMemberId: memberId,
+  });
+  return response.data;
+};
+
+export const acceptSquadInvite: MutationFunction<ApiResponse<null>, AcceptSquadInvitationParams> = async ({
+  squadId,
+}) => {
+  const response = await instance.put(`/api/squads/${squadId}/invitations/accept`, {
+    responseStatus: INVITATION_RESPONSE_STATUS.INVITING,
   });
   return response.data;
 };
