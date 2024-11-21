@@ -3,18 +3,17 @@ import Button from '@/components/common/Button/Button';
 import IconWrapper from '@/components/common/IconWrapper';
 import { Overlay } from '@/components/common/Overlay';
 import { commonButtonStyle, headerStyle, sidebarContainer } from '@/components/common/Sidebar';
+import { INVITATION_TYPE } from '@/constants/squad';
+import useAcceptInvitation from '@/hooks/mutations/useAcceptInvitation';
 import notificationInfiniteQueryOptions from '@/hooks/queries/useNotification';
+import { squadKeys } from '@/hooks/queries/useSquad';
 import useInfinite from '@/hooks/useInfinite';
+import useToastHandler from '@/hooks/useToastHandler';
 import { scrollBarStyle } from '@/styles/globalStyles';
 import { NotificationResponse } from '@/types/notification';
 import { css, Theme } from '@emotion/react';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import { MouseEvent, MouseEventHandler, useState } from 'react';
-
-const invitationType = {
-  INVITE_REQUEST: 'INVITE_REQUEST',
-  INVITE_ACCEPT: 'INVITE_ACCEPT',
-};
 
 const Notification = ({ toggleOpen }: { toggleOpen: VoidFunction }) => {
   const { data: notifications, fetchNextPage, hasNextPage } = useInfiniteQuery(notificationInfiniteQueryOptions());
@@ -79,9 +78,22 @@ Notification.List = ({
 Notification.Item = ({ data }: { data: NotificationResponse }) => {
   const [isAccept, setIsAccept] = useState(false);
   const { notificationType, notificationData, read } = data;
+  const { failedToast } = useToastHandler();
+  const { acceptInvitation } = useAcceptInvitation({
+    onSuccess: () => {
+      setIsAccept(true);
+      // TODO: 실제 API 테스트 시 점검 필요
+      const queryClient = useQueryClient();
+      queryClient.refetchQueries({ queryKey: squadKeys.squad });
+    },
+    onError: () => {
+      failedToast('잠시 후 다시 시도해주세요');
+      setIsAccept(false);
+    },
+  });
 
   const message =
-    notificationType === invitationType.INVITE_ACCEPT
+    notificationType === INVITATION_TYPE.INVITE_REQUEST
       ? `${notificationData.squadName}스쿼드에서 초대장이 도착했어요.`
       : `${notificationData.userName}님을 ${notificationData.squadName}스쿼드에 초대했어요`;
 
@@ -92,14 +104,17 @@ Notification.Item = ({ data }: { data: NotificationResponse }) => {
 
   const handleAccept = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    // TODO: 수락 API 연동 - 수락 성공 시 setIsAccept 업데이트
-    setIsAccept(true);
+    if (!notificationData.squadId) {
+      console.log('squadId가 없습니다.');
+      return;
+    }
+    acceptInvitation({ squadId: notificationData.squadId });
   };
 
   return (
     <li css={[itemStyle, markStyle(read)]} onClick={handleReadStatus}>
       <p>{message}</p>
-      {notificationType === invitationType.INVITE_ACCEPT && (
+      {notificationType === INVITATION_TYPE.INVITE_REQUEST && (
         <AcceptStatus isAccept={isAccept} onAccept={handleAccept} />
       )}
     </li>

@@ -22,3 +22,4 @@ export type DeleteTodoParamType = { toDoId: number; squadId: number };
  * Invite
  */
 export type InviteMemberParamType = { squadId: number; memberId: number };
+export type AcceptSquadInvitationParams = { squadId: number };
