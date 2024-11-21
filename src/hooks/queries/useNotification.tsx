@@ -1,4 +1,4 @@
-import { getNotificationsApi } from '@/apis/mockApi';
+import { getNotifications } from '@/apis/notification';
 import { infiniteQueryOptions } from '@tanstack/react-query';
 
 export const notiKeys = {
@@ -13,7 +13,7 @@ export const notificationInfiniteQueryOptions = () =>
   infiniteQueryOptions({
     queryKey: notiKeys.all,
     queryFn: ({ pageParam }) =>
-      getNotificationsApi({
+      getNotifications({
         startDateTime,
         endDateTime,
         lastNotificationId: pageParam,
