@@ -20,7 +20,7 @@ const InvitePage = () => {
   const { successToast, warningToast, failedToast } = useToastHandler();
   const theme = useTheme();
   const navigate = useNavigate();
-  const { searchMemberMutate } = useInviteMember({
+  const { inviteMemberMutate } = useInviteMember({
     onSuccess: (data) => successToast('멤버 초대에 성공했어요.'),
     onError: () => failedToast('멤버 초대에 실패했어요.'),
   });
@@ -53,7 +53,7 @@ const InvitePage = () => {
       warningToast('초대할 멤버를 확인해주세요.');
       return;
     }
-    searchMemberMutate({ squadId, memberId: searchResult.memberId });
+    inviteMemberMutate({ squadId, memberId: searchResult.memberId });
     navigate(-1);
   };
 
