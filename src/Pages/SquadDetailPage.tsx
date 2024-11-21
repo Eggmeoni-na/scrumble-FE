@@ -1,4 +1,4 @@
-import CalendarList from '@/components/common/Calendar/CalendarList';
+import Calendar from '@/components/common/Calendar';
 import { SquadDetailMemberList } from '@/components/common/Member';
 import TodoForm from '@/components/common/Todo/TodoForm';
 import { TodoList } from '@/components/common/Todo/TodoList';
@@ -10,8 +10,7 @@ import { useDayStore, useMemberStore, useSquadStore } from '@/stores';
 import { breakpoints, mobileMediaQuery, pcMediaQuery } from '@/styles/breakpoints';
 import { css, Theme } from '@emotion/react';
 import { useInfiniteQuery, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
-import { addMonths, format, subMonths } from 'date-fns';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 const SquadDetailPage = () => {
@@ -21,7 +20,7 @@ const SquadDetailPage = () => {
   const { user } = useUserCookie();
   const { selectedDay, setSelectedDay } = useDayStore((state) => state);
   const selectedMember = useMemberStore((state) => state.selectedMember);
-  const [currentMonth, setCurrentMonth] = useState(new Date(selectedDay));
+
   const isMeSelected = useMemo(
     () => !selectedMember || selectedMember.memberId === user?.id,
     [selectedMember, user?.id],
@@ -48,16 +47,6 @@ const SquadDetailPage = () => {
   const [progressRate, setProgressRate] = useState(0);
   const todoCount = todos.length;
 
-  const handlePrevMonth = useCallback(() => {
-    const prevMonth = subMonths(new Date(currentMonth), 1);
-    setCurrentMonth(prevMonth);
-  }, [currentMonth]);
-
-  const handleNextMonth = useCallback(() => {
-    const nextMonth = addMonths(new Date(currentMonth), 1);
-    setCurrentMonth(nextMonth);
-  }, [currentMonth]);
-
   const loadMoreTodos = () => {
     if (hasNextPage) {
       fetchNextPage();
@@ -68,11 +57,6 @@ const SquadDetailPage = () => {
   useEffect(() => {
     setCurrentSquadId(squadId);
   }, [squadId]);
-
-  useEffect(() => {
-    setSelectedDay(format(new Date(), 'yyyy-MM-dd'));
-    setCurrentMonth(new Date());
-  }, []);
 
   useEffect(() => {
     const isCompleted = todos.filter((todo) => todo.toDoStatus === TODO_STATUS.COMPLETED).length;
@@ -93,17 +77,7 @@ const SquadDetailPage = () => {
 
   return (
     <section css={containerStyle}>
-      <section aria-labelledby="calendar">
-        <h2 id="calendar" className="sr-only">
-          캘린더
-        </h2>
-        <div css={monthNavButtonStyle}>
-          <button onClick={handlePrevMonth}>{'<'}</button>
-          <span>{format(currentMonth, 'yyyy년 MM월')}</span>
-          <button onClick={handleNextMonth}>{'>'}</button>
-        </div>
-        <CalendarList selectedDay={selectedDay} onSelectDay={setSelectedDay} currentMonth={currentMonth} />
-      </section>
+      <Calendar onChangeSelectedDay={setSelectedDay} />
       <section aria-labelledby="squad-members">
         <h2 id="squad-members" className="sr-only">
           멤버

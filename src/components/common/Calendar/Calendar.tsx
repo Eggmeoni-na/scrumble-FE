@@ -1,21 +1,64 @@
 import { useDayStore } from '@/stores';
+import { breakpoints, mobileMediaQuery, pcMediaQuery } from '@/styles/breakpoints';
 import { scrollBarStyle } from '@/styles/globalStyles';
 import { getDaysInMonth } from '@/utils/getDaysInMonth';
 import { css, Theme, useTheme } from '@emotion/react';
-import { format } from 'date-fns';
+import { addMonths, format, subMonths } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import { forwardRef, memo, MouseEvent, useEffect, useMemo, useRef } from 'react';
+import { forwardRef, MouseEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-type Props = {
-  selectedDay: string;
-  onSelectDay: (date: string) => void;
-  currentMonth: Date;
+const Calendar = ({ onChangeSelectedDay }: { onChangeSelectedDay: (day: string) => void }) => {
+  const [currentMonth, setCurrentMonth] = useState(new Date());
+
+  useEffect(() => {
+    onChangeSelectedDay(format(new Date(), 'yyyy-MM-dd'));
+    setCurrentMonth(new Date());
+  }, []);
+
+  return (
+    <section aria-labelledby="calendar">
+      <h2 id="calendar" className="sr-only">
+        캘린더
+      </h2>
+      <Calendar.Header currentMonth={currentMonth} onChangeCurrentMonth={setCurrentMonth} />
+      <Calendar.List currentMonth={currentMonth} />
+    </section>
+  );
 };
 
-const CalendarList = ({ selectedDay, onSelectDay, currentMonth }: Props) => {
+export default Calendar;
+
+Calendar.Header = ({
+  currentMonth,
+  onChangeCurrentMonth,
+}: {
+  currentMonth: Date;
+  onChangeCurrentMonth: (month: Date) => void;
+}) => {
+  const handlePrevMonth = useCallback(() => {
+    const prevMonth = subMonths(new Date(currentMonth), 1);
+    onChangeCurrentMonth(prevMonth);
+  }, [currentMonth]);
+
+  const handleNextMonth = useCallback(() => {
+    const nextMonth = addMonths(new Date(currentMonth), 1);
+    onChangeCurrentMonth(nextMonth);
+  }, [currentMonth]);
+
+  return (
+    <div css={monthNavButtonStyle}>
+      <button onClick={handlePrevMonth}>{'<'}</button>
+      <span>{format(currentMonth, 'yyyy년 MM월')}</span>
+      <button onClick={handleNextMonth}>{'>'}</button>
+    </div>
+  );
+};
+
+Calendar.List = ({ currentMonth }: { currentMonth: Date }) => {
   const daysContainerRef = useRef<HTMLUListElement>(null);
   const selectedDayRef = useRef<HTMLLIElement>(null);
   const daysInCurrentMonth = useMemo(() => getDaysInMonth(new Date(currentMonth)), [currentMonth]);
+  const { selectedDay, setSelectedDay } = useDayStore((state) => state);
 
   const handleClick = (e: MouseEvent<HTMLUListElement>) => {
     const target = (e.target as HTMLElement).closest('li');
@@ -23,12 +66,7 @@ const CalendarList = ({ selectedDay, onSelectDay, currentMonth }: Props) => {
       const day = target.dataset.day;
       if (selectedDay === day) return;
       if (day) {
-        onSelectDay(day);
-        target.scrollIntoView({
-          behavior: 'smooth',
-          block: 'center',
-          inline: 'center',
-        });
+        setSelectedDay(day);
       }
     }
   };
@@ -46,15 +84,13 @@ const CalendarList = ({ selectedDay, onSelectDay, currentMonth }: Props) => {
   return (
     <ul css={calendarStyle} onClick={handleClick} ref={daysContainerRef}>
       {daysInCurrentMonth.map((day) => (
-        <CalendarItem key={day} day={day} ref={day === selectedDay ? selectedDayRef : null} />
+        <Calendar.Item key={day} day={day} ref={day === selectedDay ? selectedDayRef : null} />
       ))}
     </ul>
   );
 };
 
-export default memo(CalendarList);
-
-const CalendarItem = forwardRef<HTMLLIElement, { day: string }>(({ day }, ref) => {
+Calendar.Item = forwardRef<HTMLLIElement, { day: string }>(({ day }, ref) => {
   const theme = useTheme();
   const selectedDay = useDayStore((state) => state.selectedDay);
   const isSelected = selectedDay === day;
@@ -120,4 +156,47 @@ const selectedDateStyle = (theme: Theme) => css`
 const dayNameStyle = (theme: Theme) => css`
   ${theme.typography.size_10}
   font-weight: 500;
+`;
+
+const monthNavButtonStyle = (theme: Theme) => css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    height: 28px;
+    border: 2px solid ${theme.colors.gray.gray100};
+    border-radius: 4px;
+    ${theme.typography.size_14}
+    font-weight: 500;
+  }
+
+  & button {
+    width: 28px;
+    height: 28px;
+    border: 2px solid ${theme.colors.gray.gray100};
+    border-radius: 4px;
+    color: ${theme.colors.text};
+    cursor: pointer;
+    margin: 0 16px;
+
+    transition: transform 0.3s ease-in-out;
+    :hover {
+      transform: scale(1.1);
+      background-color: #eeeeee70;
+    }
+  }
+  ${mobileMediaQuery(css`
+    max-width: ${breakpoints.mobile};
+    margin: 8px 36px;
+  `)}
+
+  ${pcMediaQuery(css`
+    max-width: ${breakpoints.pc};
+    margin: 8px 150px;
+  `)}
 `;
