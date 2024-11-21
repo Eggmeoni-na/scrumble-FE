@@ -22,7 +22,6 @@ const SquadDetailPage = () => {
   const { selectedDay, setSelectedDay } = useDayStore((state) => state);
   const selectedMember = useMemberStore((state) => state.selectedMember);
   const [currentMonth, setCurrentMonth] = useState(new Date(selectedDay));
-
   const isMeSelected = useMemo(
     () => !selectedMember || selectedMember.memberId === user?.id,
     [selectedMember, user?.id],
@@ -50,14 +49,14 @@ const SquadDetailPage = () => {
   const todoCount = todos.length;
 
   const handlePrevMonth = useCallback(() => {
-    const prevMonth = subMonths(new Date(selectedDay), 1);
+    const prevMonth = subMonths(new Date(currentMonth), 1);
     setCurrentMonth(prevMonth);
-  }, []);
+  }, [currentMonth]);
 
   const handleNextMonth = useCallback(() => {
-    const nextMonth = addMonths(new Date(selectedDay), 1);
+    const nextMonth = addMonths(new Date(currentMonth), 1);
     setCurrentMonth(nextMonth);
-  }, []);
+  }, [currentMonth]);
 
   const loadMoreTodos = () => {
     if (hasNextPage) {
@@ -69,6 +68,11 @@ const SquadDetailPage = () => {
   useEffect(() => {
     setCurrentSquadId(squadId);
   }, [squadId]);
+
+  useEffect(() => {
+    setSelectedDay(format(new Date(), 'yyyy-MM-dd'));
+    setCurrentMonth(new Date());
+  }, []);
 
   useEffect(() => {
     const isCompleted = todos.filter((todo) => todo.toDoStatus === TODO_STATUS.COMPLETED).length;
