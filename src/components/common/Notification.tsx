@@ -5,6 +5,7 @@ import { Overlay } from '@/components/common/Overlay';
 import { commonButtonStyle, headerStyle, sidebarContainer } from '@/components/common/Sidebar';
 import { INVITATION_TYPE } from '@/constants/squad';
 import useAcceptInvitation from '@/hooks/mutations/useAcceptInvitation';
+import { useReadNotification } from '@/hooks/mutations/useReadNotification';
 import notificationInfiniteQueryOptions from '@/hooks/queries/useNotification';
 import { squadKeys } from '@/hooks/queries/useSquad';
 import useInfinite from '@/hooks/useInfinite';
@@ -77,7 +78,7 @@ Notification.List = ({
 
 Notification.Item = ({ data }: { data: NotificationResponse }) => {
   const [isAccept, setIsAccept] = useState(false);
-  const { notificationType, notificationData, read } = data;
+  const { notificationType, notificationData, read, notificationId } = data;
   const { failedToast } = useToastHandler();
   const { acceptInvitation } = useAcceptInvitation({
     onSuccess: () => {
@@ -91,6 +92,7 @@ Notification.Item = ({ data }: { data: NotificationResponse }) => {
       setIsAccept(false);
     },
   });
+  const { readNotificationMutate } = useReadNotification();
 
   const message =
     notificationType === INVITATION_TYPE.INVITE_REQUEST
@@ -98,8 +100,8 @@ Notification.Item = ({ data }: { data: NotificationResponse }) => {
       : `${notificationData.userName}님을 ${notificationData.squadName}스쿼드에 초대했어요`;
 
   const handleReadStatus = (e: MouseEvent<HTMLLIElement>) => {
-    // TODO: 읽음 처리 PUT 요청
     if (read) return;
+    readNotificationMutate({ notificationId });
   };
 
   const handleAccept = (e: MouseEvent<HTMLButtonElement>) => {
