@@ -5,9 +5,7 @@ type Props = {
   children: ReactNode;
 };
 
-const Main = ({ children }: Props) => {
-  return <main css={mainContainer}>{children}</main>;
-};
+const Main = ({ children }: Props) => <main css={mainContainer}>{children}</main>;
 
 export default Main;
 

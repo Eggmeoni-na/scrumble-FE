@@ -4,6 +4,7 @@ import { squadQueryOptions } from '@/hooks/queries/useSquad';
 import { useToastStore } from '@/stores';
 import { breakpoints, mobileMediaQuery, pcMediaQuery } from '@/styles/breakpoints';
 import { Squad } from '@/types/squad';
+import handleKeyDown from '@/utils/handleKeyDown';
 import { css, Theme } from '@emotion/react';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { startTransition } from 'react';
@@ -51,7 +52,13 @@ const SquadItem = ({ squad }: { squad: Squad }) => {
   };
 
   return (
-    <li css={itemStyle} onClick={handleNavigation}>
+    <li
+      css={itemStyle}
+      onClick={handleNavigation}
+      onKeyDown={(e) => handleKeyDown(e, handleNavigation)}
+      tabIndex={0}
+      role="button"
+    >
       {squad.squadName}
     </li>
   );

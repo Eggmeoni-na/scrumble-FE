@@ -1,13 +1,11 @@
 import { css, Theme } from '@emotion/react';
 
-const HomePage = () => {
-  return (
+const HomePage = () => (
     <div css={containerStyle}>
       <span>🪹</span>
       <p>보관함을 준비중이에요</p>
     </div>
   );
-};
 
 export default HomePage;
 

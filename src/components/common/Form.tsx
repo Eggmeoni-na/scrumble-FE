@@ -13,22 +13,20 @@ type Props = {
   style?: (theme: Theme) => SerializedStyles;
 };
 
-const Form = ({ type, onSubmit, onKeyDown, value, onChange, placeholder, style }: Props) => {
-  return (
-    <form css={[formStyle, style]} onSubmit={onSubmit}>
-      <input type={type} value={value} onChange={onChange} autoFocus placeholder={placeholder} />
-      <IconWrapper
-        css={addIconStyle}
-        onClick={() => {
-          // Button 태그로 인식하기 위함
-        }}
-        onKeyDown={onKeyDown}
-      >
-        <Add />
-      </IconWrapper>
-    </form>
-  );
-};
+const Form = ({ type, onSubmit, onKeyDown, value, onChange, placeholder, style }: Props) => (
+  <form css={[formStyle, style]} onSubmit={onSubmit}>
+    <input type={type} value={value} onChange={onChange} autoFocus placeholder={placeholder} />
+    <IconWrapper
+      css={addIconStyle}
+      onClick={() => {
+        // Button 태그로 인식하기 위함
+      }}
+      onKeyDown={onKeyDown}
+    >
+      <Add />
+    </IconWrapper>
+  </form>
+);
 
 export default Form;
 

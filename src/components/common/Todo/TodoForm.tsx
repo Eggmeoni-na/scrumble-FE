@@ -5,7 +5,7 @@ import { InfiniteQueryData } from '@/hooks/queries/types';
 import { todoKeys } from '@/hooks/queries/useTodo';
 import useToastHandler from '@/hooks/useToastHandler';
 import { ApiResponse, PostTodoRequest, ToDoDetail } from '@/types';
-import { css, Theme } from '@emotion/react';
+import { css } from '@emotion/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { FormEvent, KeyboardEventHandler, useCallback, useState } from 'react';
 
@@ -65,6 +65,6 @@ const TodoForm = ({ squadId, selectedDay }: { squadId: number; selectedDay: stri
 
 export default TodoForm;
 
-const formStyle = (theme: Theme) => css`
+const formStyle = css`
   margin: 16px;
 `;

@@ -20,7 +20,7 @@ export const useModal = () => {
           element: Component,
           props,
           modalId,
-          resolve: <T extends {}>(value?: T) => {
+          resolve: <T extends object>(value?: T) => {
             resolve({ ok: true, value });
             closeModal();
           },

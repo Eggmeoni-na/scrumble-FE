@@ -7,7 +7,6 @@ import { squadDetailQueryOptions } from '@/hooks/queries/useSquad';
 import { todoInfiniteQueryOptions, todoKeys } from '@/hooks/queries/useTodo';
 import useUserCookie from '@/hooks/useUserCookie';
 import { useDayStore, useMemberStore, useSquadStore } from '@/stores';
-import { breakpoints, mobileMediaQuery, pcMediaQuery } from '@/styles/breakpoints';
 import { css, Theme } from '@emotion/react';
 import { useInfiniteQuery, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { useEffect, useMemo, useState } from 'react';
@@ -101,50 +100,6 @@ const containerStyle = (them: Theme) => css`
   flex-direction: column;
   height: 100%;
   background-color: ${them.colors.background.white};
-`;
-
-const monthNavButtonStyle = (theme: Theme) => css`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  & span {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex: 1;
-    height: 28px;
-    border: 2px solid ${theme.colors.gray.gray100};
-    border-radius: 4px;
-    ${theme.typography.size_14}
-    font-weight: 500;
-  }
-
-  & button {
-    width: 28px;
-    height: 28px;
-    border: 2px solid ${theme.colors.gray.gray100};
-    border-radius: 4px;
-    color: ${theme.colors.text};
-    cursor: pointer;
-    margin: 0 16px;
-
-    transition: transform 0.3s ease-in-out;
-    :hover {
-      transform: scale(1.1);
-      background-color: #eeeeee70;
-    }
-  }
-
-  ${mobileMediaQuery(css`
-    max-width: ${breakpoints.mobile};
-    margin: 8px 36px;
-  `)}
-
-  ${pcMediaQuery(css`
-    max-width: ${breakpoints.pc};
-    margin: 8px 150px;
-  `)}
 `;
 
 const headerStyle = (theme: Theme) => css`

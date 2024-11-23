@@ -36,7 +36,12 @@ const Notification = ({ toggleOpen }: { toggleOpen: VoidFunction }) => {
       preventClick={false}
       onClick={handleClose}
     >
-      <div css={sidebarContainer} onClick={(e) => e.stopPropagation()}>
+      <div
+        css={sidebarContainer}
+        onClick={(e) => e.stopPropagation()}
+        onKeyDown={(e) => e.stopPropagation()}
+        role="presentation"
+      >
         <header css={headerStyle}>
           <h1>알림</h1>
           <IconWrapper aria-label="Close sidebar" onClick={handleClose} role="button" css={commonButtonStyle}>
@@ -55,7 +60,7 @@ const Notification = ({ toggleOpen }: { toggleOpen: VoidFunction }) => {
 
 export default Notification;
 
-Notification.List = ({
+const NotificationList = ({
   notifications,
   loadMoreNotifications,
   hasNextPage,
@@ -76,7 +81,7 @@ Notification.List = ({
   );
 };
 
-Notification.Item = ({ data }: { data: NotificationResponse }) => {
+const NotificationItem = ({ data }: { data: NotificationResponse }) => {
   const [isAccept, setIsAccept] = useState(false);
   const { notificationType, notificationData, read, notificationId } = data;
   const { failedToast } = useToastHandler();
@@ -99,7 +104,7 @@ Notification.Item = ({ data }: { data: NotificationResponse }) => {
       ? `${notificationData.squadName}스쿼드에서 초대장이 도착했어요.`
       : `${notificationData.userName}님을 ${notificationData.squadName}스쿼드에 초대했어요`;
 
-  const handleReadStatus = (e: MouseEvent<HTMLLIElement>) => {
+  const handleReadStatus = () => {
     if (read) return;
     readNotificationMutate({ notificationId });
   };
@@ -114,7 +119,17 @@ Notification.Item = ({ data }: { data: NotificationResponse }) => {
   };
 
   return (
-    <li css={[itemStyle, markStyle(read)]} onClick={handleReadStatus}>
+    <li
+      css={[itemStyle, markStyle(read)]}
+      onClick={handleReadStatus}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') {
+          handleReadStatus();
+        }
+      }}
+      tabIndex={0}
+      role="button"
+    >
       <p>{message}</p>
       {notificationType === INVITATION_TYPE.INVITE_REQUEST && (
         <AcceptStatus isAccept={isAccept} onAccept={handleAccept} />
@@ -133,6 +148,9 @@ const AcceptStatus = ({ isAccept, onAccept }: { isAccept: boolean; onAccept: Mou
     </IconWrapper>
   );
 };
+
+Notification.List = NotificationList;
+Notification.Item = NotificationItem;
 
 const listStyle = css`
   margin-top: 24px;

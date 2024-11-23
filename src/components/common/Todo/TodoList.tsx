@@ -9,9 +9,10 @@ import { todoKeys } from '@/hooks/queries/useTodo';
 import useToastHandler from '@/hooks/useToastHandler';
 import { useDayStore, useSquadStore } from '@/stores';
 import { ApiResponse, ToDoDetail, UpdateTodoRequest } from '@/types';
+import handleKeyDown from '@/utils/handleKeyDown';
 import { css, keyframes, Theme, useTheme } from '@emotion/react';
 import { useQueryClient } from '@tanstack/react-query';
-import { KeyboardEvent, MouseEvent, useEffect, useRef, useState } from 'react';
+import { KeyboardEvent, useEffect, useRef, useState } from 'react';
 
 type Props = {
   todos: ToDoDetail[];
@@ -105,7 +106,7 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
     },
   });
 
-  const toggleTodoStatus = (e: MouseEvent<HTMLLIElement>) => {
+  const toggleTodoStatus = () => {
     const newStatus = currentToDoStatus === TODO_STATUS.PENDING ? TODO_STATUS.COMPLETED : TODO_STATUS.PENDING;
     const newTodo: UpdateTodoRequest = {
       toDoAt,
@@ -144,7 +145,13 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
   return (
     <>
       {!isDeleteMode ? (
-        <li css={[todoItemStyle(), getStatusStyles(isCompleted, theme)]} onClick={(e) => toggleTodoStatus(e)}>
+        <li
+          css={[todoItemStyle(), getStatusStyles(isCompleted, theme)]}
+          onClick={() => toggleTodoStatus()}
+          onKeyDown={(e) => handleKeyDown(e, toggleTodoStatus)}
+          tabIndex={0}
+          role="button"
+        >
           <div css={contentStyle}>
             <IconWrapper
               aria-label={isCompleted ? 'Completed todo' : 'Uncompleted todo'}
@@ -169,7 +176,12 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
             )}
           </div>
           {!isEditMode && (
-            <div css={actionStyle} onClick={(e) => e.stopPropagation()}>
+            <div
+              css={actionStyle}
+              onClick={(e) => e.stopPropagation()}
+              onKeyDown={(e) => e.stopPropagation()}
+              role="presentation"
+            >
               <IconWrapper onClick={() => setIsEditMode(true)}>
                 <Edit />
               </IconWrapper>
@@ -179,14 +191,25 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
             </div>
           )}
           {isEditMode && (
-            <div css={editActionStyle} onClick={(e) => e.stopPropagation()}>
+            <div
+              css={editActionStyle}
+              onClick={(e) => e.stopPropagation()}
+              onKeyDown={(e) => e.stopPropagation()}
+              role="presentation"
+            >
               <Button id="edit-btn" text="수정" variant="confirm" onClick={handleEditContents} />
               <Button text="취소" variant="default" onClick={() => setIsEditMode(false)} />
             </div>
           )}
         </li>
       ) : (
-        <li css={todoItemStyle(isDeleteMode)} onClick={handleConfirmDelete}>
+        <li
+          css={todoItemStyle(isDeleteMode)}
+          onClick={handleConfirmDelete}
+          onKeyDown={(e) => handleKeyDown(e, handleConfirmDelete)}
+          tabIndex={0}
+          role="button"
+        >
           <p>등록된 할일을 삭제할까요?</p>
           <IconWrapper style={{ marginRight: '8px' }}>
             <Close

@@ -19,6 +19,7 @@ type ModalContextValue<P> = {
   portalRef: MutableRefObject<HTMLDivElement | null>;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const modalContext = createContext<ModalContextValue<any> | null>(null);
 
 export const ModalProvider = ({ children }: PropsWithChildren) => {

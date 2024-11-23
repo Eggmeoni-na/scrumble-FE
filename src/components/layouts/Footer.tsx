@@ -3,8 +3,7 @@ import IconWrapper from '@/components/common/IconWrapper';
 import { css, Theme } from '@emotion/react';
 import { Link } from 'react-router-dom';
 
-const Footer = () => {
-  return (
+const Footer = () => (
     <footer css={footerContainer}>
       <Link to="/squads" css={menuIcon} aria-label="Go to squads">
         <IconWrapper>
@@ -25,7 +24,6 @@ const Footer = () => {
       </Link>
     </footer>
   );
-};
 
 export default Footer;
 

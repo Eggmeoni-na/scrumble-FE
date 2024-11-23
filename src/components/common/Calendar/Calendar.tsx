@@ -5,7 +5,7 @@ import { getDaysInMonth } from '@/utils/getDaysInMonth';
 import { css, Theme, useTheme } from '@emotion/react';
 import { addMonths, format, subMonths } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import { forwardRef, MouseEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { forwardRef, KeyboardEvent, MouseEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 const Calendar = ({ onChangeSelectedDay }: { onChangeSelectedDay: (day: string) => void }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -28,7 +28,7 @@ const Calendar = ({ onChangeSelectedDay }: { onChangeSelectedDay: (day: string) 
 
 export default Calendar;
 
-Calendar.Header = ({
+const CalendarHeader = ({
   currentMonth,
   onChangeCurrentMonth,
 }: {
@@ -54,19 +54,29 @@ Calendar.Header = ({
   );
 };
 
-Calendar.List = ({ currentMonth }: { currentMonth: Date }) => {
+const CalendarList = ({ currentMonth }: { currentMonth: Date }) => {
   const daysContainerRef = useRef<HTMLUListElement>(null);
   const selectedDayRef = useRef<HTMLLIElement>(null);
   const daysInCurrentMonth = useMemo(() => getDaysInMonth(new Date(currentMonth)), [currentMonth]);
   const { selectedDay, setSelectedDay } = useDayStore((state) => state);
 
+  const handleInteraction = (day: string | undefined) => {
+    if (!day || selectedDay === day) return;
+    setSelectedDay(day);
+  };
+
   const handleClick = (e: MouseEvent<HTMLUListElement>) => {
     const target = (e.target as HTMLElement).closest('li');
     if (target && target instanceof HTMLLIElement) {
-      const day = target.dataset.day;
-      if (selectedDay === day) return;
-      if (day) {
-        setSelectedDay(day);
+      handleInteraction(target.dataset.day);
+    }
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLUListElement>) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      const focusedElement = document.activeElement as HTMLElement;
+      if (focusedElement && focusedElement.dataset.day) {
+        handleInteraction(focusedElement.dataset.day);
       }
     }
   };
@@ -82,7 +92,7 @@ Calendar.List = ({ currentMonth }: { currentMonth: Date }) => {
   }, [selectedDay]);
 
   return (
-    <ul css={calendarStyle} onClick={handleClick} ref={daysContainerRef}>
+    <ul css={calendarStyle} ref={daysContainerRef} onClick={handleClick} onKeyDown={handleKeyDown} role="button">
       {daysInCurrentMonth.map((day) => (
         <Calendar.Item key={day} day={day} ref={day === selectedDay ? selectedDayRef : null} />
       ))}
@@ -111,6 +121,10 @@ Calendar.Item = forwardRef<HTMLLIElement, { day: string }>(({ day }, ref) => {
     </li>
   );
 });
+
+Calendar.Header = CalendarHeader;
+Calendar.List = CalendarList;
+Calendar.Item.displayName = 'CalendarItem';
 
 const calendarStyle = css`
   display: flex;

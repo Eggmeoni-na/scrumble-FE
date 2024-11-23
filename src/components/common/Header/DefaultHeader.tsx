@@ -1,7 +1,6 @@
 import { HeaderTemplate } from '@/components/common/Header';
 
-const DefaultHeader = () => {
-  return (
+const DefaultHeader = () => (
     <HeaderTemplate>
       <HeaderTemplate.BackButton />
       <HeaderTemplate.RightMenuWrapper>
@@ -10,6 +9,5 @@ const DefaultHeader = () => {
       </HeaderTemplate.RightMenuWrapper>
     </HeaderTemplate>
   );
-};
 
 export default DefaultHeader;
