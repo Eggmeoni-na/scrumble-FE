@@ -8,9 +8,7 @@ import { css, Theme } from '@emotion/react';
 import { PropsWithChildren } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export const HeaderTemplate = ({ children }: PropsWithChildren) => {
-  return <header css={headerContainer}>{children}</header>;
-};
+export const HeaderTemplate = ({ children }: PropsWithChildren) => <header css={headerContainer}>{children}</header>;
 
 const BackButton = () => {
   const navigate = useNavigate();
@@ -26,9 +24,7 @@ const BackButton = () => {
   );
 };
 
-const RightMenuWrapper = ({ children }: PropsWithChildren) => {
-  return <div css={rightMenu}>{children}</div>;
-};
+const RightMenuWrapper = ({ children }: PropsWithChildren) => <div css={rightMenu}>{children}</div>;
 
 const ToggleThemeButton = () => {
   const { isDarkMode, toggleTheme } = useThemeStore((state) => state);
@@ -55,8 +51,7 @@ const NotificationsButton = () => {
   );
 };
 
-const SidebarToggleButton = ({ toggleSidebar }: { toggleSidebar: VoidFunction }) => {
-  return (
+const SidebarToggleButton = ({ toggleSidebar }: { toggleSidebar: VoidFunction }) => (
     <IconWrapper
       aria-label="menu"
       onClick={() => {
@@ -67,7 +62,6 @@ const SidebarToggleButton = ({ toggleSidebar }: { toggleSidebar: VoidFunction })
       <Menu />
     </IconWrapper>
   );
-};
 
 HeaderTemplate.BackButton = BackButton;
 HeaderTemplate.RightMenuWrapper = RightMenuWrapper;

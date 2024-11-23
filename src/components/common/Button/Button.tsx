@@ -8,13 +8,11 @@ type ButtonProps = {
   variant?: Variant;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
-const Button = ({ text, variant = 'default', onClick, ...rest }: ButtonProps) => {
-  return (
+const Button = ({ text, variant = 'default', onClick, ...rest }: ButtonProps) => (
     <button css={[buttonStyle, getVariantStyles(variant)]} onClick={onClick} {...rest}>
       {text}
     </button>
   );
-};
 
 export default Button;
 

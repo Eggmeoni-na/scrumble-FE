@@ -6,12 +6,10 @@ type Props = {
   children: ReactNode;
 };
 
-const LoginLayout = ({ children }: Props) => {
-  return (
+const LoginLayout = ({ children }: Props) => (
     <Container>
       <Main>{children}</Main>
     </Container>
   );
-};
 
 export default LoginLayout;

@@ -5,8 +5,7 @@ import ModalTemplate from '@/components/common/Modal/ModalTemplate/ModalTemplate
 import { ActionModalContentProps } from '@/types';
 import { css, Theme } from '@emotion/react';
 
-const ActionPrompt = ({ onSubmit, onAbort, actionModal }: ActionModalContentProps) => {
-  return (
+const ActionPrompt = ({ onSubmit, onAbort, actionModal }: ActionModalContentProps) => (
     <ModalTemplate isOverlay={true} onClose={onAbort}>
       <ModalContent>
         <p css={descStyle}>{actionModal.message}</p>
@@ -25,7 +24,6 @@ const ActionPrompt = ({ onSubmit, onAbort, actionModal }: ActionModalContentProp
       </ModalContent>
     </ModalTemplate>
   );
-};
 
 export default ActionPrompt;
 

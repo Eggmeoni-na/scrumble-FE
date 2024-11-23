@@ -8,6 +8,7 @@ import { squadDetailQueryOptions, squadKeys } from '@/hooks/queries/useSquad';
 import { useModal } from '@/hooks/useModal';
 import { useToastStore } from '@/stores';
 import { SquadMember } from '@/types';
+import handleKeyDown from '@/utils/handleKeyDown';
 import { css, Theme } from '@emotion/react';
 import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { useState } from 'react';
@@ -70,7 +71,13 @@ const Member = ({ squadId, member }: { squadId: number; member: SquadMember }) =
 
   return (
     <>
-      <li css={itemStyle} onClick={handleSelectMember}>
+      <li
+        css={itemStyle}
+        onClick={handleSelectMember}
+        onKeyDown={(e) => handleKeyDown(e, handleSelectMember)}
+        tabIndex={0}
+        role="button"
+      >
         <MemberProfile member={member} infoStyle={infoStyle} imgStyle={imgStyle} displayRole={false} />
         <IconWrapper
           aria-label={isChecked ? 'Selected member' : 'Unselected member'}
@@ -90,7 +97,7 @@ const containerStyle = css`
   margin: 24px 16px;
 `;
 
-const itemStyle = (theme: Theme) => css`
+const itemStyle = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -133,7 +140,7 @@ const imgStyle = css`
   border-radius: 16px;
 `;
 
-const infoStyle = (theme: Theme) => css`
+const infoStyle = css`
   display: flex;
   align-items: center;
   gap: 8px;

@@ -1,8 +1,7 @@
 import { Close } from '@/assets/icons';
 import { memo } from 'react';
 
-const ModalHeader = ({ title = '', onClose }: { title?: string; onClose?: () => void }) => {
-  return (
+const ModalHeader = ({ title = '', onClose }: { title?: string; onClose?: () => void }) => (
     <header className={'modal-header'}>
       <h1>{title}</h1>
       <button onClick={onClose} className={'close'}>
@@ -10,6 +9,5 @@ const ModalHeader = ({ title = '', onClose }: { title?: string; onClose?: () => 
       </button>
     </header>
   );
-};
 
 export default memo(ModalHeader);

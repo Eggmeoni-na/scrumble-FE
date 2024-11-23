@@ -8,14 +8,12 @@ type Props = {
   children: ReactNode;
 };
 
-const MainLayout = ({ children }: Props) => {
-  return (
+const MainLayout = ({ children }: Props) => (
     <Container>
       <Header />
       <Main>{children}</Main>
       <Footer />
     </Container>
   );
-};
 
 export default MainLayout;

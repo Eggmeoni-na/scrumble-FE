@@ -6,6 +6,7 @@ import { ROLE } from '@/constants/role';
 import { useDeleteSquad, useExitSquad, useUpdateSquadName } from '@/hooks/mutations';
 import { squadDetailQueryOptions, squadKeys } from '@/hooks/queries/useSquad';
 import { useSquadStore, useToastStore } from '@/stores';
+import handleKeyDown from '@/utils/handleKeyDown';
 import { css, Theme } from '@emotion/react';
 import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
@@ -50,6 +51,16 @@ export const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
     onError: () => createToast({ type: 'failed', message: '스쿼드 나가기에 실패했어요 😢' }),
   });
 
+  const handleInvitation = () => {
+    closeSidebar();
+    navigate(`/squads/${squadId}/invite`);
+  };
+
+  const handleAssignLeader = () => {
+    closeSidebar();
+    navigate(`/squads/${squadId}/members`);
+  };
+
   return (
     <Overlay
       preventClick={false}
@@ -59,7 +70,12 @@ export const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
       }}
       role="dialog"
     >
-      <div css={sidebarContainer} onClick={(e) => e.stopPropagation()}>
+      <div
+        css={sidebarContainer}
+        onClick={(e) => e.stopPropagation()}
+        onKeyDown={(e) => e.stopPropagation()}
+        role="presentation"
+      >
         <header css={headerStyle}>
           <h1>스쿼드 관리</h1>
           <IconWrapper aria-label="Close sidebar" onClick={closeSidebar} role="button" css={commonButtonStyle}>
@@ -90,24 +106,33 @@ export const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
           <h2 id="squad-settings">설정</h2>
           <ul>
             <li
-              onClick={() => {
-                closeSidebar();
-                navigate(`/squads/${squadId}/invite?step=invite`);
-              }}
+              onClick={handleInvitation}
+              onKeyDown={(e) => handleKeyDown(e, handleInvitation)}
+              tabIndex={0}
+              role="button"
             >
               멤버 초대
             </li>
             {isLeader && (
               <li
-                onClick={() => {
-                  closeSidebar();
-                  navigate(`/squads/${squadId}/members?step=assign`);
-                }}
+                onClick={handleAssignLeader}
+                onKeyDown={(e) => handleKeyDown(e, handleAssignLeader)}
+                tabIndex={0}
+                role="button"
               >
                 리더 변경
               </li>
             )}
-            {isLeader && <li onClick={handleSquadDelete}>스쿼드 삭제</li>}
+            {isLeader && (
+              <li
+                onClick={handleSquadDelete}
+                onKeyDown={(e) => handleKeyDown(e, handleSquadDelete)}
+                tabIndex={0}
+                role="button"
+              >
+                스쿼드 삭제
+              </li>
+            )}
           </ul>
         </section>
         <button css={exitButtonStyle} onClick={handleSquadExit}>
@@ -187,7 +212,7 @@ const squadInfoStyle = (theme: Theme) => css`
   }
 `;
 
-const membersStyle = (theme: Theme) => css`
+const membersStyle = css`
   padding: 0 16px;
   margin-bottom: 48px;
 

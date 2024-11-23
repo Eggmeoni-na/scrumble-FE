@@ -21,7 +21,7 @@ const InvitePage = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const { inviteMemberMutate } = useInviteMember({
-    onSuccess: (data) => successToast('멤버 초대에 성공했어요.'),
+    onSuccess: () => successToast('멤버 초대에 성공했어요.'),
     onError: () => failedToast('멤버 초대에 실패했어요.'),
   });
 
@@ -69,7 +69,17 @@ const InvitePage = () => {
         placeholder="초대할 멤버의 이메일을 입력해주세요"
       />
       {searchResult && (
-        <div css={[searchResultStyle(theme, isSelected)]} onClick={() => setIsSelected(!isSelected)}>
+        <div
+          css={[searchResultStyle(theme, isSelected)]}
+          onClick={() => setIsSelected(!isSelected)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              setIsSelected(!isSelected);
+            }
+          }}
+          tabIndex={0}
+          role="button"
+        >
           <IconWrapper
             aria-label={isSelected ? 'Selected member' : 'Unselected member'}
             aria-checked={isSelected}
@@ -145,6 +155,6 @@ const searchResultStyle = (theme: Theme, isSelected: boolean) => css`
   }
 `;
 
-const customCheckedStyle = (theme: Theme) => css`
+const customCheckedStyle = css`
   background-color: #409c2c;
 `;

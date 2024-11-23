@@ -12,7 +12,9 @@ export const optimisticUpdateMutateHandler = async <T>(
 
     const oldData = queryClient.getQueryData<T>(queryKeys) ?? [];
 
-    updateFn && queryClient.setQueryData(queryKeys, (prevData: T) => updateFn(prevData));
+    if (updateFn) {
+      queryClient.setQueryData(queryKeys, (prevData: T) => updateFn(prevData));
+    }
 
     return oldData;
   } catch (error) {

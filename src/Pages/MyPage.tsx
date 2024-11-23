@@ -1,5 +1,6 @@
 import { getUser } from '@/apis';
 import Button from '@/components/common/Button/Button';
+import handleKeyDown from '@/utils/handleKeyDown';
 import { css, Theme } from '@emotion/react';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
@@ -25,7 +26,14 @@ const MyPage = () => {
         <Button text="로그아웃" onClick={handleLogout} aria-label="로그아웃" css={logoutButtonStyle} />
       </div>
       <div css={deleteUserButtonStyle}>
-        <span onClick={handleDeleteUser}>회원탈퇴</span>
+        <span
+          onClick={handleDeleteUser}
+          onKeyDown={(e) => handleKeyDown(e, handleDeleteUser)}
+          tabIndex={0}
+          role="button"
+        >
+          회원탈퇴
+        </span>
       </div>
     </div>
   );

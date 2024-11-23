@@ -8,22 +8,30 @@ type Props = {
   squadMembers: SquadMember[];
 };
 
-const SquadDetailMemberList = ({ squadMembers }: Props) => {
-  return (
-    <ul css={containerStyle}>
-      {squadMembers.map((member) => (
-        <Member key={member.memberId} member={member} />
-      ))}
-    </ul>
-  );
-};
+const SquadDetailMemberList = ({ squadMembers }: Props) => (
+  <ul css={containerStyle}>
+    {squadMembers.map((member) => (
+      <Member key={member.memberId} member={member} />
+    ))}
+  </ul>
+);
 
 export default SquadDetailMemberList;
 
 const Member = ({ member }: { member: SquadMember }) => {
   const setSelectedMember = useMemberStore((state) => state.setSelectedMember);
   return (
-    <li onClick={() => setSelectedMember(member)} css={memberStyle}>
+    <li
+      onClick={() => setSelectedMember(member)}
+      css={memberStyle}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') {
+          setSelectedMember(member);
+        }
+      }}
+      tabIndex={0}
+      role="button"
+    >
       <MemberProfile member={member} infoStyle={infoStyle} imgStyle={imgStyle} displayRole={false} />
     </li>
   );

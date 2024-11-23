@@ -6,8 +6,6 @@ type Props = {
   portalContainer: HTMLDivElement | null;
 };
 
-const ModalPortal = ({ children, portalContainer }: Props) => {
-  return createPortal(children, portalContainer!);
-};
+const ModalPortal = ({ children, portalContainer }: Props) => createPortal(children, portalContainer!);
 
 export default ModalPortal;

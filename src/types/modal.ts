@@ -14,7 +14,7 @@ export type ModalType<P> = {
   element: ComponentType<P>;
   props?: Record<string, unknown>;
   modalId: string;
-  resolve: <T extends {}>(value?: T | PromiseLike<T>) => void;
+  resolve: <T extends object>(value?: T | PromiseLike<T>) => void;
   reject: (reason: string) => void;
   actionModal?: ActionModalType;
 };
