@@ -46,3 +46,8 @@ export const getUser = async (): Promise<{ data: UserProfile }> => {
   const response = await instance.get('/api/users/me');
   return response.data;
 };
+
+export const deleteUser = async () => {
+  const response = await instance.delete('/api/users');
+  return response.data;
+};
