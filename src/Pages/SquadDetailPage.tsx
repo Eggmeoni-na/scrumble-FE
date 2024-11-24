@@ -84,6 +84,7 @@ const SquadDetailPage = () => {
         <SquadDetailMemberList squadMembers={squadDetail.squadMembers} />
       </section>
       <div css={headerStyle}>
+        <span>{selectedDay}</span>
         <span>{!selectedMember ? user?.name : selectedMember.name}</span>
         <span>달성률: {progressRate}%</span>
       </div>
