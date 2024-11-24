@@ -1,22 +1,37 @@
-import { getUser } from '@/apis';
+import { deleteUser, logoutUser } from '@/apis';
 import Button from '@/components/common/Button/Button';
+import { useMe } from '@/hooks/queries/useMe';
+import useToastHandler from '@/hooks/useToastHandler';
+import useUserCookie from '@/hooks/useUserCookie';
 import handleKeyDown from '@/utils/handleKeyDown';
 import { css, Theme } from '@emotion/react';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useMutation, useSuspenseQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 
 const MyPage = () => {
-  const { data: user } = useSuspenseQuery({
-    queryKey: ['me'],
-    queryFn: getUser,
-  }).data;
+  const navigate = useNavigate();
+  const { clearCookie } = useUserCookie();
+  const { successToast, failedToast } = useToastHandler();
+  const { data: user } = useSuspenseQuery(useMe()).data;
+  const { mutate: deleteUserMutate } = useMutation({
+    mutationFn: deleteUser,
+    onSuccess: () => {
+      successToast('회원탈퇴에 성공했어요');
+      navigate('/login');
+    },
+    onError: () => failedToast('잠시 후 다시 시도해주세요'),
+  });
 
-  const handleLogout = () => {
-    // TODO: 로그아웃 API 연동
+  const handleLogout = async () => {
+    const res = await logoutUser();
+    if (res.status === 200) {
+      clearCookie();
+      navigate('/login');
+      return;
+    }
   };
 
-  const handleDeleteUser = () => {
-    // TODO: 회원 탈퇴 API 연동
-  };
+  const handleDeleteUser = () => deleteUserMutate();
 
   return (
     <div css={containerStyle}>
