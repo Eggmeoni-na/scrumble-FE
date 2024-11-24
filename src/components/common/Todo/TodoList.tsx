@@ -63,7 +63,7 @@ export const TodoList = ({ todos, loadMoreTodos, isMeSelected }: Props) => {
 const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
   const squadId = useSquadStore((state) => state.currentSquadId);
   const theme = useTheme();
-  const { toDoAt, toDoId, contents, squadToDoId, toDoStatus } = todo;
+  const { toDoAt, toDoId, contents, toDoStatus } = todo;
   const [currentToDoStatus, setCurrentToDoStatus] = useState(todo.toDoStatus);
   const selectedDay = useDayStore((state) => state.selectedDay);
   const [isEditMode, setIsEditMode] = useState(false);
@@ -90,8 +90,8 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
     },
     onError: (error, data, context) => {
       failedToast('수정에 실패했어요');
-      if (context) {
-        queryClient.setQueryData(todoKeys.todos(squadToDoId, selectedDay), context);
+      if (context?.oldData) {
+        queryClient.setQueryData(todoKeys.todos(squadId, selectedDay), context.oldData);
       }
     },
   });
@@ -100,8 +100,8 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
     onSuccess: () => successToast('삭제에 성공했어요'),
     onError: (error, data, context) => {
       failedToast('삭제에 실패했어요');
-      if (context) {
-        queryClient.setQueryData(todoKeys.todos(squadToDoId, selectedDay), context);
+      if (context?.oldData) {
+        queryClient.setQueryData(todoKeys.todos(squadId, selectedDay), context.oldData);
       }
     },
   });
