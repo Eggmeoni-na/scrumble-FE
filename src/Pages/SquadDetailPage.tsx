@@ -88,7 +88,7 @@ const SquadDetailPage = () => {
         <span>{!selectedMember ? user?.name : selectedMember.name}</span>
         <span>달성률: {progressRate}%</span>
       </div>
-      <TodoList todos={todos} loadMoreTodos={loadMoreTodos} isMeSelected={isMeSelected} />
+      <TodoList todos={todos} loadMoreTodos={loadMoreTodos} hasNextPage={hasNextPage} isMeSelected={isMeSelected} />
       {isMeSelected && <TodoForm squadId={squadId} selectedDay={selectedDay} />}
     </section>
   );

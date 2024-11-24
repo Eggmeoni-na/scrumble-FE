@@ -9,13 +9,17 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 const useDeleteTodo = (
   squadId: number,
   selectedDay: string,
-  options: MutateOptionsType<ApiResponse<{ toDoId: number }>, DeleteTodoParamType>,
+  options: MutateOptionsType<
+    ApiResponse<{ toDoId: number }>,
+    DeleteTodoParamType,
+    { oldData: InfiniteQueryData<ApiResponse<ToDoDetail[]>> | never[] | undefined }
+  >,
 ) => {
   const queryClient = useQueryClient();
   const { mutate: deleteTodoMuate } = useMutation({
     mutationFn: deleteTodo,
-    onMutate: (data) =>
-      optimisticUpdateMutateHandler<InfiniteQueryData<ApiResponse<ToDoDetail[]>>>(
+    onMutate: async (data) => {
+      const oldData = await optimisticUpdateMutateHandler<InfiniteQueryData<ApiResponse<ToDoDetail[]>>>(
         queryClient,
         todoKeys.todos(squadId, selectedDay),
         (prevData) => ({
@@ -25,7 +29,9 @@ const useDeleteTodo = (
             data: page.data.filter((todo) => todo.toDoId !== data.toDoId),
           })),
         }),
-      ),
+      );
+      return { oldData };
+    },
     ...options,
   });
 

@@ -13,7 +13,7 @@ const TodoForm = ({ squadId, selectedDay }: { squadId: number; selectedDay: stri
   const [contents, setContents] = useState('');
   const { successToast, failedToast, warningToast } = useToastHandler();
   const queryClient = useQueryClient();
-  const { createTodoMutate } = useCreateTodo(squadId, selectedDay, {
+  const { createTodoMutate } = useCreateTodo({
     onSuccess: async ({ data }) => {
       successToast('투두 등록에 성공했어요');
       queryClient.setQueryData(

@@ -6,48 +6,24 @@ import { TODO_STATUS } from '@/constants/todo';
 import { useDeleteTodo, useUpdateTodo } from '@/hooks/mutations';
 import { InfiniteQueryData } from '@/hooks/queries/types';
 import { todoKeys } from '@/hooks/queries/useTodo';
+import useInfinite from '@/hooks/useInfinite';
 import useToastHandler from '@/hooks/useToastHandler';
 import { useDayStore, useSquadStore } from '@/stores';
 import { ApiResponse, ToDoDetail, UpdateTodoRequest } from '@/types';
 import handleKeyDown from '@/utils/handleKeyDown';
 import { css, keyframes, Theme, useTheme } from '@emotion/react';
 import { useQueryClient } from '@tanstack/react-query';
-import { KeyboardEvent, useEffect, useRef, useState } from 'react';
+import { KeyboardEvent, useState } from 'react';
 
 type Props = {
   todos: ToDoDetail[];
   loadMoreTodos: VoidFunction;
+  hasNextPage: boolean;
   isMeSelected: boolean;
 };
 
-export const TodoList = ({ todos, loadMoreTodos, isMeSelected }: Props) => {
-  const loadMoreRef = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          try {
-            loadMoreTodos();
-          } catch (err) {
-            console.log(err);
-          }
-        }
-      },
-      { threshold: 1.0 },
-    );
-
-    // 타겟이 마운트되서 ref 객체에 참조 객체가 생기면
-    const ref = loadMoreRef.current;
-    if (ref) {
-      observer.observe(ref);
-    }
-    return () => {
-      if (ref) {
-        observer.unobserve(ref);
-      }
-    };
-  }, [loadMoreTodos]);
+export const TodoList = ({ todos, loadMoreTodos, hasNextPage, isMeSelected }: Props) => {
+  const { loadMoreRef } = useInfinite(loadMoreTodos, hasNextPage);
 
   return (
     <ul css={[todoContainerStyle, !isMeSelected && memberTodoListStyle]}>
@@ -63,7 +39,7 @@ export const TodoList = ({ todos, loadMoreTodos, isMeSelected }: Props) => {
 const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
   const squadId = useSquadStore((state) => state.currentSquadId);
   const theme = useTheme();
-  const { toDoAt, toDoId, contents, squadToDoId, toDoStatus } = todo;
+  const { toDoAt, toDoId, contents, toDoStatus } = todo;
   const [currentToDoStatus, setCurrentToDoStatus] = useState(todo.toDoStatus);
   const selectedDay = useDayStore((state) => state.selectedDay);
   const [isEditMode, setIsEditMode] = useState(false);
@@ -90,8 +66,8 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
     },
     onError: (error, data, context) => {
       failedToast('수정에 실패했어요');
-      if (context) {
-        queryClient.setQueryData(todoKeys.todos(squadToDoId, selectedDay), context);
+      if (context?.oldData) {
+        queryClient.setQueryData(todoKeys.todos(squadId, selectedDay), context.oldData);
       }
     },
   });
@@ -100,8 +76,8 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
     onSuccess: () => successToast('삭제에 성공했어요'),
     onError: (error, data, context) => {
       failedToast('삭제에 실패했어요');
-      if (context) {
-        queryClient.setQueryData(todoKeys.todos(squadToDoId, selectedDay), context);
+      if (context?.oldData) {
+        queryClient.setQueryData(todoKeys.todos(squadId, selectedDay), context.oldData);
       }
     },
   });
