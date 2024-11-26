@@ -14,6 +14,7 @@ export type SquadDetail = {
 
 export type SquadMember = {
   memberId: number;
+  squadMemberId: number;
   profileImg: string | null;
   name: string;
   squadMemberRole: squadRoleType;
