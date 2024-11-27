@@ -9,7 +9,7 @@ import useUserCookie from '@/hooks/useUserCookie';
 import { useDayStore, useMemberStore, useSquadStore } from '@/stores';
 import { css, Theme } from '@emotion/react';
 import { useInfiniteQuery, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 const SquadDetailPage = () => {
@@ -18,18 +18,16 @@ const SquadDetailPage = () => {
   const setCurrentSquadId = useSquadStore((state) => state.setCurrentSquadId);
   const { user } = useUserCookie();
   const { selectedDay, setSelectedDay } = useDayStore((state) => state);
-  const selectedMember = useMemberStore((state) => state.selectedMember);
-
-  const isMeSelected = useMemo(
-    () => !selectedMember || selectedMember.memberId === user?.id,
-    [selectedMember, user?.id],
-  );
-
-  const queryClient = useQueryClient();
+  const { selectedMember, setSelectedMember } = useMemberStore((state) => state);
 
   const { data: squadDetail } = useSuspenseQuery({
     ...squadDetailQueryOptions(squadId),
   }).data;
+
+  const me = squadDetail?.squadMembers?.find((member) => member.memberId === user?.id);
+  const isMeSelected = !selectedMember || selectedMember.squadMemberId === me?.squadMemberId;
+
+  const queryClient = useQueryClient();
 
   const payload = {
     startDate: selectedDay,
@@ -38,7 +36,12 @@ const SquadDetailPage = () => {
   };
 
   const { data, fetchNextPage, hasNextPage } = useInfiniteQuery(
-    todoInfiniteQueryOptions(isMeSelected ? user!.id : selectedMember!.memberId, squadId, selectedDay, payload),
+    todoInfiniteQueryOptions(
+      isMeSelected ? me!.squadMemberId : selectedMember!.squadMemberId,
+      squadId,
+      selectedDay,
+      payload,
+    ),
   );
 
   const todos = data ?? [];
@@ -56,6 +59,10 @@ const SquadDetailPage = () => {
   useEffect(() => {
     setCurrentSquadId(squadId);
   }, [squadId]);
+
+  useEffect(() => {
+    setSelectedMember(null);
+  }, []);
 
   useEffect(() => {
     const isCompleted = todos.filter((todo) => todo.toDoStatus === TODO_STATUS.COMPLETED).length;
