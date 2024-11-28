@@ -3,12 +3,12 @@ import IconWrapper from '@/components/common/IconWrapper';
 import MemberProfile from '@/components/common/Member/MemberProfile';
 import { commonButtonStyle } from '@/components/common/Sidebar';
 import { ROLE } from '@/constants/role';
+import { MEMBER_STYLE_TYPE } from '@/constants/squad';
 import { useRemoveUserFromSquad } from '@/hooks/mutations';
 import { squadKeys } from '@/hooks/queries/useSquad';
 import useUserCookie from '@/hooks/useUserCookie';
 import { useSquadStore, useToastStore } from '@/stores';
 import { SquadMember } from '@/types';
-import { css } from '@emotion/react';
 import { useQueryClient } from '@tanstack/react-query';
 
 const SidebarMemberList = ({
@@ -56,7 +56,7 @@ const Member = ({ member, showIcon }: { member: SquadMember; showIcon: boolean }
   return (
     <>
       <li>
-        <MemberProfile member={member} infoStyle={infoStyle} imgStyle={imgStyle} displayRole />
+        <MemberProfile member={member} displayRole type={MEMBER_STYLE_TYPE.DEFAULT} />
         {showIcon && (
           <IconWrapper
             aria-label="Remove member from squad"
@@ -72,15 +72,3 @@ const Member = ({ member, showIcon }: { member: SquadMember; showIcon: boolean }
     </>
   );
 };
-
-const imgStyle = css`
-  width: 36px;
-  height: 36px;
-  border-radius: 16px;
-`;
-
-const infoStyle = css`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-`;

@@ -4,6 +4,7 @@ import IconWrapper from '@/components/common/IconWrapper';
 import MemberProfile from '@/components/common/Member/MemberProfile';
 import { ActionPrompt } from '@/components/common/Modal/ModalContents';
 import { ROLE } from '@/constants/role';
+import { MEMBER_STYLE_TYPE } from '@/constants/squad';
 import { squadDetailQueryOptions, squadKeys } from '@/hooks/queries/useSquad';
 import { useModal } from '@/hooks/useModal';
 import { useToastStore } from '@/stores';
@@ -78,7 +79,7 @@ const Member = ({ squadId, member }: { squadId: number; member: SquadMember }) =
         tabIndex={0}
         role="button"
       >
-        <MemberProfile member={member} infoStyle={infoStyle} imgStyle={imgStyle} displayRole={false} />
+        <MemberProfile member={member} displayRole={false} type={MEMBER_STYLE_TYPE.DEFAULT} />
         <IconWrapper
           aria-label={isChecked ? 'Selected member' : 'Unselected member'}
           aria-checked={isChecked}
@@ -132,16 +133,4 @@ const checkedStyle = (theme: Theme) => css`
     width: 16px;
     height: 16px;
   }
-`;
-
-const imgStyle = css`
-  width: 36px;
-  height: 36px;
-  border-radius: 16px;
-`;
-
-const infoStyle = css`
-  display: flex;
-  align-items: center;
-  gap: 8px;
 `;
