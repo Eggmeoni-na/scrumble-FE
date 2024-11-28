@@ -7,6 +7,7 @@ import { squadDetailQueryOptions } from '@/hooks/queries/useSquad';
 import { todoInfiniteQueryOptions, todoKeys } from '@/hooks/queries/useTodo';
 import useUserCookie from '@/hooks/useUserCookie';
 import { useDayStore, useMemberStore, useSquadStore } from '@/stores';
+import { mobileMediaQuery, pcMediaQuery } from '@/styles/breakpoints';
 import { css, Theme } from '@emotion/react';
 import { useInfiniteQuery, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
@@ -115,5 +116,14 @@ const headerStyle = (theme: Theme) => css`
   justify-content: space-between;
   align-items: center;
   margin: 24px 24px 12px 32px;
-  ${theme.typography.size_16}
+
+  ${mobileMediaQuery(css`
+    font-size: ${theme.typography.size_14};
+    font-weight: 500;
+  `)}
+
+  ${pcMediaQuery(css`
+    font-size: ${theme.typography.size_16};
+    font-weight: 500;
+  `)}
 `;
