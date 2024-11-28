@@ -39,12 +39,14 @@ export const squadHandler = [
         squadMembers: [
           {
             memberId: 0,
+            squadMemberId: 0,
             profileImg: '',
             name: '김둘리',
             squadMemberRole: 'LEADER',
           },
           {
             memberId: 1,
+            squadMemberId: 1,
             profileImg: '',
             name: '고길동',
             squadMemberRole: 'NORMAL',
