@@ -2,7 +2,7 @@ import MemberProfile from '@/components/common/Member/MemberProfile';
 import { useMemberStore } from '@/stores';
 import { scrollBarStyle } from '@/styles/globalStyles';
 import { SquadMember } from '@/types';
-import { css, Theme } from '@emotion/react';
+import { css } from '@emotion/react';
 
 type Props = {
   squadMembers: SquadMember[];
@@ -19,7 +19,7 @@ const SquadDetailMemberList = ({ squadMembers }: Props) => (
 export default SquadDetailMemberList;
 
 const Member = ({ member }: { member: SquadMember }) => {
-  const setSelectedMember = useMemberStore((state) => state.setSelectedMember);
+  const { selectedMember, setSelectedMember } = useMemberStore((state) => state);
   return (
     <li
       onClick={() => setSelectedMember(member)}
@@ -32,7 +32,7 @@ const Member = ({ member }: { member: SquadMember }) => {
       tabIndex={0}
       role="button"
     >
-      <MemberProfile member={member} infoStyle={infoStyle} imgStyle={imgStyle} displayRole={false} />
+      <MemberProfile member={member} selectedMember={selectedMember} displayRole={false} type="SQUAD_DETAIL" />
     </li>
   );
 };
@@ -49,22 +49,4 @@ const containerStyle = css`
 
 const memberStyle = css`
   cursor: pointer;
-`;
-
-const imgStyle = css`
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-`;
-
-const infoStyle = (theme: Theme) => css`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-
-  & p {
-    ${theme.typography.size_10}
-    font-weight: 500;
-  }
 `;
