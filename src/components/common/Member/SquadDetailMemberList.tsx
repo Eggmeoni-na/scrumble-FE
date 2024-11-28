@@ -1,4 +1,5 @@
 import MemberProfile from '@/components/common/Member/MemberProfile';
+import { MEMBER_STYLE_TYPE } from '@/constants/squad';
 import { useMemberStore } from '@/stores';
 import { scrollBarStyle } from '@/styles/globalStyles';
 import { SquadMember } from '@/types';
@@ -32,7 +33,12 @@ const Member = ({ member }: { member: SquadMember }) => {
       tabIndex={0}
       role="button"
     >
-      <MemberProfile member={member} selectedMember={selectedMember} displayRole={false} type="SQUAD_DETAIL" />
+      <MemberProfile
+        member={member}
+        selectedMember={selectedMember}
+        displayRole={false}
+        type={MEMBER_STYLE_TYPE.SQUAD_DETIAL}
+      />
     </li>
   );
 };

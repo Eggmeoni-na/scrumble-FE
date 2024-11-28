@@ -3,6 +3,7 @@ import IconWrapper from '@/components/common/IconWrapper';
 import MemberProfile from '@/components/common/Member/MemberProfile';
 import { commonButtonStyle } from '@/components/common/Sidebar';
 import { ROLE } from '@/constants/role';
+import { MEMBER_STYLE_TYPE } from '@/constants/squad';
 import { useRemoveUserFromSquad } from '@/hooks/mutations';
 import { squadKeys } from '@/hooks/queries/useSquad';
 import useUserCookie from '@/hooks/useUserCookie';
@@ -55,7 +56,7 @@ const Member = ({ member, showIcon }: { member: SquadMember; showIcon: boolean }
   return (
     <>
       <li>
-        <MemberProfile member={member} displayRole type="SIDE_BAR" />
+        <MemberProfile member={member} displayRole type={MEMBER_STYLE_TYPE.DEFAULT} />
         {showIcon && (
           <IconWrapper
             aria-label="Remove member from squad"
