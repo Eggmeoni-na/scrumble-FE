@@ -2,6 +2,7 @@ import App from '@/App';
 import { MainLayout } from '@/components';
 import Loading from '@/components/common/Loading';
 import LoginLayout from '@/components/layouts/LoginLayout';
+import SquadIdGuard from '@/components/SquadIdGuard';
 import { HomePage, LoginPage, MyPage, SquadDetailPage, SquadPage } from '@/Pages';
 import GoogleOAuthCallbackPage from '@/Pages/GoogleOAuthLoginPage';
 import InvitePage from '@/Pages/InvitePage';
@@ -46,11 +47,19 @@ export const router = createBrowserRouter([
           },
           {
             path: '/squads/:squadId/members',
-            element: <SelectMemberPage />,
+            element: (
+              <SquadIdGuard>
+                <SelectMemberPage />
+              </SquadIdGuard>
+            ),
           },
           {
             path: '/squads/:squadId/invite',
-            element: <InvitePage />,
+            element: (
+              <SquadIdGuard>
+                <InvitePage />
+              </SquadIdGuard>
+            ),
           },
           {
             path: '/me',
