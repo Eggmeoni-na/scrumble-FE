@@ -8,8 +8,7 @@ type SquadState = {
 export const useSquadStore = create<SquadState>((set) => ({
   currentSquadId: 0,
   setCurrentSquadId: (squadId) =>
-    set((state) => ({
-      ...state,
+    set({
       currentSquadId: squadId,
-    })),
+    }),
 }));
