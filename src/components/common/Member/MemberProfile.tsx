@@ -30,8 +30,8 @@ const MemberProfile = ({ member, selectedMember, displayRole, type }: Props) => 
         {name}
         {displayRole && (
           <>
-            {squadMemberRole === ROLE.LEADER && <span> 리더</span>}
-            {user?.id === memberId && <span> (나)</span>}
+            {user?.id === memberId && <span css={meStyle}> (나)</span>}
+            {squadMemberRole === ROLE.LEADER && <span> 🐓</span>}
           </>
         )}
       </p>
@@ -87,4 +87,10 @@ const inactiveStyle = css`
   justify-content: center;
   align-items: center;
   opacity: 50%;
+`;
+
+const meStyle = (theme: Theme) => css`
+  font-size: ${theme.typography.size_14};
+  font-weight: 400;
+  color: ${theme.colors.gray.gray200};
 `;
