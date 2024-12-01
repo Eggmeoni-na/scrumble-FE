@@ -83,7 +83,7 @@ export const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
           </IconWrapper>
         </header>
         <section css={squadInfoStyle} aria-labelledby="squad-detail">
-          <h2 id="squad-detail">스쿼드 정보</h2>
+          <h2 id="squad-detail">스쿼드명</h2>
           <div>
             <h3>{squadName}</h3>
             <IconWrapper
@@ -96,7 +96,6 @@ export const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
               <Edit />
             </IconWrapper>
           </div>
-          <span>생성일</span>
         </section>
         <section css={membersStyle} aria-labelledby="squad-members">
           <h2 id="squad-members">멤버</h2>
@@ -166,7 +165,6 @@ export const sidebarContainer = (theme: Theme) => css`
   & h2 {
     font-size: ${theme.typography.size_18};
     font-weight: 600;
-    margin-bottom: 16px;
   }
 
   & h2::after {
@@ -192,12 +190,11 @@ const squadInfoStyle = (theme: Theme) => css`
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin-top: 24px;
-  margin-bottom: 48px;
+  margin: 24px 0;
   padding: 0 16px;
 
   & h3 {
-    font-weight: 500;
+    font-weight: 400;
   }
 
   & div {
@@ -214,19 +211,21 @@ const squadInfoStyle = (theme: Theme) => css`
 
 const membersStyle = css`
   padding: 0 16px;
-  margin-bottom: 48px;
+  margin-bottom: 24px;
 
-  & li {
-    padding: 8px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  & h2 {
+    margin-bottom: 12px;
   }
 `;
 
 const settingsStyle = css`
   padding: 0 16px;
   flex: 1;
+  margin-bottom: 24px;
+
+  & h2 {
+    margin-bottom: 12px;
+  }
 
   & li {
     padding: 8px 0;
