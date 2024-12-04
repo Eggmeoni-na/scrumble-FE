@@ -1,9 +1,7 @@
 type NotificationType = 'INVITE_REQUEST' | 'INVITE_ACCEPT';
 
 type NotificationData = {
-  userName: string;
-  squadName: string;
-  squadId?: number;
+  squadId: number;
 };
 
 export type NotificationRequestPayload = {
