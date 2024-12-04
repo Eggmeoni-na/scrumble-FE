@@ -1,5 +1,5 @@
-import { useMe } from '@/hooks/queries/useMe';
+import { userQueries } from '@/hooks/queries/userQueries';
 
-export * from './useSquad';
-export * from './useTodo';
-export { useMe };
+export * from './squadQueries';
+export * from './todoQueries';
+export { userQueries };

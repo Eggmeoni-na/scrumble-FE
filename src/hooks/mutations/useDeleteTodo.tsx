@@ -1,7 +1,7 @@
 import { deleteTodo } from '@/apis';
 import { DeleteTodoParamType, MutateOptionsType } from '@/hooks/mutations/types';
+import { todoKeys } from '@/hooks/queries';
 import { InfiniteQueryData } from '@/hooks/queries/types';
-import { todoKeys } from '@/hooks/queries/useTodo';
 import { ApiResponse, ToDoDetail } from '@/types';
 import { optimisticUpdateMutateHandler } from '@/utils/optimisticUpdateMutateHandler';
 import { useMutation, useQueryClient } from '@tanstack/react-query';

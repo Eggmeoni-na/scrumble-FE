@@ -1,7 +1,7 @@
 import { deleteUser, logoutUser } from '@/apis';
 import Button from '@/components/common/Button/Button';
 import { useToastHandler, useUserCookie } from '@/hooks';
-import { useMe } from '@/hooks/queries';
+import { userQueries } from '@/hooks/queries';
 import handleKeyDown from '@/utils/handleKeyDown';
 import { css, Theme } from '@emotion/react';
 import { useMutation, useSuspenseQuery } from '@tanstack/react-query';
@@ -11,7 +11,7 @@ const MyPage = () => {
   const navigate = useNavigate();
   const { clearCookie } = useUserCookie();
   const { successToast, failedToast } = useToastHandler();
-  const { data: user } = useSuspenseQuery(useMe()).data;
+  const { data: user } = useSuspenseQuery(userQueries()).data;
   const { mutate: deleteUserMutate } = useMutation({
     mutationFn: deleteUser,
     onSuccess: () => {
