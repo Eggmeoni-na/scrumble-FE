@@ -5,7 +5,7 @@ import { commonButtonStyle, headerStyle, sidebarContainer } from '@/components/c
 import { INVITATION_TYPE } from '@/constants/squad';
 import { useInfinite, useToastHandler } from '@/hooks';
 import { useAcceptInvitation, useReadNotification } from '@/hooks/mutations';
-import { notificationInfiniteQueryOptions } from '@/hooks/queries/notificationQueries';
+import { notificationInfiniteQueryOptions } from '@/hooks/queries';
 import { scrollBarStyle } from '@/styles/globalStyles';
 import { NotificationResponse } from '@/types/notification';
 import { css, Theme } from '@emotion/react';
@@ -14,7 +14,6 @@ import { MouseEvent, MouseEventHandler, useState } from 'react';
 
 const Notification = ({ toggleOpen }: { toggleOpen: VoidFunction }) => {
   const { data: notifications, fetchNextPage, hasNextPage } = useInfiniteQuery(notificationInfiniteQueryOptions());
-  console.log('notifications', notifications);
 
   const handleClose = () => toggleOpen();
 

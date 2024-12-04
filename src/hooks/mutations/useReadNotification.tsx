@@ -4,7 +4,7 @@ import { notiKeys } from '@/hooks/queries';
 import { InfiniteQueryData } from '@/hooks/queries/types';
 import { ApiResponse } from '@/types';
 import { NotificationResponse } from '@/types/notification';
-import { optimisticUpdateMutateHandler } from '@/utils/optimisticUpdateMutateHandler';
+import { optimisticUpdateMutateHandler } from '@/utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export const useReadNotification = (
