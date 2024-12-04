@@ -1,7 +1,4 @@
-import Container from '@/components/layouts/Container';
-import Footer from '@/components/layouts/Footer';
-import Header from '@/components/layouts/Header';
-import Main from '@/components/layouts/Main';
+import { Container, Footer, Header, Main } from '@/components/layouts';
 import { ReactNode } from 'react';
 
 type Props = {
@@ -9,11 +6,11 @@ type Props = {
 };
 
 const MainLayout = ({ children }: Props) => (
-    <Container>
-      <Header />
-      <Main>{children}</Main>
-      <Footer />
-    </Container>
-  );
+  <Container>
+    <Header />
+    <Main>{children}</Main>
+    <Footer />
+  </Container>
+);
 
 export default MainLayout;

@@ -1,4 +1,4 @@
-import { SelectMemberList } from '@/components/common/Member';
+import { SelectMemberList } from '@/components/Member';
 import { useSquadStore } from '@/stores';
 
 const SelectMemberPage = () => {

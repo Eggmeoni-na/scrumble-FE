@@ -1,8 +1,5 @@
-import Button from '@/components/common/Button/Button';
-import ModalButtonGroup from '@/components/common/Modal/ModalTemplate/ModalButtonGroup';
-import ModalContent from '@/components/common/Modal/ModalTemplate/ModalContent';
-import ModalHeader from '@/components/common/Modal/ModalTemplate/ModalHeader';
-import ModalTemplate from '@/components/common/Modal/ModalTemplate/ModalTemplate';
+import { Button } from '@/components/common';
+import { ModalButtonGroup, ModalContent, ModalHeader, ModalTemplate } from '@/components/common/Modal';
 import { ModalContentProps } from '@/types';
 import { css, Theme } from '@emotion/react';
 import { FormEvent, useState } from 'react';

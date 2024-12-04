@@ -1,8 +1,7 @@
 import App from '@/App';
-import { MainLayout } from '@/components';
-import Loading from '@/components/common/Loading';
-import LoginLayout from '@/components/layouts/LoginLayout';
-import SquadIdGuard from '@/components/SquadIdGuard';
+import { SquadIdGuard } from '@/components';
+import { Loading } from '@/components/common';
+import { LoginLayout, MainLayout } from '@/components/layouts';
 import { HomePage, LoginPage, MyPage, SquadDetailPage, SquadPage } from '@/Pages';
 import GoogleOAuthCallbackPage from '@/Pages/GoogleOAuthLoginPage';
 import InvitePage from '@/Pages/InvitePage';

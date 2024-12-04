@@ -1,5 +1,5 @@
 import { deleteUser, logoutUser } from '@/apis';
-import Button from '@/components/common/Button/Button';
+import { Button } from '@/components/common';
 import { useToastHandler, useUserCookie } from '@/hooks';
 import { userQueries } from '@/hooks/queries';
 import handleKeyDown from '@/utils/handleKeyDown';

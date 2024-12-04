@@ -1,12 +1,6 @@
 import { Check } from '@/assets/icons';
-import IconWrapper from '@/components/common/IconWrapper';
-import {
-  checkedStyle,
-  checkIconStyle,
-  contentStyle,
-  getStatusStyles,
-  todoItemStyle,
-} from '@/components/common/Todo/TodoList';
+import { IconWrapper } from '@/components';
+import { checkedStyle, checkIconStyle, contentStyle, getStatusStyles, todoItemStyle } from '@/components/Todo';
 import { TODO_STATUS } from '@/constants/todo';
 import { ToDoDetail } from '@/types';
 import { css, useTheme } from '@emotion/react';

@@ -1,4 +1,4 @@
-import Form from '@/components/common/Form';
+import { Form } from '@/components/common';
 import { TODO_TYPES } from '@/constants/todo';
 import { useToastHandler } from '@/hooks';
 import { useCreateTodo } from '@/hooks/mutations';

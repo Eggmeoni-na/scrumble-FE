@@ -1,7 +1,7 @@
 import { assignSquadLeader } from '@/apis';
 import { Check } from '@/assets/icons';
-import IconWrapper from '@/components/common/IconWrapper';
-import MemberProfile from '@/components/common/Member/MemberProfile';
+import { IconWrapper } from '@/components';
+import { MemberProfile } from '@/components/Member';
 import { ActionPrompt } from '@/components/common/Modal/ModalContents';
 import { ROLE } from '@/constants/role';
 import { MEMBER_STYLE_TYPE } from '@/constants/squad';

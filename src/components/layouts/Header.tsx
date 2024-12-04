@@ -1,4 +1,4 @@
-import { DefaultHeader, SquadHeader } from '@/components/common/Header';
+import { DefaultHeader, SquadHeader } from '@/components/common';
 import { useLocation, useParams } from 'react-router-dom';
 
 const Header = () => {

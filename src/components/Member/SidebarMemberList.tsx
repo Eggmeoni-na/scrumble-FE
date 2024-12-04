@@ -1,6 +1,6 @@
 import { Exit } from '@/assets/icons';
-import IconWrapper from '@/components/common/IconWrapper';
-import MemberProfile from '@/components/common/Member/MemberProfile';
+import { IconWrapper } from '@/components';
+import { MemberProfile } from '@/components/Member';
 import { commonButtonStyle } from '@/components/common/Sidebar';
 import { ROLE } from '@/constants/role';
 import { MEMBER_STYLE_TYPE } from '@/constants/squad';

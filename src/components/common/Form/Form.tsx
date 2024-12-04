@@ -1,5 +1,5 @@
 import { Add } from '@/assets/icons';
-import IconWrapper from '@/components/common/IconWrapper';
+import { IconWrapper } from '@/components';
 import { css, SerializedStyles, Theme } from '@emotion/react';
 import { ChangeEvent, FormEvent, HTMLInputTypeAttribute, KeyboardEvent } from 'react';
 

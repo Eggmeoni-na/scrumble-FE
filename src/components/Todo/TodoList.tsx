@@ -1,7 +1,7 @@
 import { Check, Close, Delete, Edit } from '@/assets/icons';
-import Button from '@/components/common/Button/Button';
-import IconWrapper from '@/components/common/IconWrapper';
-import { MemberTodoItem } from '@/components/common/Member';
+import { IconWrapper } from '@/components';
+import { Button } from '@/components/common';
+import { MemberTodoItem } from '@/components/Member';
 import { TODO_STATUS } from '@/constants/todo';
 import { useInfinite, useToastHandler } from '@/hooks';
 import { useDeleteTodo, useUpdateTodo } from '@/hooks/mutations';

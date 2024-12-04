@@ -1,4 +1,4 @@
-import Button from '@/components/common/Button/Button';
+import { Button } from '@/components/common';
 import { useCreateSquad } from '@/hooks/mutations';
 import { squadQueryOptions } from '@/hooks/queries';
 import { useToastStore } from '@/stores';

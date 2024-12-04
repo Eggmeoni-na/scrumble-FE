@@ -1,6 +1,6 @@
 import { Close, Edit } from '@/assets/icons';
-import IconWrapper from '@/components/common/IconWrapper';
-import { SidebarMemberList } from '@/components/common/Member';
+import { IconWrapper } from '@/components';
+import { SidebarMemberList } from '@/components/Member';
 import { Overlay } from '@/components/common/Overlay';
 import { ROLE } from '@/constants/role';
 import { useDeleteSquad, useExitSquad, useUpdateSquadName } from '@/hooks/mutations';
