@@ -1,7 +1,21 @@
-export { default as GoogleOAuthLoginPage } from './GoogleOAuthLoginPage';
-export { default as HomePage } from './HomePage';
-export { default as LoginPage } from './LoginPage';
-export { default as MyPage } from './MyPage';
-export { default as ProtectedPage } from './ProtectedPage';
-export { default as SquadDetailPage } from './SquadDetailPage';
-export { default as SquadPage } from './SquadPage';
+import GoogleOAuthCallbackPage from '@/Pages/GoogleOAuthLoginPage';
+import HomePage from '@/Pages/HomePage';
+import InvitePage from '@/Pages/InvitePage';
+import LoginPage from '@/Pages/LoginPage';
+import MyPage from '@/Pages/MyPage';
+import NotFoundPage from '@/Pages/NotFoundPage';
+import SelectMemberPage from '@/Pages/SelectMemberPage';
+import SquadDetailPage from '@/Pages/SquadDetailPage';
+import SquadPage from '@/Pages/SquadPage';
+
+export {
+  GoogleOAuthCallbackPage,
+  HomePage,
+  InvitePage,
+  LoginPage,
+  MyPage,
+  NotFoundPage,
+  SelectMemberPage,
+  SquadDetailPage,
+  SquadPage,
+};
