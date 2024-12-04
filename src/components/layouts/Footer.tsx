@@ -1,29 +1,29 @@
 import { Pouch, Target, User } from '@/assets/icons';
-import IconWrapper from '@/components/common/IconWrapper';
+import { IconWrapper } from '@/components';
 import { css, Theme } from '@emotion/react';
 import { Link } from 'react-router-dom';
 
 const Footer = () => (
-    <footer css={footerContainer}>
-      <Link to="/squads" css={menuIcon} aria-label="Go to squads">
-        <IconWrapper>
-          <Target />
-        </IconWrapper>
-        <span>스쿼드</span>
-      </Link>
-      <Link to="/" css={homeIcon} aria-label="Go to home">
-        <IconWrapper>
-          <Pouch />
-        </IconWrapper>
-      </Link>
-      <Link to="/me" css={menuIcon} aria-label="Go to my">
-        <IconWrapper>
-          <User />
-        </IconWrapper>
-        <span>계정</span>
-      </Link>
-    </footer>
-  );
+  <footer css={footerContainer}>
+    <Link to="/squads" css={menuIcon} aria-label="Go to squads">
+      <IconWrapper>
+        <Target />
+      </IconWrapper>
+      <span>스쿼드</span>
+    </Link>
+    <Link to="/" css={homeIcon} aria-label="Go to home">
+      <IconWrapper>
+        <Pouch />
+      </IconWrapper>
+    </Link>
+    <Link to="/me" css={menuIcon} aria-label="Go to my">
+      <IconWrapper>
+        <User />
+      </IconWrapper>
+      <span>계정</span>
+    </Link>
+  </footer>
+);
 
 export default Footer;
 

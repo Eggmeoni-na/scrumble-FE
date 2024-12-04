@@ -1,6 +1,6 @@
 import { ROLE } from '@/constants/role';
 import { MEMBER_STYLE_TYPE } from '@/constants/squad';
-import useUserCookie from '@/hooks/useUserCookie';
+import { useUserCookie } from '@/hooks';
 import { SquadMember } from '@/types';
 import { css, Theme } from '@emotion/react';
 

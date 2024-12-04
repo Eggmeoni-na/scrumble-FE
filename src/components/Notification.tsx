@@ -1,23 +1,20 @@
 import { Check, Close } from '@/assets/icons';
-import Button from '@/components/common/Button/Button';
-import IconWrapper from '@/components/common/IconWrapper';
-import { Overlay } from '@/components/common/Overlay';
+import { IconWrapper } from '@/components';
+import { Button, Overlay } from '@/components/common';
 import { commonButtonStyle, headerStyle, sidebarContainer } from '@/components/common/Sidebar';
 import { INVITATION_TYPE } from '@/constants/squad';
-import useAcceptInvitation from '@/hooks/mutations/useAcceptInvitation';
-import { useReadNotification } from '@/hooks/mutations/useReadNotification';
-import notificationInfiniteQueryOptions from '@/hooks/queries/useNotification';
-import { squadKeys } from '@/hooks/queries/useSquad';
-import useInfinite from '@/hooks/useInfinite';
-import useToastHandler from '@/hooks/useToastHandler';
+import { useInfinite, useToastHandler } from '@/hooks';
+import { useAcceptInvitation, useReadNotification } from '@/hooks/mutations';
+import { notificationInfiniteQueryOptions } from '@/hooks/queries/notificationQueries';
 import { scrollBarStyle } from '@/styles/globalStyles';
 import { NotificationResponse } from '@/types/notification';
 import { css, Theme } from '@emotion/react';
-import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { MouseEvent, MouseEventHandler, useState } from 'react';
 
 const Notification = ({ toggleOpen }: { toggleOpen: VoidFunction }) => {
   const { data: notifications, fetchNextPage, hasNextPage } = useInfiniteQuery(notificationInfiniteQueryOptions());
+  console.log('notifications', notifications);
 
   const handleClose = () => toggleOpen();
 
@@ -70,27 +67,40 @@ const NotificationList = ({
   hasNextPage: boolean;
 }) => {
   const { loadMoreRef } = useInfinite(loadMoreNotifications, hasNextPage);
+  // notifications에 읽지 않은 알림이 있는지 확인
 
   return (
     <ul css={listStyle}>
       {notifications.map((data) => (
         <Notification.Item key={data.notificationId} data={data} />
       ))}
-      {hasNextPage && <div ref={loadMoreRef} />}
+      {hasNextPage && (
+        <div
+          ref={loadMoreRef}
+          style={{
+            color: 'transparent',
+          }}
+        >
+          Loading...
+        </div>
+      )}
     </ul>
   );
 };
 
 const NotificationItem = ({ data }: { data: NotificationResponse }) => {
   const [isAccept, setIsAccept] = useState(false);
-  const { notificationType, notificationData, read, notificationId } = data;
-  const { failedToast } = useToastHandler();
+  const { notificationType, notificationData, read, notificationId, notificationMessage } = data;
+  const { failedToast, successToast } = useToastHandler();
   const { acceptInvitation } = useAcceptInvitation({
     onSuccess: () => {
+      // 서버에서 받아온 데이터로 수락 여부 업데이트
+      // 그럼 재조회 시
       setIsAccept(true);
       // TODO: 실제 API 테스트 시 점검 필요
-      const queryClient = useQueryClient();
-      queryClient.refetchQueries({ queryKey: squadKeys.squad });
+      successToast('수락했습니다요~');
+      // const queryClient = useQueryClient();
+      // queryClient.refetchQueries({ queryKey: squadKeys.squad });
     },
     onError: () => {
       failedToast('잠시 후 다시 시도해주세요');
@@ -99,10 +109,11 @@ const NotificationItem = ({ data }: { data: NotificationResponse }) => {
   });
   const { readNotificationMutate } = useReadNotification();
 
-  const message =
-    notificationType === INVITATION_TYPE.INVITE_REQUEST
-      ? `${notificationData.squadName}스쿼드에서 초대장이 도착했어요.`
-      : `${notificationData.userName}님을 ${notificationData.squadName}스쿼드에 초대했어요`;
+  // 서버에서 내려줌
+  // const message =
+  //   notificationType === INVITATION_TYPE.INVITE_REQUEST
+  //     ? `${notificationData.squadName}스쿼드에서 초대장이 도착했어요.`
+  //     : `${notificationData.userName}님을 ${notificationData.squadName}스쿼드에 초대했어요`;
 
   const handleReadStatus = () => {
     if (read) return;
@@ -111,10 +122,6 @@ const NotificationItem = ({ data }: { data: NotificationResponse }) => {
 
   const handleAccept = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    if (!notificationData.squadId) {
-      console.log('squadId가 없습니다.');
-      return;
-    }
     acceptInvitation({ squadId: notificationData.squadId });
   };
 
@@ -130,7 +137,7 @@ const NotificationItem = ({ data }: { data: NotificationResponse }) => {
       tabIndex={0}
       role="button"
     >
-      <p>{message}</p>
+      <p>{notificationMessage}</p>
       {notificationType === INVITATION_TYPE.INVITE_REQUEST && (
         <AcceptStatus isAccept={isAccept} onAccept={handleAccept} />
       )}

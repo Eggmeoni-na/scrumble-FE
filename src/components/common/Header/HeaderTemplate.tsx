@@ -1,8 +1,6 @@
 import { ActiveBell, Back, Bell, Dark, Light, Menu } from '@/assets/icons';
-import IconWrapper from '@/components/common/IconWrapper';
-import Notification from '@/components/common/Notification';
-
-import useOpenToggle from '@/hooks/useOpenToggle';
+import { IconWrapper, Notification } from '@/components';
+import { useOpenToggle } from '@/hooks';
 import { useThemeStore } from '@/stores';
 import { css, Theme } from '@emotion/react';
 import { PropsWithChildren } from 'react';
@@ -42,6 +40,7 @@ const NotificationsButton = () => {
   // TODO: 이벤트 수신 및 읽음 여부에 따라 종 아이콘 조건부 렌더링
 
   return (
+    // ContextProvider
     <>
       <IconWrapper aria-label="alarm" onClick={() => toggleOpen()} role="button">
         {!isActive ? <Bell /> : <ActiveBell />}
@@ -52,16 +51,16 @@ const NotificationsButton = () => {
 };
 
 const SidebarToggleButton = ({ toggleSidebar }: { toggleSidebar: VoidFunction }) => (
-    <IconWrapper
-      aria-label="menu"
-      onClick={() => {
-        toggleSidebar();
-      }}
-      role="button"
-    >
-      <Menu />
-    </IconWrapper>
-  );
+  <IconWrapper
+    aria-label="menu"
+    onClick={() => {
+      toggleSidebar();
+    }}
+    role="button"
+  >
+    <Menu />
+  </IconWrapper>
+);
 
 HeaderTemplate.BackButton = BackButton;
 HeaderTemplate.RightMenuWrapper = RightMenuWrapper;

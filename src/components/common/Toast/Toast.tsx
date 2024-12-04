@@ -1,5 +1,5 @@
 import { Close, Failed, Success, Warning } from '@/assets/icons';
-import IconWrapper from '@/components/common/IconWrapper';
+import { IconWrapper } from '@/components';
 import ToastPortal from '@/components/common/Toast/ToastPortal';
 import { Toast, useToastStore } from '@/stores';
 import { Status } from '@/types';

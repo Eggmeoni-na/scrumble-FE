@@ -1,8 +1,7 @@
 import { HeaderTemplate } from '@/components/common/Header';
 import { Sidebar } from '@/components/common/Sidebar';
-import { squadDetailQueryOptions } from '@/hooks/queries/useSquad';
-import useOpenToggle from '@/hooks/useOpenToggle';
-
+import { useOpenToggle } from '@/hooks';
+import { squadDetailQueryOptions } from '@/hooks/queries';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useLocation } from 'react-router-dom';
 

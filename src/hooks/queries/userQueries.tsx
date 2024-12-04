@@ -1,7 +1,7 @@
 import { getUser } from '@/apis';
 import { queryOptions } from '@tanstack/react-query';
 
-export const useMe = () =>
+export const userQueries = () =>
   queryOptions({
     queryKey: ['me'],
     queryFn: getUser,

@@ -1,5 +1,4 @@
-import Container from '@/components/layouts/Container';
-import Main from '@/components/layouts/Main';
+import { Container, Main } from '@/components/layouts';
 import { ReactNode } from 'react';
 
 type Props = {
@@ -7,9 +6,9 @@ type Props = {
 };
 
 const LoginLayout = ({ children }: Props) => (
-    <Container>
-      <Main>{children}</Main>
-    </Container>
-  );
+  <Container>
+    <Main>{children}</Main>
+  </Container>
+);
 
 export default LoginLayout;

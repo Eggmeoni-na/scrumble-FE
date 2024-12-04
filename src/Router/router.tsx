@@ -1,13 +1,18 @@
 import App from '@/App';
-import { MainLayout } from '@/components';
-import Loading from '@/components/common/Loading';
-import LoginLayout from '@/components/layouts/LoginLayout';
-import SquadIdGuard from '@/components/SquadIdGuard';
-import { HomePage, LoginPage, MyPage, SquadDetailPage, SquadPage } from '@/Pages';
-import GoogleOAuthCallbackPage from '@/Pages/GoogleOAuthLoginPage';
-import InvitePage from '@/Pages/InvitePage';
-import NotFoundPage from '@/Pages/NotFoundPage';
-import SelectMemberPage from '@/Pages/SelectMemberPage';
+import { SquadIdGuard } from '@/components';
+import { Loading } from '@/components/common';
+import { LoginLayout, MainLayout } from '@/components/layouts';
+import {
+  GoogleOAuthCallbackPage,
+  HomePage,
+  InvitePage,
+  LoginPage,
+  MyPage,
+  NotFoundPage,
+  SelectMemberPage,
+  SquadDetailPage,
+  SquadPage,
+} from '@/Pages';
 import { Suspense } from 'react';
 
 import { createBrowserRouter, Outlet } from 'react-router-dom';

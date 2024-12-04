@@ -1,4 +1,4 @@
-import MemberProfile from '@/components/common/Member/MemberProfile';
+import { MemberProfile } from '@/components/Member';
 import { MEMBER_STYLE_TYPE } from '@/constants/squad';
 import { useMemberStore } from '@/stores';
 import { scrollBarStyle } from '@/styles/globalStyles';
