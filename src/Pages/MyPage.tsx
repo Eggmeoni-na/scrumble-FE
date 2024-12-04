@@ -1,8 +1,7 @@
 import { deleteUser, logoutUser } from '@/apis';
 import Button from '@/components/common/Button/Button';
-import { useMe } from '@/hooks/queries/useMe';
-import useToastHandler from '@/hooks/useToastHandler';
-import useUserCookie from '@/hooks/useUserCookie';
+import { useToastHandler, useUserCookie } from '@/hooks';
+import { useMe } from '@/hooks/queries';
 import handleKeyDown from '@/utils/handleKeyDown';
 import { css, Theme } from '@emotion/react';
 import { useMutation, useSuspenseQuery } from '@tanstack/react-query';

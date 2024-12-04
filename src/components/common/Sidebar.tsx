@@ -4,7 +4,7 @@ import { SidebarMemberList } from '@/components/common/Member';
 import { Overlay } from '@/components/common/Overlay';
 import { ROLE } from '@/constants/role';
 import { useDeleteSquad, useExitSquad, useUpdateSquadName } from '@/hooks/mutations';
-import { squadDetailQueryOptions, squadKeys } from '@/hooks/queries/useSquad';
+import { squadDetailQueryOptions, squadKeys } from '@/hooks/queries';
 import { useSquadStore, useToastStore } from '@/stores';
 import handleKeyDown from '@/utils/handleKeyDown';
 import { css, Theme } from '@emotion/react';

@@ -1,7 +1,7 @@
 import { readNotification } from '@/apis/notification';
 import { MutateOptionsType } from '@/hooks/mutations/types';
+import { notiKeys } from '@/hooks/queries';
 import { InfiniteQueryData } from '@/hooks/queries/types';
-import { notiKeys } from '@/hooks/queries/useNotification';
 import { ApiResponse } from '@/types';
 import { NotificationResponse } from '@/types/notification';
 import { optimisticUpdateMutateHandler } from '@/utils/optimisticUpdateMutateHandler';

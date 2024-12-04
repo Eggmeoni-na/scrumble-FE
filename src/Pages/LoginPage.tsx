@@ -1,5 +1,5 @@
 import { generateTempSession } from '@/apis';
-import useUserCookie from '@/hooks/useUserCookie';
+import { useUserCookie } from '@/hooks';
 import { pcMediaQuery } from '@/styles/breakpoints';
 import { AuthUser } from '@/types';
 import { css } from '@emotion/react';

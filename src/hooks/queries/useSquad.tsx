@@ -1,4 +1,5 @@
-import { getSquadDetail, getSquadList } from '@/apis';
+import { getSquadList } from '@/apis';
+import { getSquadDetailApi } from '@/apis/mockApi';
 import { queryOptions } from '@tanstack/react-query';
 
 export const squadKeys = {
@@ -10,12 +11,13 @@ export const squadQueryOptions = () =>
   queryOptions({
     queryKey: squadKeys.squad,
     queryFn: getSquadList,
+    refetchOnWindowFocus: false,
   });
 
 export const squadDetailQueryOptions = (squadId: number) =>
   queryOptions({
     queryKey: squadKeys.squadDetail(squadId),
-    queryFn: () => getSquadDetail(squadId),
+    queryFn: () => getSquadDetailApi(squadId),
     refetchOnWindowFocus: false,
     staleTime: 300000,
   });
