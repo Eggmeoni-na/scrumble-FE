@@ -9,7 +9,7 @@ import { todoKeys } from '@/hooks/queries';
 import { InfiniteQueryData } from '@/hooks/queries/types';
 import { useDayStore, useSquadStore } from '@/stores';
 import { ApiResponse, ToDoDetail, UpdateTodoRequest } from '@/types';
-import handleKeyDown from '@/utils/handleKeyDown';
+import { handleKeyDown } from '@/utils';
 import { css, keyframes, Theme, useTheme } from '@emotion/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { KeyboardEvent, useState } from 'react';

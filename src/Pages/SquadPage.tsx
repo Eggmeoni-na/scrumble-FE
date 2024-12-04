@@ -4,7 +4,7 @@ import { squadQueryOptions } from '@/hooks/queries';
 import { useToastStore } from '@/stores';
 import { breakpoints, mobileMediaQuery, pcMediaQuery } from '@/styles/breakpoints';
 import { Squad } from '@/types/squad';
-import handleKeyDown from '@/utils/handleKeyDown';
+import { handleKeyDown } from '@/utils';
 import { css, Theme } from '@emotion/react';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { startTransition } from 'react';

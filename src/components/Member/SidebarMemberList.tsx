@@ -10,7 +10,7 @@ import { squadKeys } from '@/hooks/queries';
 import { useSquadStore, useToastStore } from '@/stores';
 import { mobileMediaQuery, pcMediaQuery } from '@/styles/breakpoints';
 import { SquadMember } from '@/types';
-import { getPriority } from '@/utils/getPriority';
+import { getPriority } from '@/utils';
 import { css } from '@emotion/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useMemo } from 'react';

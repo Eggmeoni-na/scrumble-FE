@@ -9,7 +9,7 @@ import { useModal } from '@/hooks';
 import { squadDetailQueryOptions, squadKeys } from '@/hooks/queries';
 import { useToastStore } from '@/stores';
 import { SquadMember } from '@/types';
-import handleKeyDown from '@/utils/handleKeyDown';
+import { handleKeyDown } from '@/utils';
 import { css, Theme } from '@emotion/react';
 import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { useState } from 'react';

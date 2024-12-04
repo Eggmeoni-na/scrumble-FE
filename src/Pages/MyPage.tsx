@@ -2,7 +2,7 @@ import { deleteUser, logoutUser } from '@/apis';
 import { Button } from '@/components/common';
 import { useToastHandler, useUserCookie } from '@/hooks';
 import { userQueries } from '@/hooks/queries';
-import handleKeyDown from '@/utils/handleKeyDown';
+import { handleKeyDown } from '@/utils';
 import { css, Theme } from '@emotion/react';
 import { useMutation, useSuspenseQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';

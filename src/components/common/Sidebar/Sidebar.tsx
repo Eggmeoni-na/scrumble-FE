@@ -6,7 +6,7 @@ import { ROLE } from '@/constants/role';
 import { useDeleteSquad, useExitSquad, useUpdateSquadName } from '@/hooks/mutations';
 import { squadDetailQueryOptions, squadKeys } from '@/hooks/queries';
 import { useSquadStore, useToastStore } from '@/stores';
-import handleKeyDown from '@/utils/handleKeyDown';
+import { handleKeyDown } from '@/utils';
 import { css, Theme } from '@emotion/react';
 import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';

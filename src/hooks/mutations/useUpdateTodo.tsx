@@ -3,7 +3,7 @@ import { MutateOptionsType, UpdateTodoParamType } from '@/hooks/mutations/types'
 import { todoKeys } from '@/hooks/queries';
 import { InfiniteQueryData } from '@/hooks/queries/types';
 import { ApiResponse, CreateAndUpdateResponseType, ToDoDetail } from '@/types';
-import { optimisticUpdateMutateHandler } from '@/utils/optimisticUpdateMutateHandler';
+import { optimisticUpdateMutateHandler } from '@/utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export const useUpdateTodo = (

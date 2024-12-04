@@ -1,7 +1,7 @@
 import { useDayStore } from '@/stores';
 import { breakpoints, mobileMediaQuery, pcMediaQuery } from '@/styles/breakpoints';
 import { scrollBarStyle } from '@/styles/globalStyles';
-import { getDaysInMonth } from '@/utils/getDaysInMonth';
+import { getDaysInMonth } from '@/utils';
 import { css, Theme, useTheme } from '@emotion/react';
 import { addMonths, format, subMonths } from 'date-fns';
 import { ko } from 'date-fns/locale';
