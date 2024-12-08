@@ -6,9 +6,8 @@ import { TODO_STATUS } from '@/constants/todo';
 import { useInfinite, useToastHandler } from '@/hooks';
 import { useDeleteTodo, useUpdateTodo } from '@/hooks/mutations';
 import { todoKeys } from '@/hooks/queries';
-import { InfiniteQueryData } from '@/hooks/queries/types';
 import { useDayStore, useSquadStore } from '@/stores';
-import { ApiResponse, ToDoDetail, UpdateTodoRequest } from '@/types';
+import { ToDoDetail, UpdateTodoRequest } from '@/types';
 import { handleKeyDown } from '@/utils';
 import { css, keyframes, Theme, useTheme } from '@emotion/react';
 import { useQueryClient } from '@tanstack/react-query';
@@ -49,20 +48,8 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
 
   const queryClient = useQueryClient();
   // TODO 상태 및 내용 수정 로직 공유
-  const { updateTodoMutate } = useUpdateTodo(squadId, selectedDay, {
-    onSuccess: ({ data }) => {
-      successToast('수정에 성공했어요');
-      queryClient.setQueryData(
-        todoKeys.todos(squadId, selectedDay),
-        (prevData: InfiniteQueryData<ApiResponse<ToDoDetail[]>>) => ({
-          ...prevData,
-          pages: prevData.pages.map((page) => ({
-            ...page,
-            data: page.data.map((todo) => (todo.toDoId === data.toDoId ? data : todo)),
-          })),
-        }),
-      );
-    },
+  const { updateTodoMutate } = useUpdateTodo(toDoId, squadId, selectedDay, {
+    onSuccess: () => successToast('수정에 성공했어요'),
     onError: (error, data, context) => {
       failedToast('수정에 실패했어요');
       if (context?.oldData) {
