@@ -3,11 +3,11 @@ import { SquadDetailMemberList } from '@/components/Member';
 import { TodoForm, TodoList } from '@/components/Todo';
 import { TODO_PAGE_SIZE, TODO_STATUS } from '@/constants/todo';
 import { useUserCookie } from '@/hooks';
-import { squadDetailQueryOptions, todoInfiniteQueryOptions, todoKeys } from '@/hooks/queries';
+import { squadDetailQueryOptions, todoInfiniteQueryOptions } from '@/hooks/queries';
 import { useDayStore, useMemberStore, useSquadStore } from '@/stores';
 import { mobileMediaQuery, pcMediaQuery } from '@/styles/breakpoints';
 import { css, Theme } from '@emotion/react';
-import { useInfiniteQuery, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -25,8 +25,6 @@ const SquadDetailPage = () => {
 
   const me = squadDetail?.squadMembers?.find((member) => member.memberId === user?.id);
   const isMeSelected = !selectedMember || selectedMember.squadMemberId === me?.squadMemberId;
-
-  const queryClient = useQueryClient();
 
   const payload = {
     startDate: selectedDay,
@@ -71,14 +69,6 @@ const SquadDetailPage = () => {
       setProgressRate(newProgressRate);
     }
   }, [todos, todoCount, progressRate]);
-
-  useEffect(
-    () => () =>
-      queryClient.removeQueries({
-        queryKey: todoKeys.todos(squadId, selectedDay),
-      }),
-    [selectedDay, selectedMember],
-  );
 
   return (
     <section css={containerStyle}>
