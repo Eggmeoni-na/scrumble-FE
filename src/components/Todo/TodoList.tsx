@@ -48,7 +48,7 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
 
   const queryClient = useQueryClient();
   // TODO 상태 및 내용 수정 로직 공유
-  const { updateTodoMutate } = useUpdateTodo(toDoId, squadId, selectedDay, {
+  const { updateTodoMutate } = useUpdateTodo(squadId, selectedDay, {
     onSuccess: () => successToast('수정에 성공했어요'),
     onError: (error, data, context) => {
       failedToast('수정에 실패했어요');
