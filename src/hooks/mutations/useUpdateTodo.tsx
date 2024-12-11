@@ -7,7 +7,6 @@ import { optimisticUpdateMutateHandler } from '@/utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export const useUpdateTodo = (
-  toDoId: number,
   squadId: number,
   selectedDay: string,
   options: MutateOptionsType<
@@ -19,7 +18,7 @@ export const useUpdateTodo = (
   const queryClient = useQueryClient();
   const { mutate: updateTodoMutate } = useMutation({
     mutationFn: updateTodo,
-    onMutate: async ({ newTodo }) => {
+    onMutate: async ({ newTodo, toDoId }) => {
       const oldData = await optimisticUpdateMutateHandler<InfiniteQueryData<ApiResponse<ToDoDetail[]>>>(
         queryClient,
         todoKeys.todos(squadId, selectedDay),
