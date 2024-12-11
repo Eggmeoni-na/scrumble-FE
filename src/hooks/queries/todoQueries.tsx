@@ -34,4 +34,5 @@ export const todoInfiniteQueryOptions = (
     initialPageParam: 1,
     select: (data) => (data.pages ?? []).flatMap((page) => page.data),
     refetchOnWindowFocus: false,
+    staleTime: 300000,
   });
