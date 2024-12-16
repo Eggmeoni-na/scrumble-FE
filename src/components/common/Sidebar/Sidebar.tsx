@@ -53,12 +53,12 @@ export const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
 
   const handleInvitation = () => {
     closeSidebar();
-    navigate(`/squads/${squadId}/invite`);
+    navigate(`/squads/${squadId}/invite?step=invite`);
   };
 
   const handleAssignLeader = () => {
     closeSidebar();
-    navigate(`/squads/${squadId}/members`);
+    navigate(`/squads/${squadId}/members?step=assign`);
   };
 
   return (
