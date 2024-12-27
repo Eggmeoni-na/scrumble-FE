@@ -12,7 +12,7 @@ export const useModal = () => {
   const openModal = useCallback(
     <P extends { onSubmit(value: unknown): unknown }>(
       Component: ComponentType<P>,
-      props?: Record<string, unknown>,
+      props?: Omit<P, 'onSubmit' | 'onAbort'> | undefined,
       actionModal?: ActionModalType,
     ) =>
       new Promise<{ ok: boolean; value?: Parameters<P['onSubmit']>[0]; error?: string }>((resolve) => {
