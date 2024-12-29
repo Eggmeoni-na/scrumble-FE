@@ -20,7 +20,7 @@ const SquadHeader = ({ squadId }: { squadId: number }) => {
   const title = step ? HEADER_TITLE[step] : data.squadName;
 
   return (
-    <div>
+    <>
       <HeaderTemplate>
         <HeaderTemplate.BackButton />
         <span>{title}</span>
@@ -31,7 +31,7 @@ const SquadHeader = ({ squadId }: { squadId: number }) => {
         </HeaderTemplate.RightMenuWrapper>
       </HeaderTemplate>
       {isOpen && <Sidebar closeSidebar={toggleOpen} />}
-    </div>
+    </>
   );
 };
 
