@@ -22,11 +22,9 @@ const containerStyles = css`
 
   ${mobileMediaQuery(css`
     max-width: ${breakpoints.mobile};
-    border: 2px solid red; // 구분용 - 삭제 예정
   `)}
 
   ${pcMediaQuery(css`
     max-width: ${breakpoints.pc};
-    border: 2px solid red; // 구분용 - 삭제 예정
   `)}
 `;
