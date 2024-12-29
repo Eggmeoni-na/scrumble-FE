@@ -1,5 +1,4 @@
-import RootErrorFallback from '@/components/common/ErrorBoundary/RootErrorFallback';
-import { ToastContainer } from '@/components/common/Toast';
+import { RootErrorFallback, ToastContainer } from '@/components/common';
 import { ModalProvider } from '@/context/ModalContext';
 import { useThemeStore } from '@/stores';
 import { darkTheme, globalStyles, lightTheme } from '@/styles';
