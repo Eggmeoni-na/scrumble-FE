@@ -413,33 +413,19 @@ Context API는 Provider를 통해 상태를 특정 범위에 제한할 수 있�
 
 <table>
   <tr>
-    <th>투두 생성</th>
+    <th width="360px">투두 생성</th>
+    <th width="360px">투두 수정</th>
+    <th width="360px">투두 삭제</th>
   </tr>
   <tr>
     <td>
-    <img src="https://github.com/user-attachments/assets/f9393be8-513e-4935-9977-1eefd4ef3058" alt="투두 생성">
+      <img src="https://github.com/user-attachments/assets/b1bc3666-8e82-4fa8-8f8c-d16daec687d1" alt="투두 생성" >
     </td>
-  </tr>
-</table>
-
-<table>
-  <tr>
-    <th>투두 수정</th>
-  </tr>
-  <tr>
     <td>
-    <img src="https://github.com/user-attachments/assets/2a267c36-9aca-457b-9748-68e1f54f5cd0" alt="투두 수정">
+      <img src="https://github.com/user-attachments/assets/323c35f4-22f2-4cee-b44a-4e3c9eab7a4a" alt="투두 수정">
     </td>
-  </tr>
-</table>
-
-<table>
-  <tr>
-    <th>투두 삭제</th>
-  </tr>
-  <tr>
     <td>
-    <img src="https://github.com/user-attachments/assets/4399d1e0-e8e0-4c0a-a4a2-eee4a8511adc" alt="투두 삭제">
+      <img src="https://github.com/user-attachments/assets/db23341e-b4f8-493d-85b2-4e83f4e14280" alt="투두 삭제">
     </td>
   </tr>
 </table>
