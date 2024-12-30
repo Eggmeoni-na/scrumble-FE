@@ -419,7 +419,7 @@ Context API는 Provider를 통해 상태를 특정 범위에 제한할 수 있�
   </tr>
   <tr>
     <td>
-      <img src="https://github.com/user-attachments/assets/b1bc3666-8e82-4fa8-8f8c-d16daec687d1" alt="투두 생성" >
+      <img src="https://github.com/user-attachments/assets/77221144-85c0-4011-9199-8cc334128fd2" alt="투두 생성" >
     </td>
     <td>
       <img src="https://github.com/user-attachments/assets/323c35f4-22f2-4cee-b44a-4e3c9eab7a4a" alt="투두 수정">
