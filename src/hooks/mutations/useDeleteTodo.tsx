@@ -2,13 +2,12 @@ import { deleteTodo } from '@/apis';
 import { DeleteTodoParamType, MutateOptionsType } from '@/hooks/mutations/types';
 import { todoKeys } from '@/hooks/queries';
 import { InfiniteQueryData } from '@/hooks/queries/types';
-import { ApiResponse, ToDoDetail } from '@/types';
+import { ApiResponse, ToDoDetail, TodoQueryParams } from '@/types';
 import { optimisticUpdateMutateHandler } from '@/utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const useDeleteTodo = (
-  squadId: number,
-  selectedDay: string,
+  queryParams: TodoQueryParams,
   options: MutateOptionsType<
     ApiResponse<{ toDoId: number }>,
     DeleteTodoParamType,
@@ -19,9 +18,10 @@ const useDeleteTodo = (
   const { mutate: deleteTodoMuate } = useMutation({
     mutationFn: deleteTodo,
     onMutate: async (data) => {
+      const { squadId, selectedDay, userId } = queryParams;
       const oldData = await optimisticUpdateMutateHandler<InfiniteQueryData<ApiResponse<ToDoDetail[]>>>(
         queryClient,
-        todoKeys.todos(squadId, selectedDay),
+        todoKeys.todosByMember(squadId, selectedDay, userId),
         (prevData) => ({
           ...prevData,
           pages: prevData.pages.map((page) => ({
