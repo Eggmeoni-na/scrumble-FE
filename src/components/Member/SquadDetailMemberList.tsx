@@ -1,21 +1,28 @@
 import { MemberProfile } from '@/components/Member';
 import { MEMBER_STYLE_TYPE } from '@/constants/squad';
+import { useUserCookie } from '@/hooks';
 import { useMemberStore } from '@/stores';
 import { scrollBarStyle } from '@/styles/globalStyles';
 import { SquadMember } from '@/types';
 import { css } from '@emotion/react';
+import { useMemo } from 'react';
 
 type Props = {
   squadMembers: SquadMember[];
 };
 
-const SquadDetailMemberList = ({ squadMembers }: Props) => (
-  <ul css={containerStyle}>
-    {squadMembers.map((member) => (
-      <Member key={member.memberId} member={member} />
-    ))}
-  </ul>
-);
+const SquadDetailMemberList = ({ squadMembers }: Props) => {
+  const { user } = useUserCookie();
+  const sortedMembers = useMemo(() => [...squadMembers].sort((a) => (a.memberId === user?.id ? -1 : 0)), []);
+
+  return (
+    <ul css={containerStyle}>
+      {sortedMembers.map((member) => (
+        <Member key={member.memberId} member={member} />
+      ))}
+    </ul>
+  );
+};
 
 export default SquadDetailMemberList;
 
