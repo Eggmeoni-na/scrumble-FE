@@ -3,11 +3,11 @@ import { IconWrapper } from '@/components';
 import { Button } from '@/components/common';
 import { MemberTodoItem } from '@/components/Member';
 import { TODO_STATUS } from '@/constants/todo';
-import { useInfinite, useToastHandler } from '@/hooks';
+import { useInfinite, useToastHandler, useValidatedUser } from '@/hooks';
 import { useDeleteTodo, useUpdateTodo } from '@/hooks/mutations';
 import { todoKeys } from '@/hooks/queries';
 import { useDayStore, useSquadStore } from '@/stores';
-import { ToDoDetail, UpdateTodoRequest } from '@/types';
+import { ToDoDetail, TodoQueryParams, UpdateTodoRequest } from '@/types';
 import { handleKeyDown } from '@/utils';
 import { css, keyframes, Theme, useTheme } from '@emotion/react';
 import { useQueryClient } from '@tanstack/react-query';
@@ -35,6 +35,7 @@ export const TodoList = ({ todos, loadMoreTodos, hasNextPage, isMeSelected }: Pr
 };
 
 const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
+  const { userId } = useValidatedUser();
   const squadId = useSquadStore((state) => state.currentSquadId);
   const theme = useTheme();
   const { toDoAt, toDoId, contents, toDoStatus } = todo;
@@ -46,24 +47,29 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
   const isCompleted = currentToDoStatus === TODO_STATUS.COMPLETED;
   const { successToast, failedToast } = useToastHandler();
 
+  const queryParams: TodoQueryParams = {
+    squadId,
+    selectedDay,
+    userId,
+  };
+
   const queryClient = useQueryClient();
-  // TODO 상태 및 내용 수정 로직 공유
-  const { updateTodoMutate } = useUpdateTodo(squadId, selectedDay, {
+  const { updateTodoMutate } = useUpdateTodo(queryParams, {
     onSuccess: () => successToast('수정에 성공했어요'),
     onError: (error, data, context) => {
       failedToast('수정에 실패했어요');
       if (context?.oldData) {
-        queryClient.setQueryData(todoKeys.todos(squadId, selectedDay), context.oldData);
+        queryClient.setQueryData(todoKeys.todosByMember(squadId, selectedDay, userId), context.oldData);
       }
     },
   });
 
-  const { deleteTodoMuate } = useDeleteTodo(squadId, selectedDay, {
+  const { deleteTodoMuate } = useDeleteTodo(queryParams, {
     onSuccess: () => successToast('삭제에 성공했어요'),
     onError: (error, data, context) => {
       failedToast('삭제에 실패했어요');
       if (context?.oldData) {
-        queryClient.setQueryData(todoKeys.todos(squadId, selectedDay), context.oldData);
+        queryClient.setQueryData(todoKeys.todosByMember(squadId, selectedDay, userId), context.oldData);
       }
     },
   });
@@ -80,10 +86,9 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
   };
 
   const handleKeyPressForEdit = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key !== 'Enter') return;
-    if (!e.nativeEvent.isComposing) {
+    if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
       e.preventDefault();
-      document.getElementById('edit-btn')?.click();
+      handleEditContents();
     }
   };
 
@@ -110,7 +115,11 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
         <li
           css={[todoItemStyle(), getStatusStyles(isCompleted, theme)]}
           onClick={() => toggleTodoStatus()}
-          onKeyDown={(e) => handleKeyDown(e, toggleTodoStatus)}
+          onKeyDown={(e) => {
+            if (!isEditMode) {
+              handleKeyDown(e, toggleTodoStatus);
+            }
+          }}
           tabIndex={0}
           role="button"
         >
@@ -131,7 +140,7 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
                 value={newContents}
                 onChange={(e) => setNewContents(e.target.value)}
                 onClick={(e) => e.stopPropagation()}
-                onKeyDown={handleKeyPressForEdit}
+                onKeyUp={handleKeyPressForEdit}
                 autoFocus
                 css={editInputStyle}
               />
@@ -141,7 +150,7 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
             <div
               css={actionStyle}
               onClick={(e) => e.stopPropagation()}
-              onKeyDown={(e) => e.stopPropagation()}
+              // onKeyDown={(e) => e.stopPropagation()}
               role="presentation"
             >
               <IconWrapper onClick={() => setIsEditMode(true)}>
@@ -156,7 +165,7 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
             <div
               css={editActionStyle}
               onClick={(e) => e.stopPropagation()}
-              onKeyDown={(e) => e.stopPropagation()}
+              // onKeyDown={(e) => e.stopPropagation()}
               role="presentation"
             >
               <Button id="edit-btn" text="수정" variant="confirm" onClick={handleEditContents} />

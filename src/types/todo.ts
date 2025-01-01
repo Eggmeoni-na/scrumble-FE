@@ -15,6 +15,12 @@ export type ToDoDetail = {
 
 export type TodoStatus = (typeof TODO_STATUS)[keyof typeof TODO_STATUS];
 
+export type TodoQueryParams = {
+  squadId: number;
+  selectedDay: string;
+  userId: number;
+};
+
 export type GetTodoRequestParams = {
   squadMemberId: number;
   payload: GetTodoRequestPayload;

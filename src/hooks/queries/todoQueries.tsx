@@ -4,7 +4,6 @@ import { infiniteQueryOptions } from '@tanstack/react-query';
 
 export const todoKeys = {
   todos: (squadId: number, day: string) => ['todoList', squadId, day] as const,
-  todoById: (squadId: number, day: string, todoId: number) => [...todoKeys.todos(squadId, day), todoId] as const,
   todosByMember: (squadId: number, day: string, memberId: number) => [...todoKeys.todos(squadId, day), memberId],
 };
 
@@ -15,7 +14,7 @@ export const todoInfiniteQueryOptions = (
   queryParams: Omit<GetTodoRequestPayload, 'lastToDoId'>,
 ) =>
   infiniteQueryOptions({
-    queryKey: todoKeys.todos(squadId, selectedDay),
+    queryKey: todoKeys.todosByMember(squadId, selectedDay, squadMemberId),
     queryFn: ({ pageParam }) =>
       getTodoList({
         squadMemberId,

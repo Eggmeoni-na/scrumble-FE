@@ -2,13 +2,12 @@ import { updateTodo } from '@/apis';
 import { MutateOptionsType, UpdateTodoParamType } from '@/hooks/mutations/types';
 import { todoKeys } from '@/hooks/queries';
 import { InfiniteQueryData } from '@/hooks/queries/types';
-import { ApiResponse, CreateAndUpdateResponseType, ToDoDetail } from '@/types';
+import { ApiResponse, CreateAndUpdateResponseType, ToDoDetail, TodoQueryParams } from '@/types';
 import { optimisticUpdateMutateHandler } from '@/utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export const useUpdateTodo = (
-  squadId: number,
-  selectedDay: string,
+  queryParams: TodoQueryParams,
   options: MutateOptionsType<
     ApiResponse<CreateAndUpdateResponseType>,
     UpdateTodoParamType,
@@ -19,9 +18,10 @@ export const useUpdateTodo = (
   const { mutate: updateTodoMutate } = useMutation({
     mutationFn: updateTodo,
     onMutate: async ({ newTodo, toDoId }) => {
+      const { squadId, selectedDay, userId } = queryParams;
       const oldData = await optimisticUpdateMutateHandler<InfiniteQueryData<ApiResponse<ToDoDetail[]>>>(
         queryClient,
-        todoKeys.todos(squadId, selectedDay),
+        todoKeys.todosByMember(squadId, selectedDay, userId),
         (prevData: InfiniteQueryData<ApiResponse<ToDoDetail[]>>) => {
           const todo = {
             ...newTodo,
