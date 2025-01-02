@@ -1,5 +1,5 @@
 import { deleteSquad } from '@/apis';
-import { ActionPrompt } from '@/components/common/Modal/ModalContents';
+import { ActionModal } from '@/components/common/Modal/ModalContents';
 
 import { ExitAndDeleteSquadNameParamType, MutateOptionsType } from '@/hooks/mutations';
 import { useModal } from '@/hooks/useModal';
@@ -24,7 +24,7 @@ const useDeleteSquad = (
       displayCancel: true,
     } as const;
 
-    const res = await openModal(ActionPrompt, undefined, deleteInfo);
+    const res = await openModal(ActionModal, undefined, deleteInfo);
     if (res.ok) {
       deleteSquadMutate({ squadId });
     }
