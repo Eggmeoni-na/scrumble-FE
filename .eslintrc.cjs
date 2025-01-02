@@ -20,10 +20,9 @@ module.exports = {
     'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     'react/self-closing-comp': 'warn',
     'prefer-const': 'warn',
-    'react/no-unknown-property': ['error', { ignore: ['css'] }], // CSS-in-JS
+    'react/no-unknown-property': ['error', { ignore: ['css'] }],
     'arrow-body-style': ['warn', 'as-needed'],
     'react/react-in-jsx-scope': 'off',
-    'jsx-a11y/alt-text': 'warn',
     'jsx-a11y/anchor-is-valid': ['warn', { components: ['Link'], specialLink: ['to'] }],
     'jsx-a11y/label-has-associated-control': ['error', { assert: 'either' }],
     'jsx-a11y/no-noninteractive-element-to-interactive-role': [
@@ -34,7 +33,7 @@ module.exports = {
       },
     ],
     'jsx-a11y/no-autofocus': 'off',
-    'react/prop-types': 'off', // PropTypes를 사용하지 않도록 설정
+    'react/prop-types': 'off',
   },
   settings: {
     react: {
