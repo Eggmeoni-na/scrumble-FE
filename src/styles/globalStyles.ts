@@ -203,6 +203,10 @@ export const globalStyles = (theme: Theme) => css`
     background: none;
   }
 
+  dialog {
+    all: unset;
+  }
+
   /* Add global styles */
 `;
 
