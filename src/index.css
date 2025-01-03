@@ -16,6 +16,7 @@
   z-index: 999;
   background: white;
   padding: 28px;
+  margin: 0 24px;
   border-radius: 16px;
   position: relative;
   -webkit-box-shadow: -5px 10px 49px 0px rgba(36, 36, 36, 0.25);

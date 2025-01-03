@@ -1,2 +1,2 @@
-export { default as ActionPrompt } from './ActionPrompt';
+export { default as ActionModal } from './ActionModal';
 export { default as SquadForm } from './SquadForm';

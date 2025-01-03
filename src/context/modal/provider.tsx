@@ -1,26 +1,8 @@
+import { modalContext } from '@/context/modal/context';
 import { breakpoints, mobileMediaQuery, pcMediaQuery } from '@/styles/breakpoints';
 import { ModalParameters, ModalType } from '@/types';
 import { css } from '@emotion/react';
-import {
-  MutableRefObject,
-  PropsWithChildren,
-  createContext,
-  useCallback,
-  useContext,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
-
-type ModalContextValue<P> = {
-  open: (modal: ModalType<P>) => void;
-  close: (id: string) => void;
-  modals: ModalType<P>[];
-  portalRef: MutableRefObject<HTMLDivElement | null>;
-};
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const modalContext = createContext<ModalContextValue<any> | null>(null);
+import { PropsWithChildren, useCallback, useMemo, useRef, useState } from 'react';
 
 export const ModalProvider = ({ children }: PropsWithChildren) => {
   const [modals, setModals] = useState<ModalType<ModalParameters>[]>([]);
@@ -46,14 +28,6 @@ export const ModalProvider = ({ children }: PropsWithChildren) => {
       </div>
     </modalContext.Provider>
   );
-};
-
-export const useModalContext = () => {
-  const context = useContext(modalContext);
-  if (!context) {
-    throw new Error('modalContext is not available.');
-  }
-  return context;
 };
 
 const modalConatiner = css`

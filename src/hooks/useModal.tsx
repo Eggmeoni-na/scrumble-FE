@@ -1,7 +1,7 @@
 import { Modal, ModalPortal } from '@/components/common/Modal';
+import { useModalContext } from '@/context/modal';
 import { ActionModalType } from '@/types';
 import { ComponentType, useCallback, useEffect, useId } from 'react';
-import { useModalContext } from 'src/context/ModalContext';
 
 export const useModal = () => {
   const context = useModalContext();

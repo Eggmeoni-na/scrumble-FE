@@ -1,5 +1,5 @@
 import { removeUserFromSquad } from '@/apis';
-import { ActionPrompt } from '@/components/common/Modal/ModalContents';
+import { ActionModal } from '@/components/common/Modal/ModalContents';
 
 import { MutateOptionsType, RemoveUserFromSquadParamType } from '@/hooks/mutations';
 import { useModal } from '@/hooks/useModal';
@@ -25,7 +25,7 @@ const useRemoveUserFromSquad = (
       displayCancel: true,
     } as const;
 
-    const res = await openModal(ActionPrompt, undefined, removeInfo);
+    const res = await openModal(ActionModal, undefined, removeInfo);
     if (res.ok) {
       deleteSquadMutate({ squadId, kickedMemberId: member.memberId });
     }

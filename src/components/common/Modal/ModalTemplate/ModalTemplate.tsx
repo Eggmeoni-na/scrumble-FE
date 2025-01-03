@@ -25,14 +25,7 @@ const ModalTemplate = ({ children, onClose, styleType = 'common', ...rest }: Mod
     preventClick={rest.preventClick}
     transparent={rest.transparent}
   >
-    <div
-      className={`modal-container ${styleType}`}
-      onClick={(e) => e.stopPropagation()}
-      onKeyDown={(e) => e.stopPropagation()}
-      role="presentation"
-    >
-      {children}
-    </div>
+    <dialog className={`modal-container ${styleType}`}>{children}</dialog>
   </Container>
 );
 

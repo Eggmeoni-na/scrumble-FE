@@ -68,14 +68,8 @@ export const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
       style={{
         justifyContent: 'flex-end',
       }}
-      role="dialog"
     >
-      <div
-        css={sidebarContainer}
-        onClick={(e) => e.stopPropagation()}
-        onKeyDown={(e) => e.stopPropagation()}
-        role="presentation"
-      >
+      <dialog css={sidebarContainer}>
         <header css={headerStyle}>
           <h1>스쿼드 관리</h1>
           <IconWrapper aria-label="Close sidebar" onClick={closeSidebar} role="button" css={commonButtonStyle}>
@@ -137,7 +131,7 @@ export const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
         <button css={exitButtonStyle} onClick={handleSquadExit}>
           나가기
         </button>
-      </div>
+      </dialog>
       <UpdateSquadNameModal />
       <DeleteSquadModal />
       <ExitSquadModal />

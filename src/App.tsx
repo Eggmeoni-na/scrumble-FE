@@ -1,5 +1,5 @@
 import { RootErrorFallback, ToastContainer } from '@/components/common';
-import { ModalProvider } from '@/context/ModalContext';
+import { ModalProvider } from '@/context/modal';
 import { useThemeStore } from '@/stores';
 import { darkTheme, globalStyles, lightTheme } from '@/styles';
 import { Global, ThemeProvider } from '@emotion/react';

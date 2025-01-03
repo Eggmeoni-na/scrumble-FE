@@ -4,8 +4,8 @@ import { ModalButtonGroup, ModalContent, ModalTemplate } from '@/components/comm
 import { ActionModalContentProps } from '@/types';
 import { css, Theme } from '@emotion/react';
 
-const ActionPrompt = ({ onSubmit, onAbort, actionModal }: ActionModalContentProps) => (
-  <ModalTemplate isOverlay={true} onClose={onAbort}>
+const ActionModal = ({ onSubmit, onAbort, actionModal }: ActionModalContentProps) => (
+  <ModalTemplate isOverlay={true} onClose={onAbort} preventClick={false}>
     <ModalContent>
       <p css={descStyle}>{actionModal.message}</p>
       <ModalButtonGroup>
@@ -24,7 +24,7 @@ const ActionPrompt = ({ onSubmit, onAbort, actionModal }: ActionModalContentProp
   </ModalTemplate>
 );
 
-export default ActionPrompt;
+export default ActionModal;
 
 const descStyle = (theme: Theme) => css`
   padding: 36px 0;

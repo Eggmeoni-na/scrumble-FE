@@ -2,7 +2,7 @@ import { assignSquadLeader } from '@/apis';
 import { Check } from '@/assets/icons';
 import { IconWrapper } from '@/components';
 import { MemberProfile } from '@/components/Member';
-import { ActionPrompt } from '@/components/common/Modal/ModalContents';
+import { ActionModal } from '@/components/common/Modal/ModalContents';
 import { ROLE } from '@/constants/role';
 import { MEMBER_STYLE_TYPE } from '@/constants/squad';
 import { useModal } from '@/hooks';
@@ -62,7 +62,7 @@ const Member = ({ squadId, member }: { squadId: number; member: SquadMember }) =
       displayCancel: true,
     } as const;
 
-    const res = await openModal(ActionPrompt, undefined, assignInfo);
+    const res = await openModal(ActionModal, undefined, assignInfo);
     if (res.ok) {
       assignSquadLeaderMutate({ squadId, newLeaderId: member.memberId });
     } else {
