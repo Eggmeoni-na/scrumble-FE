@@ -15,8 +15,7 @@ const Overlay = ({
   ...rest
 }: PropsWithChildren & OverlayProps) => {
   const handleClose = (e: MouseEvent<HTMLDivElement>) => {
-    e.stopPropagation();
-    if (onClose) {
+    if (e.target === e.currentTarget && onClose) {
       onClose();
     }
   };
@@ -25,9 +24,7 @@ const Overlay = ({
     <div
       css={[container, transparent && bgTransparent]}
       onClick={preventClick ? undefined : handleClose}
-      onKeyDown={() => {}}
-      role="button"
-      tabIndex={0}
+      role="presentation"
       {...rest}
     >
       {children}
