@@ -1,6 +1,5 @@
 import { Button } from '@/components/common';
 import { ModalButtonGroup, ModalContent, ModalTemplate } from '@/components/common/Modal';
-
 import { ActionModalContentProps } from '@/types';
 import { css, Theme } from '@emotion/react';
 
@@ -31,4 +30,5 @@ const descStyle = (theme: Theme) => css`
   text-align: center;
   ${theme.typography.size_18}
   color: ${theme.colors.black.black300};
+  white-space: pre-line;
 `;
