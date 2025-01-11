@@ -18,7 +18,7 @@ export type TodoStatus = (typeof TODO_STATUS)[keyof typeof TODO_STATUS];
 export type TodoQueryParams = {
   squadId: number;
   selectedDay: string;
-  userId: number;
+  squadMemberId: number;
 };
 
 export type GetTodoRequestParams = {

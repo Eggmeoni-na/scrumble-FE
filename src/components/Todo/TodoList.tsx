@@ -3,7 +3,7 @@ import { IconWrapper } from '@/components';
 import { Button } from '@/components/common';
 import { MemberTodoItem } from '@/components/Member';
 import { TODO_STATUS } from '@/constants/todo';
-import { useInfinite, useToastHandler, useValidatedUser } from '@/hooks';
+import { useInfinite, useToastHandler } from '@/hooks';
 import { useDeleteTodo, useUpdateTodo } from '@/hooks/mutations';
 import { todoKeys } from '@/hooks/queries';
 import { useDayStore, useSquadStore } from '@/stores';
@@ -18,15 +18,20 @@ type Props = {
   loadMoreTodos: VoidFunction;
   hasNextPage: boolean;
   isMeSelected: boolean;
+  squadMemberId: number;
 };
 
-export const TodoList = ({ todos, loadMoreTodos, hasNextPage, isMeSelected }: Props) => {
+export const TodoList = ({ todos, loadMoreTodos, hasNextPage, isMeSelected, squadMemberId }: Props) => {
   const { loadMoreRef } = useInfinite(loadMoreTodos, hasNextPage);
 
   return (
     <ul css={[todoContainerStyle, !isMeSelected && memberTodoListStyle]}>
       {todos.map((todo) =>
-        isMeSelected ? <TodoItem key={todo.toDoId} todo={todo} /> : <MemberTodoItem key={todo.toDoId} todo={todo} />,
+        isMeSelected ? (
+          <TodoItem key={todo.toDoId} todo={todo} squadMemberId={squadMemberId} />
+        ) : (
+          <MemberTodoItem key={todo.toDoId} todo={todo} />
+        ),
       )}
       <br />
       <div ref={loadMoreRef} />
@@ -34,8 +39,7 @@ export const TodoList = ({ todos, loadMoreTodos, hasNextPage, isMeSelected }: Pr
   );
 };
 
-const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
-  const { userId } = useValidatedUser();
+const TodoItem = ({ todo, squadMemberId }: { todo: ToDoDetail; squadMemberId: number }) => {
   const squadId = useSquadStore((state) => state.currentSquadId);
   const theme = useTheme();
   const { toDoAt, toDoId, contents, toDoStatus } = todo;
@@ -50,7 +54,7 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
   const queryParams: TodoQueryParams = {
     squadId,
     selectedDay,
-    userId,
+    squadMemberId,
   };
 
   const queryClient = useQueryClient();
@@ -59,7 +63,7 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
     onError: (error, data, context) => {
       failedToast('수정에 실패했어요');
       if (context?.oldData) {
-        queryClient.setQueryData(todoKeys.todosByMember(squadId, selectedDay, userId), context.oldData);
+        queryClient.setQueryData(todoKeys.todosByMember(squadId, selectedDay, squadMemberId), context.oldData);
       }
     },
   });
@@ -69,7 +73,7 @@ const TodoItem = ({ todo }: { todo: ToDoDetail }) => {
     onError: (error, data, context) => {
       failedToast('삭제에 실패했어요');
       if (context?.oldData) {
-        queryClient.setQueryData(todoKeys.todosByMember(squadId, selectedDay, userId), context.oldData);
+        queryClient.setQueryData(todoKeys.todosByMember(squadId, selectedDay, squadMemberId), context.oldData);
       }
     },
   });
