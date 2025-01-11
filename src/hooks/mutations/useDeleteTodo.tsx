@@ -18,10 +18,10 @@ const useDeleteTodo = (
   const { mutate: deleteTodoMuate } = useMutation({
     mutationFn: deleteTodo,
     onMutate: async (data) => {
-      const { squadId, selectedDay, userId } = queryParams;
+      const { squadId, selectedDay, squadMemberId } = queryParams;
       const oldData = await optimisticUpdateMutateHandler<InfiniteQueryData<ApiResponse<ToDoDetail[]>>>(
         queryClient,
-        todoKeys.todosByMember(squadId, selectedDay, userId),
+        todoKeys.todosByMember(squadId, selectedDay, squadMemberId),
         (prevData) => ({
           ...prevData,
           pages: prevData.pages.map((page) => ({

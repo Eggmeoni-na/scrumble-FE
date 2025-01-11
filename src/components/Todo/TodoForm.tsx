@@ -1,6 +1,6 @@
 import { Form } from '@/components/common';
 import { TODO_TYPES } from '@/constants/todo';
-import { useToastHandler, useValidatedUser } from '@/hooks';
+import { useToastHandler } from '@/hooks';
 import { useCreateTodo } from '@/hooks/mutations';
 import { todoKeys } from '@/hooks/queries';
 import { InfiniteQueryData } from '@/hooks/queries/types';
@@ -9,8 +9,15 @@ import { css, Theme } from '@emotion/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { FormEvent, KeyboardEventHandler, useCallback, useState } from 'react';
 
-const TodoForm = ({ squadId, selectedDay }: { squadId: number; selectedDay: string }) => {
-  const { userId } = useValidatedUser();
+const TodoForm = ({
+  squadId,
+  selectedDay,
+  squadMemberId,
+}: {
+  squadId: number;
+  selectedDay: string;
+  squadMemberId: number;
+}) => {
   const [contents, setContents] = useState('');
   const { successToast, failedToast, warningToast } = useToastHandler();
   const queryClient = useQueryClient();
@@ -19,7 +26,7 @@ const TodoForm = ({ squadId, selectedDay }: { squadId: number; selectedDay: stri
     onSuccess: async ({ data }) => {
       successToast('투두 등록에 성공했어요');
       queryClient.setQueryData(
-        todoKeys.todosByMember(squadId, selectedDay, userId),
+        todoKeys.todosByMember(squadId, selectedDay, squadMemberId),
         (prevData: InfiniteQueryData<ApiResponse<ToDoDetail[]>>) => ({
           ...prevData,
           pages: prevData.pages.map((page, index) => (index === 0 ? { ...page, data: [data, ...page.data] } : page)),

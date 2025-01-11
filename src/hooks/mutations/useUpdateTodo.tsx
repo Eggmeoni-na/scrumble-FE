@@ -18,10 +18,10 @@ export const useUpdateTodo = (
   const { mutate: updateTodoMutate } = useMutation({
     mutationFn: updateTodo,
     onMutate: async ({ newTodo, toDoId }) => {
-      const { squadId, selectedDay, userId } = queryParams;
+      const { squadId, selectedDay, squadMemberId } = queryParams;
       const oldData = await optimisticUpdateMutateHandler<InfiniteQueryData<ApiResponse<ToDoDetail[]>>>(
         queryClient,
-        todoKeys.todosByMember(squadId, selectedDay, userId),
+        todoKeys.todosByMember(squadId, selectedDay, squadMemberId),
         (prevData: InfiniteQueryData<ApiResponse<ToDoDetail[]>>) => {
           const todo = {
             ...newTodo,
