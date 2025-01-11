@@ -23,8 +23,9 @@ const SquadDetailPage = () => {
     ...squadDetailQueryOptions(squadId),
   }).data;
 
-  const me = squadDetail?.squadMembers?.find((member) => member.memberId === user?.id);
+  const me = squadDetail.squadMembers.find((member) => member.memberId === user?.id);
   const isMeSelected = !selectedMember || selectedMember.squadMemberId === me?.squadMemberId;
+  const squadMemberId = isMeSelected ? me!.squadMemberId : selectedMember!.squadMemberId;
 
   const payload = {
     startDate: selectedDay,
@@ -33,12 +34,7 @@ const SquadDetailPage = () => {
   };
 
   const { data, fetchNextPage, hasNextPage } = useInfiniteQuery(
-    todoInfiniteQueryOptions(
-      isMeSelected ? me!.squadMemberId : selectedMember!.squadMemberId,
-      squadId,
-      selectedDay,
-      payload,
-    ),
+    todoInfiniteQueryOptions(squadMemberId, squadId, selectedDay, payload),
   );
 
   const todos = data ?? [];
@@ -58,7 +54,7 @@ const SquadDetailPage = () => {
   }, [squadId]);
 
   useEffect(() => {
-    setSelectedMember(null);
+    setSelectedMember(me || null);
   }, []);
 
   useEffect(() => {
@@ -84,8 +80,14 @@ const SquadDetailPage = () => {
         <span>{!selectedMember ? user?.name : selectedMember.name}</span>
         <span>달성률: {progressRate}%</span>
       </div>
-      <TodoList todos={todos} loadMoreTodos={loadMoreTodos} hasNextPage={hasNextPage} isMeSelected={isMeSelected} />
-      {isMeSelected && <TodoForm squadId={squadId} selectedDay={selectedDay} />}
+      <TodoList
+        todos={todos}
+        loadMoreTodos={loadMoreTodos}
+        hasNextPage={hasNextPage}
+        isMeSelected={isMeSelected}
+        squadMemberId={squadMemberId}
+      />
+      {isMeSelected && <TodoForm squadId={squadId} selectedDay={selectedDay} squadMemberId={squadMemberId} />}
     </section>
   );
 };
