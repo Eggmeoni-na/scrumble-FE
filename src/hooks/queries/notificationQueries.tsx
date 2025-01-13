@@ -6,9 +6,6 @@ export const notiKeys = {
   all: ['notifications'] as const,
 };
 
-// const endDateTime = new Date().toISOString();
-// const currentDate = new Date(endDateTime);
-// const startDateTime = new Date(currentDate.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString();
 const today = new Date();
 const startDateTime = formatISO(subDays(today, 7));
 const endDateTime = formatISO(today);
@@ -37,6 +34,3 @@ export const notificationInfiniteQueryOptions = () =>
   });
 
 export default notificationInfiniteQueryOptions;
-
-// const lastNotificationId = lastPage?.data[lastPage.data.length - 1].notificationId ?? null;
-// return lastNotificationId;
