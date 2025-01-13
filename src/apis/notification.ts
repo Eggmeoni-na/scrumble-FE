@@ -1,6 +1,10 @@
 import { instance } from '@/apis';
-import { ApiResponse } from '@/types';
-import { NotificationRequestPayload, NotificationResponse } from '@/types/notification';
+import {
+  ApiResponse,
+  NotificationRequestPayload,
+  NotificationResponse,
+  NotificationUpdateRequestPayload,
+} from '@/types';
 
 export const getNotifications = async (
   params: NotificationRequestPayload,
@@ -11,11 +15,17 @@ export const getNotifications = async (
   return response.data;
 };
 
-export const readNotification = async ({
+export const updateNotification = async ({
   notificationId,
+  params,
 }: {
   notificationId: number;
+  params: NotificationUpdateRequestPayload;
 }): Promise<ApiResponse<NotificationResponse>> => {
-  const response = await instance.put(`/api/notifications/${notificationId}`);
+  const { notificationStatus, readFlag } = params;
+  const response = await instance.put(`/api/notifications/${notificationId}`, {
+    notificationStatus,
+    readFlag,
+  });
   return response.data;
 };
