@@ -19,6 +19,11 @@ export default defineConfig(({ mode }) => {
         '/api': {
           target: env.VITE_API_URL,
           changeOrigin: true,
+          configure: (proxy) => {
+            proxy.on('proxyReq', (proxyReq) => {
+              proxyReq.setHeader('Connection', 'keep-alive');
+            });
+          },
         },
       },
     },
