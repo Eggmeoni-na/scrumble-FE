@@ -1,5 +1,6 @@
 import { RootErrorFallback, ToastContainer } from '@/components/common';
 import { ModalProvider } from '@/context/modal';
+import { NotificationProvider } from '@/context/notification/provider';
 import { useThemeStore } from '@/stores';
 import { darkTheme, globalStyles, lightTheme } from '@/styles';
 import { Global, ThemeProvider } from '@emotion/react';
@@ -24,13 +25,15 @@ function App() {
   return (
     <ModalProvider>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
-          <Global styles={globalStyles} />
-          <ErrorBoundary FallbackComponent={RootErrorFallback} onReset={reset}>
-            <Outlet />
-          </ErrorBoundary>
-          <ToastContainer />
-        </ThemeProvider>
+        <NotificationProvider>
+          <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+            <Global styles={globalStyles} />
+            <ErrorBoundary FallbackComponent={RootErrorFallback} onReset={reset}>
+              <Outlet />
+            </ErrorBoundary>
+            <ToastContainer />
+          </ThemeProvider>
+        </NotificationProvider>
         <ReactQueryDevtools initialIsOpen={true} />
       </QueryClientProvider>
     </ModalProvider>
