@@ -4,19 +4,19 @@ import { Button, Overlay } from '@/components/common';
 import { commonButtonStyle, headerStyle, sidebarContainer } from '@/components/common/Sidebar';
 import { INVITATION_TYPE } from '@/constants/squad';
 import { useInfinite, useToastHandler } from '@/hooks';
-import { useAcceptInvitation, useReadNotification } from '@/hooks/mutations';
-import { notificationInfiniteQueryOptions } from '@/hooks/queries';
+import { useAcceptInvitation } from '@/hooks/mutations';
+import useUpdateNotification from '@/hooks/mutations/useUpdateNotification';
+import { notificationInfiniteQueryOptions, squadKeys } from '@/hooks/queries';
 import { scrollBarStyle } from '@/styles/globalStyles';
-import { NotificationResponse } from '@/types/notification';
+import { NotificationResponse, NotificationUpdateRequestPayload } from '@/types';
 import { css, Theme } from '@emotion/react';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { MouseEvent, MouseEventHandler, useState } from 'react';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
+import { MouseEvent, MouseEventHandler } from 'react';
 
 const Notification = ({ toggleOpen }: { toggleOpen: VoidFunction }) => {
   const { data: notifications, fetchNextPage, hasNextPage } = useInfiniteQuery(notificationInfiniteQueryOptions());
 
   const handleClose = () => toggleOpen();
-
   const loadMoreNotifications = () => {
     if (hasNextPage) {
       fetchNextPage();
@@ -32,12 +32,7 @@ const Notification = ({ toggleOpen }: { toggleOpen: VoidFunction }) => {
       preventClick={false}
       onClick={handleClose}
     >
-      <div
-        css={sidebarContainer}
-        onClick={(e) => e.stopPropagation()}
-        onKeyDown={(e) => e.stopPropagation()}
-        role="presentation"
-      >
+      <div css={sidebarContainer} onClick={(e) => e.stopPropagation()} role="presentation">
         <header css={headerStyle}>
           <h1>알림</h1>
           <IconWrapper aria-label="Close sidebar" onClick={handleClose} role="button" css={commonButtonStyle}>
@@ -66,7 +61,6 @@ const NotificationList = ({
   hasNextPage: boolean;
 }) => {
   const { loadMoreRef } = useInfinite(loadMoreNotifications, hasNextPage);
-  // notifications에 읽지 않은 알림이 있는지 확인
 
   return (
     <ul css={listStyle}>
@@ -88,40 +82,48 @@ const NotificationList = ({
 };
 
 const NotificationItem = ({ data }: { data: NotificationResponse }) => {
-  const [isAccept, setIsAccept] = useState(false);
-  const { notificationType, notificationData, read, notificationId, notificationMessage } = data;
+  const { notificationType, notificationData, read, notificationId, notificationMessage, notificationStatus } = data;
   const { failedToast, successToast } = useToastHandler();
+  const isAccept = notificationStatus === 'COMPLETED';
+
+  const queryClient = useQueryClient();
+  const { updateNotificationMutate } = useUpdateNotification();
   const { acceptInvitation } = useAcceptInvitation({
+    onMutate: () => {
+      try {
+        // 수락 여부 변경
+        const params: NotificationUpdateRequestPayload = {
+          notificationStatus: 'COMPLETED',
+          readFlag: read,
+        };
+
+        updateNotificationMutate({ notificationId: data.notificationId, params });
+      } catch (error) {
+        console.error('Notification onMutate Error:', error);
+        throw error;
+      }
+    },
     onSuccess: () => {
-      // 서버에서 받아온 데이터로 수락 여부 업데이트
-      // 그럼 재조회 시
-      setIsAccept(true);
-      // TODO: 실제 API 테스트 시 점검 필요
-      successToast('수락했습니다요~');
-      // const queryClient = useQueryClient();
-      // queryClient.refetchQueries({ queryKey: squadKeys.squad });
+      successToast('스쿼드에 참여했어요');
+      queryClient.refetchQueries({ queryKey: squadKeys.squad }); // 스쿼드 목록 리페치
     },
     onError: () => {
       failedToast('잠시 후 다시 시도해주세요');
-      setIsAccept(false);
     },
   });
-  const { readNotificationMutate } = useReadNotification();
-
-  // 서버에서 내려줌
-  // const message =
-  //   notificationType === INVITATION_TYPE.INVITE_REQUEST
-  //     ? `${notificationData.squadName}스쿼드에서 초대장이 도착했어요.`
-  //     : `${notificationData.userName}님을 ${notificationData.squadName}스쿼드에 초대했어요`;
 
   const handleReadStatus = () => {
     if (read) return;
-    readNotificationMutate({ notificationId });
+    const params: NotificationUpdateRequestPayload = {
+      notificationStatus,
+      readFlag: true,
+    };
+    updateNotificationMutate({ notificationId, params });
   };
 
   const handleAccept = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    acceptInvitation({ squadId: notificationData.squadId });
+    acceptInvitation({ squadId: notificationData.squadId }); // 스쿼드 초대 수락 (API 다름)
   };
 
   return (

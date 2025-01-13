@@ -6,7 +6,6 @@ import useDeleteTodo from '@/hooks/mutations/useDeleteTodo';
 import { useDeleteUser } from '@/hooks/mutations/useDeleteUser';
 import useExitSquad from '@/hooks/mutations/useExitSquad';
 import useInviteMember from '@/hooks/mutations/useInviteMember';
-import { useReadNotification } from '@/hooks/mutations/useReadNotification';
 import useRemoveUserFromSquad from '@/hooks/mutations/useRemoveUserFromSquad';
 import useUpdateSquadName from '@/hooks/mutations/useUpdateSquadName';
 import { useUpdateTodo } from '@/hooks/mutations/useUpdateTodo';
@@ -20,7 +19,6 @@ export {
   useDeleteUser,
   useExitSquad,
   useInviteMember,
-  useReadNotification,
   useRemoveUserFromSquad,
   useUpdateSquadName,
   useUpdateTodo,

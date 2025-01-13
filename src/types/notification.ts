@@ -1,4 +1,5 @@
 type NotificationType = 'INVITE_REQUEST' | 'INVITE_ACCEPT';
+type NotificationStatusType = 'PENDING' | 'COMPLETED';
 
 type NotificationData = {
   squadId: number;
@@ -17,5 +18,11 @@ export type NotificationResponse = {
   notificationMessage: string;
   createdAt: string;
   notificationData: NotificationData;
+  notificationStatus: NotificationStatusType;
   read: boolean;
+};
+
+export type NotificationUpdateRequestPayload = {
+  notificationStatus: NotificationStatusType;
+  readFlag: boolean;
 };
