@@ -10,8 +10,7 @@ export const generateEmptySession = async () => {
 
 export const generateTempSession = async () => {
   const response = await instance.post('/api/test/session/session', {
-    email: 'testA@email.com',
-    // email: 'scrumble@email.com',
+    email: import.meta.env.VITE_TEST_LOGIN_EMAIL,
   });
   return response;
 };
