@@ -1,5 +1,7 @@
 import { ActiveBell, Back, Bell, Dark, Light, Menu } from '@/assets/icons';
 import { IconWrapper, Notification } from '@/components';
+import { useNotificationContext } from '@/context/notification';
+
 import { useOpenToggle } from '@/hooks';
 import { useThemeStore } from '@/stores';
 import { css, Theme } from '@emotion/react';
@@ -36,14 +38,12 @@ const ToggleThemeButton = () => {
 
 const NotificationsButton = () => {
   const { isOpen, toggleOpen } = useOpenToggle();
-  const isActive = true;
-  // TODO: 이벤트 수신 및 읽음 여부에 따라 종 아이콘 조건부 렌더링
+  const { hasUnreadMessages } = useNotificationContext();
 
   return (
-    // ContextProvider
     <>
       <IconWrapper aria-label="alarm" onClick={() => toggleOpen()} role="button">
-        {!isActive ? <Bell /> : <ActiveBell />}
+        {hasUnreadMessages ? <ActiveBell /> : <Bell />}
       </IconWrapper>
       {isOpen && <Notification toggleOpen={toggleOpen} />}
     </>
