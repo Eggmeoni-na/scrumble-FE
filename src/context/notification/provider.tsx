@@ -14,7 +14,7 @@ export const NotificationProvider = ({ children }: PropsWithChildren) => {
     }
 
     const { startDateTime, endDateTime } = getDateRange();
-    const url = `/api/notifications/subscribe?memberId=${user.id}&startDateTime=${startDateTime}&endDateTime=${endDateTime}`;
+    const url = `${import.meta.env.VITE_API_URL}/api/notifications/subscribe?memberId=${user.id}&startDateTime=${startDateTime}&endDateTime=${endDateTime}`;
     const eventSource = new EventSource(url);
 
     eventSource.addEventListener('notificationEvent', (e) => {
@@ -25,7 +25,7 @@ export const NotificationProvider = ({ children }: PropsWithChildren) => {
     eventSource.onerror = () => eventSource.close();
 
     return () => eventSource.close();
-  }, []);
+  }, [user]);
 
   const value = useMemo(() => ({ hasUnreadMessages, setHasUnreadMessages }), [hasUnreadMessages]);
 
