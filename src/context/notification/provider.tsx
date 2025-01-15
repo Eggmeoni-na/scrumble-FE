@@ -4,7 +4,7 @@ import { getDateRange } from '@/utils/getDateRange';
 import { PropsWithChildren, useEffect, useMemo, useState } from 'react';
 
 export const NotificationProvider = ({ children }: PropsWithChildren) => {
-  const [hasUnreadMessages, setHasUnreadMessages] = useState(true);
+  const [hasUnreadMessages, setHasUnreadMessages] = useState<boolean | null>(null);
   const { user } = useUserCookie();
 
   useEffect(() => {
@@ -15,19 +15,31 @@ export const NotificationProvider = ({ children }: PropsWithChildren) => {
 
     const { startDateTime, endDateTime } = getDateRange();
     const url = `${import.meta.env.VITE_API_URL}/api/notifications/subscribe?memberId=${user.id}&startDateTime=${startDateTime}&endDateTime=${endDateTime}`;
-    const eventSource = new EventSource(url);
+    const eventSource = new EventSource(url, { withCredentials: true });
+
+    eventSource.onmessage = (e) => {
+      console.log('받은 데이터:', e.data);
+    };
 
     eventSource.addEventListener('notificationEvent', (e) => {
       const parsedData = JSON.parse(e.data);
+      console.log('이벤트 푸시 - hasUnreadMessages:', parsedData.body.hasUnreadMessages);
       setHasUnreadMessages(parsedData.body.hasUnreadMessages);
     });
 
-    eventSource.onerror = () => eventSource.close();
+    eventSource.onerror = () => {
+      console.error('SSE 연결이 끊어졌습니다. 재연결을 시도합니다.');
+      eventSource.close();
+    };
 
     return () => eventSource.close();
   }, [user]);
 
   const value = useMemo(() => ({ hasUnreadMessages, setHasUnreadMessages }), [hasUnreadMessages]);
+
+  useEffect(() => {
+    console.log('상태 변경 감지:', hasUnreadMessages);
+  }, [hasUnreadMessages]);
 
   return <notificationContext.Provider value={value}>{children}</notificationContext.Provider>;
 };
