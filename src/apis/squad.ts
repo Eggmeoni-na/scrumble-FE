@@ -91,7 +91,7 @@ export const acceptSquadInvite: MutationFunction<ApiResponse<null>, AcceptSquadI
   squadId,
 }) => {
   const response = await instance.put(`/api/squads/${squadId}/invitations/accept`, {
-    responseStatus: INVITATION_RESPONSE_STATUS.INVITING,
+    responseStatus: INVITATION_RESPONSE_STATUS.JOIN,
   });
   return response.data;
 };
