@@ -33,9 +33,12 @@ const SquadDetailPage = () => {
     pageSize: TODO_PAGE_SIZE,
   };
 
-  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery(
-    todoInfiniteQueryOptions(squadMemberId, squadId, selectedDay, payload),
-  );
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    refetch: refetchTodos,
+  } = useInfiniteQuery(todoInfiniteQueryOptions(squadMemberId, squadId, selectedDay, payload));
 
   const todos = data ?? [];
 
@@ -55,6 +58,10 @@ const SquadDetailPage = () => {
 
   useEffect(() => {
     setSelectedMember(me || null);
+  }, []);
+
+  useEffect(() => {
+    refetchTodos();
   }, []);
 
   useEffect(() => {

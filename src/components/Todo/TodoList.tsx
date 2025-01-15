@@ -43,12 +43,11 @@ const TodoItem = ({ todo, squadMemberId }: { todo: ToDoDetail; squadMemberId: nu
   const squadId = useSquadStore((state) => state.currentSquadId);
   const theme = useTheme();
   const { toDoAt, toDoId, contents, toDoStatus } = todo;
-  const [currentToDoStatus, setCurrentToDoStatus] = useState(todo.toDoStatus);
   const selectedDay = useDayStore((state) => state.selectedDay);
   const [isEditMode, setIsEditMode] = useState(false);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [newContents, setNewContents] = useState(contents);
-  const isCompleted = currentToDoStatus === TODO_STATUS.COMPLETED;
+  const isCompleted = toDoStatus === TODO_STATUS.COMPLETED;
   const { successToast, failedToast } = useToastHandler();
 
   const queryParams: TodoQueryParams = {
@@ -79,13 +78,12 @@ const TodoItem = ({ todo, squadMemberId }: { todo: ToDoDetail; squadMemberId: nu
   });
 
   const toggleTodoStatus = () => {
-    const newStatus = currentToDoStatus === TODO_STATUS.PENDING ? TODO_STATUS.COMPLETED : TODO_STATUS.PENDING;
+    const newStatus = toDoStatus === TODO_STATUS.PENDING ? TODO_STATUS.COMPLETED : TODO_STATUS.PENDING;
     const newTodo: UpdateTodoRequest = {
       toDoAt,
       toDoStatus: newStatus,
       contents,
     };
-    setCurrentToDoStatus(newStatus);
     updateTodoMutate({ toDoId, newTodo });
   };
 
@@ -173,7 +171,14 @@ const TodoItem = ({ todo, squadMemberId }: { todo: ToDoDetail; squadMemberId: nu
               role="presentation"
             >
               <Button id="edit-btn" text="수정" variant="confirm" onClick={handleEditContents} />
-              <Button text="취소" variant="default" onClick={() => setIsEditMode(false)} />
+              <Button
+                text="취소"
+                variant="default"
+                onClick={() => {
+                  setNewContents(contents);
+                  setIsEditMode(false);
+                }}
+              />
             </div>
           )}
         </li>
