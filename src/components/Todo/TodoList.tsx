@@ -171,7 +171,14 @@ const TodoItem = ({ todo, squadMemberId }: { todo: ToDoDetail; squadMemberId: nu
               role="presentation"
             >
               <Button id="edit-btn" text="수정" variant="confirm" onClick={handleEditContents} />
-              <Button text="취소" variant="default" onClick={() => setIsEditMode(false)} />
+              <Button
+                text="취소"
+                variant="default"
+                onClick={() => {
+                  setNewContents(contents);
+                  setIsEditMode(false);
+                }}
+              />
             </div>
           )}
         </li>
