@@ -1,8 +1,9 @@
-name: Sync Dev Branch with Upstream
+name: Sync with Upstream
 
 on:
-  schedule:
-    - cron: '0 * * * *'
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -16,13 +17,12 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Add upstream repository
-        run: git remote add upstream https://github.com/Eggmeoni-na/scrumble-FE.git
-
-      - name: Fetch upstream dev branch
-        run: git fetch upstream dev
-
-      - name: Merge upstream dev into fork dev
         run: |
-          git checkout dev || git checkout -b dev
-          git merge upstream/dev --allow-unrelated-histories
-          git push origin dev
+          git remote add upstream https://github.com/Eggmeoni-na/scrumble-FE.git
+          git fetch upstream
+
+      - name: Merge upstream/main into fork/main
+        run: |
+          git checkout main
+          git merge upstream/main --allow-unrelated-histories
+          git push origin main
