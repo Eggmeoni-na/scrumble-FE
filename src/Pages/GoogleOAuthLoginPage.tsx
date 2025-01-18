@@ -1,10 +1,12 @@
 import { signInOrSignUp } from '@/apis/auth';
+import { useUserCookie } from '@/hooks';
 import { OAuthRequestParams } from '@/types/auth';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const GoogleOAuthCallbackPage = () => {
   const navigate = useNavigate();
+  const { setCookie } = useUserCookie();
 
   useEffect(() => {
     const handleGoogleOAuth = async () => {
@@ -28,7 +30,15 @@ const GoogleOAuthCallbackPage = () => {
       try {
         const response = await signInOrSignUp(authData);
         if (response.status === 200) {
-          // TODO: 인증 정보 전역 관리
+          const { id, name } = response.data.data;
+          setCookie(
+            'user',
+            { id, name },
+            {
+              path: '/',
+              sameSite: 'strict',
+            },
+          );
           navigate('/');
         }
       } catch (error) {

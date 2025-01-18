@@ -85,7 +85,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: '/login/oauth2/code/google',
+        path: '/auth',
         element: <GoogleOAuthCallbackPage />,
       },
     ],
