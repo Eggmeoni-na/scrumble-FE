@@ -1,38 +1,12 @@
-import { generateTempSession } from '@/apis';
-import { useUserCookie } from '@/hooks';
+import { getOAuthUrl } from '@/apis';
 import { pcMediaQuery } from '@/styles/breakpoints';
-import { AuthUser } from '@/types';
 import { css } from '@emotion/react';
-import { AxiosResponse } from 'axios';
-import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
-  const navigate = useNavigate();
-  const { setCookie } = useUserCookie();
-
   const handleGoogleLogin = async () => {
     try {
-      // TODO: 테스트 완료 후 구글 로그인으로 변경 예정
-      const response: AxiosResponse<{ data: AuthUser }> = await generateTempSession();
-      const { status, data } = response;
-      if (status === 200) {
-        const { id, name } = data.data;
-
-        setCookie(
-          'user',
-          { id, name },
-          {
-            path: '/',
-            sameSite: 'strict',
-          },
-        );
-
-        navigate('/squads', { replace: true });
-        return;
-      } else {
-        // TODO: 세션 발급 실패 에러 처리
-        console.error('Failed to generate session:', status);
-      }
+      const response = await getOAuthUrl('GOOGLE');
+      window.location.href = `${response.data.redirectUrl}`;
     } catch (error) {
       // TODO: 로그인 실패 에러 안내
       console.error('Failed to fetch Google OAuth URL', error);
