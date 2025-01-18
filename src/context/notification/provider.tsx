@@ -29,7 +29,6 @@ export const NotificationProvider = ({ children }: PropsWithChildren) => {
 
     eventSource.onerror = () => {
       console.error('SSE 연결이 끊어졌습니다. 재연결을 시도합니다.');
-      eventSource.close();
     };
 
     return () => eventSource.close();

@@ -17,6 +17,11 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Configure Git user
+        run: |
+          git config --global user.name "k-jeonghee"
+          git config --global user.email "heestory1992@gmail.com"
+
       - name: Add upstream repository
         run: |
           git remote add upstream https://github.com/Eggmeoni-na/scrumble-FE.git
