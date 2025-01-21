@@ -1,3 +1,4 @@
+import { baseURL } from '@/apis';
 import { notificationContext } from '@/context/notification/context';
 import { useUserCookie } from '@/hooks';
 import { getDateRange } from '@/utils/getDateRange';
@@ -14,7 +15,7 @@ export const NotificationProvider = ({ children }: PropsWithChildren) => {
     }
 
     const { startDateTime, endDateTime } = getDateRange();
-    const url = `${import.meta.env.VITE_API_URL}/api/notifications/subscribe?memberId=${user.id}&startDateTime=${startDateTime}&endDateTime=${endDateTime}`;
+    const url = `${baseURL}/api/notifications/subscribe?memberId=${user.id}&startDateTime=${startDateTime}&endDateTime=${endDateTime}`;
     const eventSource = new EventSource(url, { withCredentials: true });
 
     eventSource.onmessage = (e) => {
