@@ -2,6 +2,7 @@ import App from '@/App';
 import { SquadIdGuard } from '@/components';
 import { Loading } from '@/components/common';
 import { LoginLayout, MainLayout } from '@/components/layouts';
+import ProtectedRoute from '@/components/ProtectedRoute';
 import {
   GoogleOAuthCallbackPage,
   HomePage,
@@ -25,9 +26,11 @@ export const router = createBrowserRouter([
       {
         path: '/',
         element: (
-          <MainLayout>
-            <Outlet />
-          </MainLayout>
+          <ProtectedRoute>
+            <MainLayout>
+              <Outlet />
+            </MainLayout>
+          </ProtectedRoute>
         ),
         children: [
           {
