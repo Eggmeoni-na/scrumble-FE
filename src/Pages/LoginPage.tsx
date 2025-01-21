@@ -1,14 +1,21 @@
 import { getOAuthUrl } from '@/apis';
+import { useUserCookie } from '@/hooks';
 import { pcMediaQuery } from '@/styles/breakpoints';
 import { css } from '@emotion/react';
+import { Navigate } from 'react-router-dom';
 
 const LoginPage = () => {
+  const { user } = useUserCookie();
+
+  if (user) {
+    return <Navigate to="/" replace />;
+  }
+
   const handleGoogleLogin = async () => {
     try {
       const response = await getOAuthUrl('GOOGLE');
       window.location.href = `${response.data.redirectUrl}`;
     } catch (error) {
-      // TODO: 로그인 실패 에러 안내
       console.error('Failed to fetch Google OAuth URL', error);
     }
   };
