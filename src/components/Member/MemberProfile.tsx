@@ -65,8 +65,8 @@ const sidebarNameStyle = (theme: Theme) => css`
 `;
 
 const imgStyle = (theme: Theme) => css`
-  width: 85%;
-  height: 85%;
+  width: 56px;
+  height: 56px;
   object-fit: cover;
   border-radius: 50%;
   border: 3.5px solid ${theme.colors.background.white};
@@ -78,8 +78,8 @@ const activeStyle = css`
   align-items: center;
   background: linear-gradient(90deg, rgb(255, 126, 0) 10%, rgba(255, 191, 0, 1) 72%, rgba(255, 246, 0, 1) 100%);
   border-radius: 50%;
-  width: 56px;
-  height: 56px;
+  width: 64px;
+  height: 64px;
 `;
 
 const inactiveStyle = css`
