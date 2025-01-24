@@ -19,9 +19,12 @@ const SquadDetailPage = () => {
   const { selectedDay, setSelectedDay } = useDayStore((state) => state);
   const { selectedMember, setSelectedMember } = useMemberStore((state) => state);
 
-  const { data: squadDetail } = useSuspenseQuery({
+  const {
+    data: { data: squadDetail },
+    refetch: refetchSquadDetail,
+  } = useSuspenseQuery({
     ...squadDetailQueryOptions(squadId),
-  }).data;
+  });
 
   const me = squadDetail.squadMembers.find((member) => member.memberId === user?.id);
   const isMeSelected = !selectedMember || selectedMember.squadMemberId === me?.squadMemberId;
@@ -61,6 +64,7 @@ const SquadDetailPage = () => {
   }, []);
 
   useEffect(() => {
+    refetchSquadDetail();
     refetchTodos();
   }, []);
 
