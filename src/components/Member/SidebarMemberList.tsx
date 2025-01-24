@@ -4,16 +4,13 @@ import { MemberProfile } from '@/components/Member';
 import { commonButtonStyle } from '@/components/common/Sidebar';
 import { ROLE } from '@/constants/role';
 import { MEMBER_STYLE_TYPE } from '@/constants/squad';
-import { useUserCookie } from '@/hooks';
 import { useRemoveUserFromSquad } from '@/hooks/mutations';
 import { squadKeys } from '@/hooks/queries';
 import { useSquadStore, useToastStore } from '@/stores';
 import { mobileMediaQuery, pcMediaQuery } from '@/styles/breakpoints';
 import { SquadMember } from '@/types';
-import { getPriority } from '@/utils';
 import { css } from '@emotion/react';
 import { useQueryClient } from '@tanstack/react-query';
-import { useMemo } from 'react';
 
 const SidebarMemberList = ({
   members,
@@ -23,16 +20,10 @@ const SidebarMemberList = ({
   myRole: (typeof ROLE)[keyof typeof ROLE];
 }) => {
   const isLeader = myRole === ROLE.LEADER;
-  const { user } = useUserCookie();
-
-  const sortedMembers = useMemo(
-    () => [...members].sort((a, b) => getPriority(a, user!.id) - getPriority(b, user!.id)),
-    [],
-  );
 
   return (
     <ul css={containerStyle}>
-      {sortedMembers.map((member) => (
+      {members.map((member) => (
         <Member key={member.memberId} member={member} showIcon={isLeader && member.squadMemberRole === ROLE.NORMAL} />
       ))}
     </ul>

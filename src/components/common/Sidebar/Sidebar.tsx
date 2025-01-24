@@ -3,10 +3,11 @@ import { IconWrapper } from '@/components';
 import { SidebarMemberList } from '@/components/Member';
 import { Overlay } from '@/components/common/Overlay';
 import { ROLE } from '@/constants/role';
+import { useUserCookie } from '@/hooks';
 import { useDeleteSquad, useExitSquad, useUpdateSquadName } from '@/hooks/mutations';
 import { squadDetailQueryOptions, squadKeys } from '@/hooks/queries';
 import { useSquadStore, useToastStore } from '@/stores';
-import { handleKeyDown } from '@/utils';
+import { getPriority, handleKeyDown } from '@/utils';
 import { css, Theme } from '@emotion/react';
 import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
@@ -15,11 +16,17 @@ export const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
   const squadId = useSquadStore((state) => state.currentSquadId);
   const navigate = useNavigate();
   const createToast = useToastStore((state) => state.createToast);
+  const { user } = useUserCookie();
 
   const { data: squadDetail } = useSuspenseQuery({
     ...squadDetailQueryOptions(squadId),
+    select: (data) => ({
+      ...data,
+      squadMembers: data.data.squadMembers.sort((a, b) => getPriority(a, user!.id) - getPriority(b, user!.id)),
+    }),
     refetchOnMount: false,
   }).data;
+
   const { squadName, squadMembers, mySquadMemberRole } = squadDetail;
   const isLeader = mySquadMemberRole === ROLE.LEADER;
 

@@ -18,4 +18,5 @@ export const squadDetailQueryOptions = (squadId: number) =>
     queryKey: squadKeys.squadDetail(squadId),
     queryFn: () => getSquadDetail(squadId),
     refetchOnWindowFocus: false,
+    staleTime: 300000,
   });
