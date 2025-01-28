@@ -4,7 +4,7 @@ import { ActionModalContentProps } from '@/types';
 import { css, Theme } from '@emotion/react';
 
 const ActionModal = ({ onSubmit, onAbort, actionModal }: ActionModalContentProps) => (
-  <ModalTemplate isOverlay={true} onClose={onAbort} preventClick={false}>
+  <ModalTemplate isOverlay={true} onClose={onAbort} preventClick={true}>
     <ModalContent>
       <p css={descStyle}>{actionModal.message}</p>
       <ModalButtonGroup>
