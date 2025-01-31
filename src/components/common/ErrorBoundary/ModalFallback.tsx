@@ -26,9 +26,9 @@ const ModalFallback = ({ error, resetErrorBoundary, queryKey }: Props) => {
     if (res.ok) {
       resetErrorBoundary();
       if (queryKey) {
-        queryClient.refetchQueries({ queryKey });
+        queryClient.resetQueries({ queryKey });
       } else {
-        queryClient.refetchQueries();
+        queryClient.resetQueries();
       }
       if (redirectPath === '/login') {
         clearCookie();
