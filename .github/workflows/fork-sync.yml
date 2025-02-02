@@ -1,38 +1,24 @@
 name: Sync with Upstream
 
 on:
-  repository_dispatch:
-    types: [sync_upstream]
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
   sync:
-    if: github.repository == 'k-jeonghee/scrumble-FE'
+    if: github.repository == 'Eggmeoni-na/scrumble-FE'
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout fork repository
+      - name: Checkout Organization Repository
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.FORK_ACTIONS }}
           ref: main
+          token: ${{ secrets.AUTO_ACTIONS }}
 
-      - name: Configure Git user
+      - name: Push Upstream Main to Fork Main
         run: |
-          git config --global user.name "k-jeonghee"
-          git config --global user.email "heestory1992@gmail.com"
-
-      - name: Add upstream repository and fetch updates
-        run: |
-          if git remote get-url upstream &>/dev/null; then
-            echo "Upstream already exists"
-          else
-            git remote add upstream https://github.com/Eggmeoni-na/scrumble-FE.git
-          fi
-          git fetch upstream
-
-      - name: Merge upstream/main into fork/main
-        run: |
-          git checkout main
-          git reset --hard upstream/main
-          git push origin main --force
+          git remote add fork https://x-access-token:${{ secrets.AUTO_ACTIONS }}@github.com/k-jeonghee/scrumble-FE.git
+          git push fork main --force
