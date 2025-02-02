@@ -1,5 +1,7 @@
+import { useUserCookie } from '@/hooks';
 import { css } from '@emotion/react';
-import type { FallbackProps } from 'react-error-boundary';
+import { useQueryClient } from '@tanstack/react-query';
+import { FallbackProps } from 'react-error-boundary';
 import { useNavigate } from 'react-router-dom';
 
 type Props = {
@@ -10,10 +12,14 @@ type Props = {
 
 const GeneralErrorFallback = ({ statusCode, message, reset }: Props) => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const { clearCookie } = useUserCookie();
 
-  const resetErrorAndRedirect = () => {
+  const resetErrorAndRedirect = async () => {
     reset();
+    queryClient.resetQueries();
     if (statusCode === 401) {
+      clearCookie();
       navigate('/login', { replace: true });
       return;
     }
@@ -44,7 +50,8 @@ const GeneralErrorFallback = ({ statusCode, message, reset }: Props) => {
 
 const RootErrorFallback = ({ error, resetErrorBoundary }: FallbackProps) => {
   const statusCode = error.response?.status;
-  const message = statusCode === 401 ? '로그인이 필요해요' : '잠시 후 다시 시도해주세요.';
+  const responseMessage = error.response?.data.message || '예상치 못한 에러가 발생했어요.\n잠시 후 다시 시도해주세요';
+  const message = statusCode === 401 ? '로그인이 필요해요' : responseMessage;
 
   return <GeneralErrorFallback statusCode={statusCode} message={message} reset={resetErrorBoundary} />;
 };

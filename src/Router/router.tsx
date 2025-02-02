@@ -1,7 +1,8 @@
 import App from '@/App';
 import { SquadIdGuard } from '@/components';
-import { Loading } from '@/components/common';
+import { FallbackWrapper } from '@/components/common/ErrorBoundary';
 import { LoginLayout, MainLayout } from '@/components/layouts';
+import ProtectedRoute from '@/components/ProtectedRoute';
 import {
   GoogleOAuthCallbackPage,
   HomePage,
@@ -13,9 +14,8 @@ import {
   SquadDetailPage,
   SquadPage,
 } from '@/Pages';
-import { Suspense } from 'react';
 
-import { createBrowserRouter, Outlet } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
 
 export const router = createBrowserRouter([
   {
@@ -23,61 +23,66 @@ export const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: '/',
+        index: true,
         element: (
-          <MainLayout>
-            <Outlet />
-          </MainLayout>
+          <ProtectedRoute>
+            <FallbackWrapper>
+              <HomePage />
+            </FallbackWrapper>
+          </ProtectedRoute>
         ),
+      },
+      {
+        path: 'squads',
         children: [
           {
             index: true,
-            element: <HomePage />,
-          },
-          {
-            path: '/squads',
             element: (
-              <Suspense fallback={<Loading />}>
+              <FallbackWrapper>
                 <SquadPage />
-              </Suspense>
+              </FallbackWrapper>
             ),
           },
           {
-            path: '/squads/:squadId',
+            path: ':squadId',
             element: (
-              <Suspense fallback={<Loading />}>
+              <FallbackWrapper>
                 <SquadDetailPage />
-              </Suspense>
+              </FallbackWrapper>
             ),
           },
           {
-            path: '/squads/:squadId/members',
+            path: ':squadId/members',
             element: (
               <SquadIdGuard>
-                <SelectMemberPage />
+                <FallbackWrapper>
+                  <SelectMemberPage />
+                </FallbackWrapper>
               </SquadIdGuard>
             ),
           },
           {
-            path: '/squads/:squadId/invite',
+            path: ':squadId/invite',
             element: (
               <SquadIdGuard>
-                <InvitePage />
+                <FallbackWrapper>
+                  <InvitePage />
+                </FallbackWrapper>
               </SquadIdGuard>
-            ),
-          },
-          {
-            path: '/me',
-            element: (
-              <Suspense fallback={<Loading />}>
-                <MyPage />
-              </Suspense>
             ),
           },
         ],
       },
       {
-        path: '/login',
+        path: 'me',
+        element: (
+          <MainLayout>
+            <MyPage />
+          </MainLayout>
+        ),
+      },
+      {
+        path: 'login',
         element: (
           <LoginLayout>
             <LoginPage />
@@ -85,13 +90,13 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: '/auth',
+        path: 'auth',
         element: <GoogleOAuthCallbackPage />,
       },
     ],
   },
   {
-    path: '/*',
+    path: '*',
     element: <NotFoundPage />,
   },
 ]);

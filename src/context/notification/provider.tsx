@@ -1,3 +1,4 @@
+import { baseURL } from '@/apis';
 import { notificationContext } from '@/context/notification/context';
 import { useUserCookie } from '@/hooks';
 import { getDateRange } from '@/utils/getDateRange';
@@ -14,16 +15,11 @@ export const NotificationProvider = ({ children }: PropsWithChildren) => {
     }
 
     const { startDateTime, endDateTime } = getDateRange();
-    const url = `${import.meta.env.VITE_API_URL}/api/notifications/subscribe?memberId=${user.id}&startDateTime=${startDateTime}&endDateTime=${endDateTime}`;
+    const url = `${baseURL}/api/notifications/subscribe?memberId=${user.id}&startDateTime=${startDateTime}&endDateTime=${endDateTime}`;
     const eventSource = new EventSource(url, { withCredentials: true });
-
-    eventSource.onmessage = (e) => {
-      console.log('받은 데이터:', e.data);
-    };
 
     eventSource.addEventListener('notificationEvent', (e) => {
       const parsedData = JSON.parse(e.data);
-      console.log('이벤트 푸시 - hasUnreadMessages:', parsedData.body.hasUnreadMessages);
       setHasUnreadMessages(parsedData.body.hasUnreadMessages);
     });
 
@@ -35,10 +31,6 @@ export const NotificationProvider = ({ children }: PropsWithChildren) => {
   }, [user]);
 
   const value = useMemo(() => ({ hasUnreadMessages, setHasUnreadMessages }), [hasUnreadMessages]);
-
-  useEffect(() => {
-    console.log('상태 변경 감지:', hasUnreadMessages);
-  }, [hasUnreadMessages]);
 
   return <notificationContext.Provider value={value}>{children}</notificationContext.Provider>;
 };
