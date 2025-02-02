@@ -1,9 +1,8 @@
 name: Sync with Upstream
 
 on:
-  push:
-    branches:
-      - main
+  repository_dispatch:
+    types: [sync_upstream]
   workflow_dispatch:
 
 jobs:
@@ -15,20 +14,25 @@ jobs:
       - name: Checkout fork repository
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.FORK_ACTIONS }}
+          ref: main
 
       - name: Configure Git user
         run: |
           git config --global user.name "k-jeonghee"
           git config --global user.email "heestory1992@gmail.com"
 
-      - name: Add upstream repository
+      - name: Add upstream repository and fetch updates
         run: |
-          git remote add upstream https://github.com/Eggmeoni-na/scrumble-FE.git
+          if git remote get-url upstream &>/dev/null; then
+            echo "Upstream already exists"
+          else
+            git remote add upstream https://github.com/Eggmeoni-na/scrumble-FE.git
+          fi
           git fetch upstream
 
       - name: Merge upstream/main into fork/main
         run: |
           git checkout main
-          git reset --hard upstream/main 
+          git reset --hard upstream/main
           git push origin main --force

@@ -1,0 +1,20 @@
+name: Dispatch Fork Sync
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  dispatch:
+    if: github.repository == 'Eggmeoni-na/scrumble-FE'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send repository_dispatch event to fork repository
+        run: |
+          curl -X POST -f \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: token ${{ secrets.AUTO_ACTIONS }}" \
+            https://api.github.com/repos/k-jeonghee/scrumble-FE/dispatches \
+            -d '{"event_type": "sync_upstream"}'
