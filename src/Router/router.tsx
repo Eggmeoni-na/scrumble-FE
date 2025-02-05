@@ -1,7 +1,7 @@
 import App from '@/App';
 import { SquadIdGuard } from '@/components';
 import { FallbackWrapper } from '@/components/common/ErrorBoundary';
-import { LoginLayout, MainLayout } from '@/components/layouts';
+import { LoginLayout } from '@/components/layouts';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import {
   GoogleOAuthCallbackPage,
@@ -66,11 +66,7 @@ export const router = createBrowserRouter([
           },
           {
             path: 'me',
-            element: (
-              <MainLayout>
-                <MyPage />
-              </MainLayout>
-            ),
+            element: <MyPage />,
           },
         ],
       },
