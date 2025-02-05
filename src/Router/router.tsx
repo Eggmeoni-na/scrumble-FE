@@ -23,63 +23,56 @@ export const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        index: true,
         element: (
-          <ProtectedRoute>
-            <FallbackWrapper>
-              <HomePage />
-            </FallbackWrapper>
-          </ProtectedRoute>
+          <FallbackWrapper>
+            <ProtectedRoute />
+          </FallbackWrapper>
         ),
-      },
-      {
-        path: 'squads',
         children: [
           {
             index: true,
-            element: (
-              <FallbackWrapper>
-                <SquadPage />
-              </FallbackWrapper>
-            ),
+            element: <HomePage />,
           },
           {
-            path: ':squadId',
-            element: (
-              <FallbackWrapper>
-                <SquadDetailPage />
-              </FallbackWrapper>
-            ),
+            path: 'squads',
+            children: [
+              {
+                index: true,
+                element: <SquadPage />,
+              },
+              {
+                path: ':squadId',
+                children: [
+                  {
+                    index: true,
+                    element: <SquadDetailPage />,
+                  },
+                  {
+                    element: <SquadIdGuard />,
+                    children: [
+                      {
+                        path: 'members',
+                        element: <SelectMemberPage />,
+                      },
+                      {
+                        path: 'invite',
+                        element: <InvitePage />,
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
           },
           {
-            path: ':squadId/members',
+            path: 'me',
             element: (
-              <SquadIdGuard>
-                <FallbackWrapper>
-                  <SelectMemberPage />
-                </FallbackWrapper>
-              </SquadIdGuard>
-            ),
-          },
-          {
-            path: ':squadId/invite',
-            element: (
-              <SquadIdGuard>
-                <FallbackWrapper>
-                  <InvitePage />
-                </FallbackWrapper>
-              </SquadIdGuard>
+              <MainLayout>
+                <MyPage />
+              </MainLayout>
             ),
           },
         ],
-      },
-      {
-        path: 'me',
-        element: (
-          <MainLayout>
-            <MyPage />
-          </MainLayout>
-        ),
       },
       {
         path: 'login',
