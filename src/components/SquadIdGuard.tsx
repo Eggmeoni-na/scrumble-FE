@@ -1,8 +1,7 @@
 import { useSquadStore } from '@/stores';
-import { PropsWithChildren } from 'react';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, Outlet, useParams } from 'react-router-dom';
 
-const SquadIdGuard = ({ children }: PropsWithChildren) => {
+const SquadIdGuard = () => {
   const { squadId } = useParams();
   const currentSquadId = useSquadStore((state) => state.currentSquadId);
 
@@ -10,7 +9,7 @@ const SquadIdGuard = ({ children }: PropsWithChildren) => {
     return <Navigate to={`/squads/${squadId}`} replace />;
   }
 
-  return <>{children}</>;
+  return <Outlet />;
 };
 
 export default SquadIdGuard;
