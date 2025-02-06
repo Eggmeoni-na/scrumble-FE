@@ -25,13 +25,6 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'jsx-a11y/anchor-is-valid': ['warn', { components: ['Link'], specialLink: ['to'] }],
     'jsx-a11y/label-has-associated-control': ['error', { assert: 'either' }],
-    'jsx-a11y/no-noninteractive-element-to-interactive-role': [
-      'error',
-      {
-        ul: ['button'],
-        li: ['button'],
-      },
-    ],
     'jsx-a11y/no-autofocus': 'off',
     'react/prop-types': 'off',
   },
