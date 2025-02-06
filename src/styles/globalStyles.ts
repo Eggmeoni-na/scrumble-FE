@@ -184,6 +184,7 @@ export const globalStyles = (theme: Theme) => css`
     border-spacing: 0;
   }
   button {
+    color: ${theme.colors.text};
     border-style: none;
     background-color: transparent;
     cursor: pointer;
@@ -231,3 +232,5 @@ export const scrollBarStyle = css`
     scrollbar-color: rgba(212, 212, 212, 0.7) transparent;
   }
 `;
+
+export const fullSizeButtonStyle = { width: '100%', height: '100%' };
