@@ -5,18 +5,18 @@ import { Link } from 'react-router-dom';
 
 const Footer = () => (
   <footer css={footerContainer}>
-    <Link to="/squads" css={menuIcon} aria-label="Go to squads">
+    <Link to="/squads" css={menuIcon} aria-label="스쿼드 목록">
       <IconWrapper>
         <Target />
       </IconWrapper>
       <span>스쿼드</span>
     </Link>
-    <Link to="/" css={homeIcon} aria-label="Go to home">
+    <Link to="/" css={homeIcon} aria-label="홈">
       <IconWrapper>
         <Pouch />
       </IconWrapper>
     </Link>
-    <Link to="/me" css={menuIcon} aria-label="Go to my">
+    <Link to="/me" css={menuIcon} aria-label="마이 페이지">
       <IconWrapper>
         <User />
       </IconWrapper>

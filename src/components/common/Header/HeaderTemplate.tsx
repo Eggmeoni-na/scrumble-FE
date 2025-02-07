@@ -16,7 +16,7 @@ const BackButton = () => {
 
   return (
     <div css={leftMenu}>
-      <IconWrapper aria-label="Go to back" role="button" onClick={handleBack} disabled={location.pathname === '/'}>
+      <IconWrapper aria-label="뒤로가기" role="button" onClick={handleBack} disabled={location.pathname === '/'}>
         <Back />
       </IconWrapper>
       {location.pathname === '/' && <img css={logoStyle} src="./images/logo.png" alt="logo" />}
@@ -30,7 +30,7 @@ const ToggleThemeButton = () => {
   const { isDarkMode, toggleTheme } = useThemeStore((state) => state);
 
   return (
-    <IconWrapper aria-label="Toggle theme" onClick={toggleTheme} role="button">
+    <IconWrapper aria-label="테마 변경" onClick={toggleTheme} role="button">
       {isDarkMode ? <Light /> : <Dark />}
     </IconWrapper>
   );
@@ -42,7 +42,7 @@ const NotificationsButton = () => {
 
   return (
     <>
-      <IconWrapper aria-label="alarm" onClick={() => toggleOpen()} role="button">
+      <IconWrapper aria-label="알림 조회" onClick={() => toggleOpen()} role="button">
         {hasUnreadMessages ? <ActiveBell /> : <Bell />}
       </IconWrapper>
       {isOpen && <Notification toggleOpen={toggleOpen} />}
@@ -51,13 +51,7 @@ const NotificationsButton = () => {
 };
 
 const SidebarToggleButton = ({ toggleSidebar }: { toggleSidebar: VoidFunction }) => (
-  <IconWrapper
-    aria-label="menu"
-    onClick={() => {
-      toggleSidebar();
-    }}
-    role="button"
-  >
+  <IconWrapper aria-label="더보기 메뉴" onClick={() => toggleSidebar()} role="button">
     <Menu />
   </IconWrapper>
 );

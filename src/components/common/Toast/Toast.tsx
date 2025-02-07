@@ -41,7 +41,7 @@ const Toast = ({ message, type, onRemove, showCloseButton }: Omit<Toast, 'id'> &
     <IconWrapper
       customStyle={() => closeButton(showCloseButton)}
       onClick={onRemove}
-      aria-label="Close toast"
+      aria-label="토스트 닫기"
       role="button"
     >
       <Close />
