@@ -7,8 +7,8 @@ import { useInfinite, useToastHandler } from '@/hooks';
 import { useDeleteTodo, useUpdateTodo } from '@/hooks/mutations';
 import { todoKeys } from '@/hooks/queries';
 import { useDayStore, useSquadStore } from '@/stores';
+import { fullSizeButtonStyle } from '@/styles/globalStyles';
 import { ToDoDetail, TodoQueryParams, UpdateTodoRequest } from '@/types';
-import { handleKeyDown } from '@/utils';
 import { css, keyframes, Theme, useTheme } from '@emotion/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { KeyboardEvent, useState } from 'react';
@@ -33,8 +33,12 @@ export const TodoList = ({ todos, loadMoreTodos, hasNextPage, isMeSelected, squa
           <MemberTodoItem key={todo.toDoId} todo={todo} />
         ),
       )}
-      <br />
-      <div ref={loadMoreRef} />
+      {todos.length > 0 && (
+        <>
+          <br />
+          <div ref={loadMoreRef} />
+        </>
+      )}
     </ul>
   );
 };
@@ -95,6 +99,10 @@ const TodoItem = ({ todo, squadMemberId }: { todo: ToDoDetail; squadMemberId: nu
   };
 
   const handleEditContents = () => {
+    if (contents === newContents) {
+      setIsEditMode(false);
+      return;
+    }
     const newTodo: UpdateTodoRequest = {
       toDoAt: selectedDay,
       toDoStatus,
@@ -114,63 +122,44 @@ const TodoItem = ({ todo, squadMemberId }: { todo: ToDoDetail; squadMemberId: nu
   return (
     <>
       {!isDeleteMode ? (
-        <li
-          css={[todoItemStyle(), getStatusStyles(isCompleted, theme)]}
-          onClick={() => toggleTodoStatus()}
-          onKeyDown={(e) => {
-            if (!isEditMode) {
-              handleKeyDown(e, toggleTodoStatus);
-            }
-          }}
-          tabIndex={0}
-          role="button"
-        >
-          <div css={contentStyle}>
-            <IconWrapper
-              aria-label={isCompleted ? 'Completed todo' : 'Uncompleted todo'}
-              aria-checked={isCompleted}
-              role="checkbox"
-              css={[checkIconStyle, isCompleted && checkedStyle]}
-            >
-              {isCompleted && <Check />}
-            </IconWrapper>
-            {!isEditMode ? (
-              <p>{contents}</p>
-            ) : (
-              <input
-                type="text"
-                value={newContents}
-                onChange={(e) => setNewContents(e.target.value)}
-                onClick={(e) => e.stopPropagation()}
-                onKeyUp={handleKeyPressForEdit}
-                autoFocus
-                css={editInputStyle}
-              />
-            )}
-          </div>
-          {!isEditMode && (
-            <div
-              css={actionStyle}
-              onClick={(e) => e.stopPropagation()}
-              // onKeyDown={(e) => e.stopPropagation()}
-              role="presentation"
-            >
-              <IconWrapper onClick={() => setIsEditMode(true)}>
+        <li css={[todoItemStyle(), getStatusStyles(isCompleted, theme)]}>
+          <button onClick={toggleTodoStatus} style={fullSizeButtonStyle} aria-label="투두 상태 변경">
+            <div css={contentStyle}>
+              <IconWrapper
+                aria-label={isCompleted ? '완료된 투두' : '완료되지 않은 투두'}
+                aria-checked={isCompleted}
+                role="checkbox"
+                css={[checkIconStyle, isCompleted && checkedStyle]}
+              >
+                {isCompleted && <Check />}
+              </IconWrapper>
+              {!isEditMode ? (
+                <p>{contents}</p>
+              ) : (
+                <input
+                  type="text"
+                  value={newContents}
+                  onChange={(e) => setNewContents(e.target.value)}
+                  onClick={(e) => e.stopPropagation()}
+                  onKeyDown={handleKeyPressForEdit}
+                  css={editInputStyle}
+                  autoFocus
+                />
+              )}
+            </div>
+          </button>
+          {!isEditMode ? (
+            <div css={actionStyle} role="presentation">
+              <IconWrapper onClick={() => setIsEditMode(true)} aria-label="투두 수정">
                 <Edit />
               </IconWrapper>
-              <IconWrapper onClick={handleDeleteTodo}>
+              <IconWrapper onClick={handleDeleteTodo} aria-label="투두 삭제">
                 <Delete />
               </IconWrapper>
             </div>
-          )}
-          {isEditMode && (
-            <div
-              css={editActionStyle}
-              onClick={(e) => e.stopPropagation()}
-              // onKeyDown={(e) => e.stopPropagation()}
-              role="presentation"
-            >
-              <Button id="edit-btn" text="수정" variant="confirm" onClick={handleEditContents} />
+          ) : (
+            <div css={editActionStyle} role="presentation">
+              <Button id="edit-btn" text="수정" variant="confirm" onClick={handleEditContents} aria-label="수정하기" />
               <Button
                 text="취소"
                 variant="default"
@@ -178,26 +167,18 @@ const TodoItem = ({ todo, squadMemberId }: { todo: ToDoDetail; squadMemberId: nu
                   setNewContents(contents);
                   setIsEditMode(false);
                 }}
+                aria-label="투두 수정 취소"
               />
             </div>
           )}
         </li>
       ) : (
-        <li
-          css={todoItemStyle(isDeleteMode)}
-          onClick={handleConfirmDelete}
-          onKeyDown={(e) => handleKeyDown(e, handleConfirmDelete)}
-          tabIndex={0}
-          role="button"
-        >
-          <p>등록된 할일을 삭제할까요?</p>
-          <IconWrapper style={{ marginRight: '8px' }}>
-            <Close
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsDeleteMode(false);
-              }}
-            />
+        <li css={todoItemStyle(isDeleteMode)}>
+          <button onClick={handleConfirmDelete} style={fullSizeButtonStyle} aria-label="삭제하기" tabIndex={0}>
+            등록된 할일을 삭제할까요?
+          </button>
+          <IconWrapper style={{ marginRight: '8px' }} onClick={() => setIsDeleteMode(false)} aria-label="삭제 취소">
+            <Close />
           </IconWrapper>
         </li>
       )}
