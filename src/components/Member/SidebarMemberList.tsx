@@ -57,7 +57,7 @@ const Member = ({ member, showIcon }: { member: SquadMember; showIcon: boolean }
         <MemberProfile member={member} displayRole type={MEMBER_STYLE_TYPE.DEFAULT} />
         {showIcon && (
           <IconWrapper
-            aria-label="Remove member from squad"
+            aria-label={`${member.name} 강퇴`}
             onClick={handleRemoveUser}
             role="button"
             css={commonButtonStyle}

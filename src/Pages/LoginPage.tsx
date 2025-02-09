@@ -55,7 +55,7 @@ const LoginPage = () => {
     <div>
       <div css={loginContainer}>
         <img css={loginHomeImgStyle} src="/images/login.png" alt="login_image" />
-        <button onClick={handleGoogleLogin} aria-label="Login with Google">
+        <button onClick={handleGoogleLogin} aria-label="구글 계정으로 로그인">
           <img css={googleLoginImgStyle} src="/images/google_login.png" alt="google_login" />
         </button>
         <button css={demoUserStyle} onClick={handleTempLogin}>

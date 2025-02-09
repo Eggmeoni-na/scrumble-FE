@@ -18,6 +18,7 @@ const Form = ({ type, onSubmit, onKeyDown, value, onChange, placeholder, style }
     <input type={type} value={value} onChange={onChange} autoFocus placeholder={placeholder} />
     <IconWrapper
       css={addIconStyle}
+      aria-label="할일 등록"
       onClick={() => {
         // Button 태그로 인식하기 위함
       }}
