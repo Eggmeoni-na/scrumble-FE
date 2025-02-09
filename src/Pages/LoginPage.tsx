@@ -97,6 +97,6 @@ const googleLoginImgStyle = css`
 
 const demoUserStyle = (theme: Theme) => css`
   color: ${theme.colors.text};
-  font-size: ${theme.typography.size_16};
+  ${theme.typography.size_16}
   text-decoration: underline;
 `;

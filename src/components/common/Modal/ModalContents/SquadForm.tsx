@@ -54,5 +54,5 @@ const inputStyle = (theme: Theme) => css`
   border-radius: 6px;
   margin: 16px 0;
   padding: 0 8px;
-  font-size: ${theme.typography.size_16};
+  ${theme.typography.size_16}
 `;

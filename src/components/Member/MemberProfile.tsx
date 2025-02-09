@@ -50,8 +50,6 @@ const infoStyle = css`
 
 const detailNameStyle = (theme: Theme) => css`
   ${theme.typography.size_10}
-  font-weight: 500;
-
   width: 42px;
   text-align: center;
   text-overflow: clip;
@@ -61,7 +59,6 @@ const detailNameStyle = (theme: Theme) => css`
 
 const sidebarNameStyle = (theme: Theme) => css`
   ${theme.typography.size_16}
-  font-weight: 500;
 `;
 
 const imgStyle = (theme: Theme) => css`
@@ -90,7 +87,7 @@ const inactiveStyle = css`
 `;
 
 const meStyle = (theme: Theme) => css`
-  font-size: ${theme.typography.size_14};
+  ${theme.typography.size_14}
   font-weight: 400;
   color: ${theme.colors.gray.gray200};
 `;

@@ -73,17 +73,17 @@ const itemStyle = (theme: Theme) => css`
 
   ${mobileMediaQuery(css`
     max-width: ${breakpoints.mobile};
-    font-size: ${theme.typography.size_16};
+    ${theme.typography.size_16}
   `)}
 
   ${pcMediaQuery(css`
     max-width: ${breakpoints.pc};
-    font-size: ${theme.typography.size_24};
+    ${theme.typography.size_24}
     font-weight: 500;
   `)}
 
   & button {
-    font-size: ${theme.typography.size_16};
+    ${theme.typography.size_16}
   }
 `;
 

@@ -74,11 +74,11 @@ const Member = ({ member, showIcon }: { member: SquadMember; showIcon: boolean }
 const containerStyle = css`
   overflow-y: auto;
   ${mobileMediaQuery(css`
-    height: 240px;
+    height: 180px;
   `)}
 
   ${pcMediaQuery(css`
-    height: 360px;
+    height: 260px;
   `)}
 `;
 

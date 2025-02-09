@@ -63,7 +63,7 @@ const containerStyle = (theme: Theme) => css`
   padding: 24px 0;
 
   & h1 {
-    font-size: ${theme.typography.size_24};
+    ${theme.typography.size_24}
     margin-bottom: 12px;
   }
 `;
