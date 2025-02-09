@@ -156,7 +156,7 @@ export const sidebarContainer = (theme: Theme) => css`
   overflow: auto;
 
   & h2 {
-    font-size: ${theme.typography.size_18};
+    ${theme.typography.size_18}
     font-weight: 600;
   }
 
@@ -171,7 +171,7 @@ export const sidebarContainer = (theme: Theme) => css`
 `;
 
 export const headerStyle = (theme: Theme) => css`
-  font-size: ${theme.typography.size_24};
+  ${theme.typography.size_24}
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -179,7 +179,7 @@ export const headerStyle = (theme: Theme) => css`
   padding: 0 16px;
 `;
 
-const squadInfoStyle = (theme: Theme) => css`
+const squadInfoStyle = css`
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -194,11 +194,6 @@ const squadInfoStyle = (theme: Theme) => css`
     display: flex;
     gap: 4px;
     align-items: center;
-  }
-
-  & span {
-    font-size: ${theme.typography.size_14};
-    color: ${theme.colors.gray.gray300};
   }
 `;
 
@@ -231,7 +226,7 @@ const settingsStyle = (theme: Theme) => css`
 
   & button {
     text-align: left;
-    font-size: ${theme.typography.size_16};
+    ${theme.typography.size_16}
   }
 `;
 

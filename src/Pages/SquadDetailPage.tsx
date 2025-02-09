@@ -119,12 +119,10 @@ const headerStyle = (theme: Theme) => css`
   margin: 24px 24px 12px 32px;
 
   ${mobileMediaQuery(css`
-    font-size: ${theme.typography.size_14};
-    font-weight: 500;
+    ${theme.typography.size_14}
   `)}
 
   ${pcMediaQuery(css`
-    font-size: ${theme.typography.size_16};
-    font-weight: 500;
+    ${theme.typography.size_16}
   `)}
 `;
