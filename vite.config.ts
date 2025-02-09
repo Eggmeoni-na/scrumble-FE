@@ -22,6 +22,7 @@ export default defineConfig(({ mode }) => {
           configure: (proxy) => {
             proxy.on('proxyReq', (proxyReq) => {
               proxyReq.setHeader('Connection', 'keep-alive');
+              proxyReq.setHeader('Origin', env.VITE_DEV_URL);
             });
           },
         },
