@@ -15,7 +15,6 @@ export const generateTempSession = async () => {
   return response;
 };
 
-// 배포 완료 API
 export const getOAuthUrl = async (oauthType: string) => {
   const response: AxiosResponse<OAuthUrl> = await instance.get('/api/auth/oauth-url', {
     params: {
@@ -48,5 +47,10 @@ export const getUser = async (): Promise<{ data: UserProfile }> => {
 
 export const deleteUser = async () => {
   const response = await instance.delete('/api/users');
+  return response.data;
+};
+
+export const editNickname = async (newName: string) => {
+  const response = await instance.put('/api/users', { newName });
   return response.data;
 };
