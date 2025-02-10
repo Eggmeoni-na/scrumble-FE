@@ -76,11 +76,12 @@ const InvitePage = () => {
               setIsSelected(!isSelected);
             }
           }}
+          aria-label={searchResult.name}
           tabIndex={0}
           role="button"
         >
           <IconWrapper
-            aria-label={isSelected ? 'Selected member' : 'Unselected member'}
+            aria-label={isSelected ? '선택된 멤버' : '선택되지 않은 멤버'}
             aria-checked={isSelected}
             role="checkbox"
             css={[checkIconStyle, isSelected && checkedStyle, isSelected && customCheckedStyle]}

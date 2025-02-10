@@ -7,7 +7,7 @@ import { MEMBER_STYLE_TYPE } from '@/constants/squad';
 import { useRemoveUserFromSquad } from '@/hooks/mutations';
 import { squadKeys } from '@/hooks/queries';
 import { useSquadStore, useToastStore } from '@/stores';
-import { mobileMediaQuery, pcMediaQuery } from '@/styles/breakpoints';
+import { pcMediaQuery } from '@/styles/breakpoints';
 import { SquadMember } from '@/types';
 import { css } from '@emotion/react';
 import { useQueryClient } from '@tanstack/react-query';
@@ -57,7 +57,7 @@ const Member = ({ member, showIcon }: { member: SquadMember; showIcon: boolean }
         <MemberProfile member={member} displayRole type={MEMBER_STYLE_TYPE.DEFAULT} />
         {showIcon && (
           <IconWrapper
-            aria-label="Remove member from squad"
+            aria-label={`${member.name} 강퇴`}
             onClick={handleRemoveUser}
             role="button"
             css={commonButtonStyle}
@@ -73,12 +73,10 @@ const Member = ({ member, showIcon }: { member: SquadMember; showIcon: boolean }
 
 const containerStyle = css`
   overflow-y: auto;
-  ${mobileMediaQuery(css`
-    height: 240px;
-  `)}
+  height: 180px;
 
   ${pcMediaQuery(css`
-    height: 360px;
+    height: 260px;
   `)}
 `;
 

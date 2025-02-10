@@ -12,7 +12,7 @@ const MemberTodoItem = ({ todo }: { todo: ToDoDetail }) => {
     <li css={[todoItemStyle(), getStatusStyles(isCompleted, theme), memberTodoItemStyle]}>
       <div css={contentStyle}>
         <IconWrapper
-          aria-label={isCompleted ? 'Completed todo' : 'Uncompleted todo'}
+          aria-label={isCompleted ? '완료' : '미완료'}
           aria-checked={isCompleted}
           role="checkbox"
           css={[checkIconStyle, isCompleted && checkedStyle]}

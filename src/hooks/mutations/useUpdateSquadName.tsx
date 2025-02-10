@@ -7,6 +7,7 @@ import { useMutation } from '@tanstack/react-query';
 
 const useUpdateSquadName = (
   squadId: number,
+  squadName: string,
   options: MutateOptionsType<ApiResponse<SquadDetail>, UpdateSquadNameParamType, SquadDetail>,
 ) => {
   const { ModalContainer: UpdateSquadNameModal, openModal } = useModal();
@@ -16,7 +17,7 @@ const useUpdateSquadName = (
   });
 
   const handleUpdateSquadName = async () => {
-    const res = await openModal(SquadForm, { isEdit: true });
+    const res = await openModal(SquadForm, { squadName, isEdit: true });
     if (!res.ok || !res.value) return;
     updateSquadNameMutate({ squadId, squadName: res.value });
   };

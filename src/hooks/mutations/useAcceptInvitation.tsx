@@ -3,8 +3,8 @@ import { AcceptSquadInvitationParams, MutateOptionsType } from '@/hooks/mutation
 import { ApiResponse } from '@/types';
 import { useMutation } from '@tanstack/react-query';
 
-const useAcceptInvitation = (options: MutateOptionsType<ApiResponse<null>, AcceptSquadInvitationParams>) => {
-  const { mutate: acceptInvitation } = useMutation({
+const useAcceptInvitation = (options?: MutateOptionsType<ApiResponse<null>, AcceptSquadInvitationParams>) => {
+  const { mutateAsync: acceptInvitation } = useMutation({
     mutationFn: acceptSquadInvite,
     ...options,
   });

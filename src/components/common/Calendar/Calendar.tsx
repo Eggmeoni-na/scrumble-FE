@@ -1,6 +1,6 @@
 import { useDayStore } from '@/stores';
-import { breakpoints, mobileMediaQuery, pcMediaQuery } from '@/styles/breakpoints';
-import { scrollBarStyle } from '@/styles/globalStyles';
+import { breakpoints, pcMediaQuery } from '@/styles/breakpoints';
+import { fullSizeButtonStyle, scrollBarStyle } from '@/styles/globalStyles';
 import { getDaysInMonth } from '@/utils';
 import { css, Theme, useTheme } from '@emotion/react';
 import { addMonths, format, subMonths } from 'date-fns';
@@ -92,11 +92,24 @@ const CalendarList = ({ currentMonth }: { currentMonth: Date }) => {
   }, [selectedDay]);
 
   return (
-    <ul css={calendarStyle} ref={daysContainerRef} onClick={handleClick} onKeyDown={handleKeyDown} role="button">
-      {daysInCurrentMonth.map((day) => (
-        <Calendar.Item key={day} day={day} ref={day === selectedDay ? selectedDayRef : null} />
-      ))}
-    </ul>
+    <>
+      {daysInCurrentMonth.length > 0 && (
+        <ul
+          css={calendarStyle}
+          ref={daysContainerRef}
+          onClick={handleClick}
+          onKeyDown={handleKeyDown}
+          tabIndex={0}
+          role="listbox"
+          aria-label="날짜 선택"
+          aria-activedescendant={selectedDay ? `${selectedDay}일` : undefined}
+        >
+          {daysInCurrentMonth.map((day) => (
+            <Calendar.Item key={day} day={day} ref={day === selectedDay ? selectedDayRef : null} />
+          ))}
+        </ul>
+      )}
+    </>
   );
 };
 
@@ -115,9 +128,14 @@ Calendar.Item = forwardRef<HTMLLIElement, { day: string }>(({ day }, ref) => {
       ]}
       data-day={day}
       ref={ref}
+      role="option"
+      aria-selected={selectedDay === day}
+      id={`${day}일`}
     >
-      <span>{format(new Date(day), 'dd')}</span>
-      <span css={dayNameStyle}>{format(new Date(day), 'EEE', { locale: ko })}</span>
+      <button style={fullSizeButtonStyle} aria-label={`${day}일`}>
+        <span>{format(new Date(day), 'dd')}</span>
+        <span css={dayNameStyle}>{format(new Date(day), 'EEE', { locale: ko })}</span>
+      </button>
     </li>
   );
 });
@@ -164,7 +182,10 @@ const todayStyle = (theme: Theme, isSelected: boolean) => css`
 const selectedDateStyle = (theme: Theme) => css`
   background-color: ${theme.colors.primary};
   border: 2px solid ${theme.colors.primary};
-  color: white;
+
+  & button {
+    color: #1b1b52;
+  }
 `;
 
 const dayNameStyle = (theme: Theme) => css`
@@ -176,6 +197,8 @@ const monthNavButtonStyle = (theme: Theme) => css`
   display: flex;
   justify-content: center;
   align-items: center;
+  max-width: ${breakpoints.mobile};
+  margin: 8px auto;
 
   & span {
     display: flex;
@@ -204,10 +227,6 @@ const monthNavButtonStyle = (theme: Theme) => css`
       background-color: #eeeeee70;
     }
   }
-  ${mobileMediaQuery(css`
-    max-width: ${breakpoints.mobile};
-    margin: 8px 36px;
-  `)}
 
   ${pcMediaQuery(css`
     max-width: ${breakpoints.pc};

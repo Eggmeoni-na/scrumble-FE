@@ -2,9 +2,9 @@ import { Button } from '@/components/common';
 import { useCreateSquad } from '@/hooks/mutations';
 import { squadQueryOptions } from '@/hooks/queries';
 import { useToastStore } from '@/stores';
-import { breakpoints, mobileMediaQuery, pcMediaQuery } from '@/styles/breakpoints';
+import { breakpoints, pcMediaQuery } from '@/styles/breakpoints';
+import { fullSizeButtonStyle } from '@/styles/globalStyles';
 import { Squad } from '@/types/squad';
-import { handleKeyDown } from '@/utils';
 import { css, Theme } from '@emotion/react';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { startTransition } from 'react';
@@ -52,14 +52,10 @@ const SquadItem = ({ squad }: { squad: Squad }) => {
   };
 
   return (
-    <li
-      css={itemStyle}
-      onClick={handleNavigation}
-      onKeyDown={(e) => handleKeyDown(e, handleNavigation)}
-      tabIndex={0}
-      role="button"
-    >
-      {squad.squadName}
+    <li css={itemStyle}>
+      <button onClick={handleNavigation} style={fullSizeButtonStyle} aria-label={`${squad.squadName} 스쿼드 선택`}>
+        {squad.squadName}
+      </button>
     </li>
   );
 };
@@ -69,23 +65,20 @@ const itemStyle = (theme: Theme) => css`
   justify-content: center;
   align-items: center;
   height: 52px;
-  padding: 12px;
   margin: 8px 16px;
   border-radius: 8px;
   background-color: ${theme.colors.background.lightYellow};
   box-shadow: 0px 3px 28px 0px rgba(37, 37, 37, 0.05);
   cursor: pointer;
-
-  ${mobileMediaQuery(css`
-    max-width: ${breakpoints.mobile};
-    ${theme.typography.size_16}
-  `)}
+  max-width: ${breakpoints.mobile};
 
   ${pcMediaQuery(css`
     max-width: ${breakpoints.pc};
-    ${theme.typography.size_24}
-    font-weight: 500;
   `)}
+
+  & button {
+    ${theme.typography.size_16}
+  }
 `;
 
 const headerStyle = (theme: Theme) => css`
@@ -95,13 +88,13 @@ const headerStyle = (theme: Theme) => css`
   margin: 24px 16px;
 
   & span {
-    font-size: ${theme.typography.size_24};
+    ${theme.typography.size_24};
     padding-left: 16px;
   }
 
   & button {
     width: 112px;
-    font-size: ${theme.typography.size_16};
+    ${theme.typography.size_16};
     background-color: var(--color-primary);
     color: white;
   }

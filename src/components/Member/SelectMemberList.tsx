@@ -8,8 +8,8 @@ import { MEMBER_STYLE_TYPE } from '@/constants/squad';
 import { useModal } from '@/hooks';
 import { squadDetailQueryOptions, squadKeys } from '@/hooks/queries';
 import { useToastStore } from '@/stores';
+import { fullSizeButtonStyle } from '@/styles/globalStyles';
 import { SquadMember } from '@/types';
-import { handleKeyDown } from '@/utils';
 import { css, Theme } from '@emotion/react';
 import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { useState } from 'react';
@@ -72,22 +72,18 @@ const Member = ({ squadId, member }: { squadId: number; member: SquadMember }) =
 
   return (
     <>
-      <li
-        css={itemStyle}
-        onClick={handleSelectMember}
-        onKeyDown={(e) => handleKeyDown(e, handleSelectMember)}
-        tabIndex={0}
-        role="button"
-      >
-        <MemberProfile member={member} displayRole={false} type={MEMBER_STYLE_TYPE.DEFAULT} />
-        <IconWrapper
-          aria-label={isChecked ? 'Selected member' : 'Unselected member'}
-          aria-checked={isChecked}
-          role="checkbox"
-          css={[checkIconStyle, isChecked && checkedStyle]}
-        >
-          {isChecked && <Check />}
-        </IconWrapper>
+      <li css={itemStyle}>
+        <button onClick={handleSelectMember} style={fullSizeButtonStyle} aria-label={member.name}>
+          <MemberProfile member={member} displayRole={false} type={MEMBER_STYLE_TYPE.DEFAULT} />
+          <IconWrapper
+            aria-label={isChecked ? '선택된 멤버' : '선택되지 않은 멤버'}
+            aria-checked={isChecked}
+            role="checkbox"
+            css={[checkIconStyle, isChecked && checkedStyle]}
+          >
+            {isChecked && <Check />}
+          </IconWrapper>
+        </button>
       </li>
       <AssignSquadLeaderModal />
     </>

@@ -1,15 +1,14 @@
 import { useUserCookie } from '@/hooks';
-import { PropsWithChildren } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 
-const ProtectedRoute = ({ children }: PropsWithChildren) => {
+const ProtectedRoute = () => {
   const { user } = useUserCookie();
 
   if (user === null) {
     return <Navigate to="/login" replace />;
   }
 
-  return <>{children}</>;
+  return <Outlet />;
 };
 
 export default ProtectedRoute;

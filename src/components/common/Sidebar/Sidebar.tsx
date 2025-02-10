@@ -7,7 +7,8 @@ import { useUserCookie } from '@/hooks';
 import { useDeleteSquad, useExitSquad, useUpdateSquadName } from '@/hooks/mutations';
 import { squadDetailQueryOptions, squadKeys } from '@/hooks/queries';
 import { useSquadStore, useToastStore } from '@/stores';
-import { getPriority, handleKeyDown } from '@/utils';
+import { fullSizeButtonStyle } from '@/styles/globalStyles';
+import { getPriority } from '@/utils';
 import { css, Theme } from '@emotion/react';
 import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
@@ -31,7 +32,7 @@ export const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
   const isLeader = mySquadMemberRole === ROLE.LEADER;
 
   const queryClient = useQueryClient();
-  const { UpdateSquadNameModal, handleUpdateSquadName } = useUpdateSquadName(squadId, {
+  const { UpdateSquadNameModal, handleUpdateSquadName } = useUpdateSquadName(squadId, squadName, {
     onSuccess: async () => {
       createToast({ type: 'success', message: '스쿼드명이 수정되었어요', duration: 2000, showCloseButton: false });
       queryClient.refetchQueries({
@@ -79,16 +80,16 @@ export const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
       <dialog css={sidebarContainer}>
         <header css={headerStyle}>
           <h1>스쿼드 관리</h1>
-          <IconWrapper aria-label="Close sidebar" onClick={closeSidebar} role="button" css={commonButtonStyle}>
+          <IconWrapper aria-label="사이드바 닫기" onClick={closeSidebar} role="button" css={commonButtonStyle}>
             <Close />
           </IconWrapper>
         </header>
-        <section css={squadInfoStyle} aria-labelledby="squad-detail">
+        <section css={squadInfoStyle}>
           <h2 id="squad-detail">스쿼드명</h2>
           <div>
             <h3>{squadName}</h3>
             <IconWrapper
-              aria-label="Edit squad name"
+              aria-label="스쿼드명 수정"
               onClick={handleUpdateSquadName}
               role="button"
               css={commonButtonStyle}
@@ -98,39 +99,30 @@ export const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
             </IconWrapper>
           </div>
         </section>
-        <section css={membersStyle} aria-labelledby="squad-members">
+        <section css={membersStyle}>
           <h2 id="squad-members">멤버</h2>
           <SidebarMemberList members={squadMembers} myRole={squadDetail.mySquadMemberRole} />
         </section>
-        <section css={settingsStyle} aria-labelledby="squad-settings">
+        <section css={settingsStyle}>
           <h2 id="squad-settings">설정</h2>
           <ul>
-            <li
-              onClick={handleInvitation}
-              onKeyDown={(e) => handleKeyDown(e, handleInvitation)}
-              tabIndex={0}
-              role="button"
-            >
-              멤버 초대
+            <li>
+              <button onClick={handleInvitation} style={fullSizeButtonStyle} aria-label="멤버 초대">
+                멤버 초대
+              </button>
             </li>
             {isLeader && (
-              <li
-                onClick={handleAssignLeader}
-                onKeyDown={(e) => handleKeyDown(e, handleAssignLeader)}
-                tabIndex={0}
-                role="button"
-              >
-                리더 변경
+              <li>
+                <button onClick={handleAssignLeader} style={fullSizeButtonStyle} aria-label="리더 변경">
+                  리더 변경
+                </button>
               </li>
             )}
             {isLeader && (
-              <li
-                onClick={handleSquadDelete}
-                onKeyDown={(e) => handleKeyDown(e, handleSquadDelete)}
-                tabIndex={0}
-                role="button"
-              >
-                스쿼드 삭제
+              <li>
+                <button onClick={handleSquadDelete} style={fullSizeButtonStyle} aria-label="스쿼드 삭제">
+                  스쿼드 삭제
+                </button>
               </li>
             )}
           </ul>
@@ -164,7 +156,7 @@ export const sidebarContainer = (theme: Theme) => css`
   overflow: auto;
 
   & h2 {
-    font-size: ${theme.typography.size_18};
+    ${theme.typography.size_18}
     font-weight: 600;
   }
 
@@ -179,7 +171,7 @@ export const sidebarContainer = (theme: Theme) => css`
 `;
 
 export const headerStyle = (theme: Theme) => css`
-  font-size: ${theme.typography.size_24};
+  ${theme.typography.size_24}
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -187,7 +179,7 @@ export const headerStyle = (theme: Theme) => css`
   padding: 0 16px;
 `;
 
-const squadInfoStyle = (theme: Theme) => css`
+const squadInfoStyle = css`
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -203,11 +195,6 @@ const squadInfoStyle = (theme: Theme) => css`
     gap: 4px;
     align-items: center;
   }
-
-  & span {
-    font-size: ${theme.typography.size_14};
-    color: ${theme.colors.gray.gray300};
-  }
 `;
 
 const membersStyle = css`
@@ -219,7 +206,7 @@ const membersStyle = css`
   }
 `;
 
-const settingsStyle = css`
+const settingsStyle = (theme: Theme) => css`
   padding: 0 16px;
   flex: 1;
   margin-bottom: 24px;
@@ -235,6 +222,11 @@ const settingsStyle = css`
 
   & li:hover {
     opacity: 0.5;
+  }
+
+  & button {
+    text-align: left;
+    ${theme.typography.size_16}
   }
 `;
 
