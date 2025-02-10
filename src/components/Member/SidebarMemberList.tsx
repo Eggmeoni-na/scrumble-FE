@@ -7,7 +7,7 @@ import { MEMBER_STYLE_TYPE } from '@/constants/squad';
 import { useRemoveUserFromSquad } from '@/hooks/mutations';
 import { squadKeys } from '@/hooks/queries';
 import { useSquadStore, useToastStore } from '@/stores';
-import { mobileMediaQuery, pcMediaQuery } from '@/styles/breakpoints';
+import { pcMediaQuery } from '@/styles/breakpoints';
 import { SquadMember } from '@/types';
 import { css } from '@emotion/react';
 import { useQueryClient } from '@tanstack/react-query';
@@ -73,9 +73,7 @@ const Member = ({ member, showIcon }: { member: SquadMember; showIcon: boolean }
 
 const containerStyle = css`
   overflow-y: auto;
-  ${mobileMediaQuery(css`
-    height: 180px;
-  `)}
+  height: 180px;
 
   ${pcMediaQuery(css`
     height: 260px;

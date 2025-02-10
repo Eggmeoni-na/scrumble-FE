@@ -5,7 +5,7 @@ import { TODO_PAGE_SIZE, TODO_STATUS } from '@/constants/todo';
 import { useUserCookie } from '@/hooks';
 import { squadDetailQueryOptions, todoInfiniteQueryOptions } from '@/hooks/queries';
 import { useDayStore, useMemberStore, useSquadStore } from '@/stores';
-import { mobileMediaQuery, pcMediaQuery } from '@/styles/breakpoints';
+import { pcMediaQuery } from '@/styles/breakpoints';
 import { css, Theme } from '@emotion/react';
 import { useInfiniteQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
@@ -117,10 +117,8 @@ const headerStyle = (theme: Theme) => css`
   justify-content: space-between;
   align-items: center;
   margin: 24px 24px 12px 32px;
-
-  ${mobileMediaQuery(css`
-    ${theme.typography.size_14}
-  `)}
+  ${theme.typography.size_14}
+  font-weight: 500;
 
   ${pcMediaQuery(css`
     ${theme.typography.size_16}
