@@ -50,7 +50,11 @@ const MyPage = () => {
     }
   };
 
-  const handleDeleteUser = () => deleteUserMutate();
+  const handleDeleteUser = () => {
+    deleteUserMutate();
+    navigate('/login');
+    return;
+  };
 
   return (
     <div css={containerStyle}>
