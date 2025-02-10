@@ -2,6 +2,8 @@ import { HeaderTemplate } from '@/components/common/Header';
 import { Sidebar } from '@/components/common/Sidebar';
 import { useOpenToggle } from '@/hooks';
 import { squadDetailQueryOptions } from '@/hooks/queries';
+import { pcMediaQuery } from '@/styles/breakpoints';
+import { css, Theme } from '@emotion/react';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useLocation } from 'react-router-dom';
 
@@ -23,7 +25,7 @@ const SquadHeader = ({ squadId }: { squadId: number }) => {
     <>
       <HeaderTemplate>
         <HeaderTemplate.BackButton />
-        <span>{title}</span>
+        <span css={titleStyle}>{title}</span>
         <HeaderTemplate.RightMenuWrapper>
           <HeaderTemplate.ToggleThemeButton />
           <HeaderTemplate.NotificationsButton />
@@ -36,3 +38,13 @@ const SquadHeader = ({ squadId }: { squadId: number }) => {
 };
 
 export default SquadHeader;
+
+const titleStyle = (theme: Theme) => css`
+  text-align: center;
+  ${theme.typography.size_14}
+  font-weight: 500;
+
+  ${pcMediaQuery(css`
+    ${theme.typography.size_16}
+  `)}
+`;

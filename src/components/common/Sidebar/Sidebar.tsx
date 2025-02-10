@@ -32,7 +32,7 @@ export const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
   const isLeader = mySquadMemberRole === ROLE.LEADER;
 
   const queryClient = useQueryClient();
-  const { UpdateSquadNameModal, handleUpdateSquadName } = useUpdateSquadName(squadId, {
+  const { UpdateSquadNameModal, handleUpdateSquadName } = useUpdateSquadName(squadId, squadName, {
     onSuccess: async () => {
       createToast({ type: 'success', message: '스쿼드명이 수정되었어요', duration: 2000, showCloseButton: false });
       queryClient.refetchQueries({

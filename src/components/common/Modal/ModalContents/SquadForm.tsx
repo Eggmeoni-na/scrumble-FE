@@ -4,17 +4,22 @@ import { ModalContentProps } from '@/types';
 import { css, Theme } from '@emotion/react';
 import { FormEvent, useState } from 'react';
 
-const SquadForm = ({ onSubmit, onAbort, isEdit = false }: ModalContentProps<string> & { isEdit?: boolean }) => {
-  const [squadName, setSquadName] = useState('');
+const SquadForm = ({
+  onSubmit,
+  onAbort,
+  squadName = '',
+  isEdit = false,
+}: ModalContentProps<string> & { squadName?: string; isEdit?: boolean }) => {
+  const [newSquadName, setNewSquadName] = useState('');
 
   const handleCreateSquad = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onSubmit(squadName);
+    onSubmit(newSquadName);
   };
 
   const handleUpdateSquadName = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onSubmit(squadName);
+    onSubmit(newSquadName);
   };
 
   return (
@@ -27,8 +32,8 @@ const SquadForm = ({ onSubmit, onAbort, isEdit = false }: ModalContentProps<stri
             css={inputStyle}
             type="text"
             value={squadName}
-            onChange={(e) => setSquadName(e.target.value)}
-            maxLength={9}
+            onChange={(e) => setNewSquadName(e.target.value)}
+            maxLength={20}
             autoFocus
           />
           <ModalButtonGroup>
