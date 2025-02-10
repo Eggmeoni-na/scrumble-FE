@@ -7,7 +7,7 @@ import { useInfinite, useToastHandler } from '@/hooks';
 import { useAcceptInvitation } from '@/hooks/mutations';
 import useUpdateNotification from '@/hooks/mutations/useUpdateNotification';
 import { notificationInfiniteQueryOptions, squadKeys } from '@/hooks/queries';
-import { scrollBarStyle } from '@/styles/globalStyles';
+import { fullSizeButtonStyle, scrollBarStyle } from '@/styles/globalStyles';
 import { NotificationResponse, NotificationUpdateRequestPayload } from '@/types';
 import { css, Theme } from '@emotion/react';
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
@@ -35,7 +35,7 @@ const Notification = ({ toggleOpen }: { toggleOpen: VoidFunction }) => {
       <div css={sidebarContainer} onClick={(e) => e.stopPropagation()} role="presentation">
         <header css={headerStyle}>
           <h1>알림</h1>
-          <IconWrapper aria-label="Close sidebar" onClick={handleClose} role="button" css={commonButtonStyle}>
+          <IconWrapper aria-label="사이드바 닫기" onClick={handleClose} role="button" css={commonButtonStyle}>
             <Close />
           </IconWrapper>
         </header>
@@ -88,29 +88,7 @@ const NotificationItem = ({ data }: { data: NotificationResponse }) => {
 
   const queryClient = useQueryClient();
   const { updateNotificationMutate } = useUpdateNotification();
-  const { acceptInvitation } = useAcceptInvitation({
-    onMutate: () => {
-      try {
-        // 수락 여부 변경
-        const params: NotificationUpdateRequestPayload = {
-          notificationStatus: 'COMPLETED',
-          readFlag: read,
-        };
-
-        updateNotificationMutate({ notificationId: data.notificationId, params });
-      } catch (error) {
-        console.error('Notification onMutate Error:', error);
-        throw error;
-      }
-    },
-    onSuccess: () => {
-      successToast('스쿼드에 참여했어요');
-      queryClient.refetchQueries({ queryKey: squadKeys.squad }); // 스쿼드 목록 리페치
-    },
-    onError: () => {
-      failedToast('잠시 후 다시 시도해주세요');
-    },
-  });
+  const { acceptInvitation } = useAcceptInvitation();
 
   const handleReadStatus = () => {
     if (read) return;
@@ -121,26 +99,31 @@ const NotificationItem = ({ data }: { data: NotificationResponse }) => {
     updateNotificationMutate({ notificationId, params });
   };
 
-  const handleAccept = (e: MouseEvent<HTMLButtonElement>) => {
+  const handleAccept = async (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    acceptInvitation({ squadId: notificationData.squadId }); // 스쿼드 초대 수락 (API 다름)
+    try {
+      await acceptInvitation({ squadId: notificationData.squadId });
+      const params: NotificationUpdateRequestPayload = {
+        notificationStatus: 'COMPLETED',
+        readFlag: read,
+      };
+      updateNotificationMutate({ notificationId, params });
+      successToast('스쿼드에 참여했어요');
+      queryClient.refetchQueries({ queryKey: squadKeys.squad, exact: true });
+    } catch {
+      failedToast('잠시 후 다시 시도해주세요');
+    }
   };
 
   return (
-    <li
-      css={[itemStyle, markStyle(read)]}
-      onClick={handleReadStatus}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter') {
-          handleReadStatus();
-        }
-      }}
-      tabIndex={0}
-      role="button"
-    >
-      <p>{notificationMessage}</p>
+    <li css={[itemStyle, markStyle(read)]}>
+      <button onClick={handleReadStatus} style={fullSizeButtonStyle} aria-label="알림 읽기">
+        <p>{notificationMessage}</p>
+      </button>
       {notificationType === INVITATION_TYPE.INVITE_REQUEST && (
-        <AcceptStatus isAccept={isAccept} onAccept={handleAccept} />
+        <button>
+          <AcceptStatus isAccept={isAccept} onAccept={handleAccept} />
+        </button>
       )}
     </li>
   );
@@ -170,16 +153,15 @@ const listStyle = css`
 const itemStyle = (theme: Theme) => css`
   height: 56px;
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  padding: 8px 16px;
+  align-items: flex-start;
+  padding: 8px 12px;
   ${theme.typography.size_14}
   font-weight: 400;
   flex: 2;
 
   & p {
-    width: 190px;
-    margin-right: 8px;
+    width: 100%;
+    text-align: left;
   }
 
   & button {
@@ -196,12 +178,11 @@ const markStyle = (isRead: boolean) => css`
   ::before {
     opacity: ${isRead && 0};
     content: '';
-    width: 6px;
+    width: 8px;
     height: 6px;
     background-color: red;
     border-radius: 50%;
-    margin-top: -24px;
-    margin-right: 8px;
+    margin-top: 8px;
   }
 `;
 
