@@ -1,5 +1,4 @@
 import { modalContext } from '@/context/modal/context';
-import { breakpoints, mobileMediaQuery, pcMediaQuery } from '@/styles/breakpoints';
 import { ModalParameters, ModalType } from '@/types';
 import { css } from '@emotion/react';
 import { PropsWithChildren, useCallback, useMemo, useRef, useState } from 'react';
@@ -34,12 +33,4 @@ const modalConatiner = css`
   position: relative;
   margin: 0 auto;
   overflow: hidden;
-
-  ${mobileMediaQuery(css`
-    max-width: ${breakpoints.mobile};
-  `)}
-
-  ${pcMediaQuery(css`
-    max-width: ${breakpoints.pc};
-  `)}
 `;

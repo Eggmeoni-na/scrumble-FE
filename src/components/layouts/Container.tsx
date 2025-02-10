@@ -1,5 +1,5 @@
 import { breakpoints } from '@/styles';
-import { mobileMediaQuery, pcMediaQuery } from '@/styles/breakpoints';
+import { pcMediaQuery } from '@/styles/breakpoints';
 import { css } from '@emotion/react';
 import { ReactNode } from 'react';
 
@@ -19,10 +19,7 @@ const containerStyles = css`
   flex-direction: column;
   justify-content: space-between;
   background-color: #fff;
-
-  ${mobileMediaQuery(css`
-    max-width: ${breakpoints.mobile};
-  `)}
+  max-width: ${breakpoints.mobile};
 
   ${pcMediaQuery(css`
     max-width: ${breakpoints.pc};

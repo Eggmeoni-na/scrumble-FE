@@ -2,7 +2,7 @@ import { Button } from '@/components/common';
 import { useCreateSquad } from '@/hooks/mutations';
 import { squadQueryOptions } from '@/hooks/queries';
 import { useToastStore } from '@/stores';
-import { breakpoints, mobileMediaQuery, pcMediaQuery } from '@/styles/breakpoints';
+import { breakpoints, pcMediaQuery } from '@/styles/breakpoints';
 import { fullSizeButtonStyle } from '@/styles/globalStyles';
 import { Squad } from '@/types/squad';
 import { css, Theme } from '@emotion/react';
@@ -70,16 +70,10 @@ const itemStyle = (theme: Theme) => css`
   background-color: ${theme.colors.background.lightYellow};
   box-shadow: 0px 3px 28px 0px rgba(37, 37, 37, 0.05);
   cursor: pointer;
-
-  ${mobileMediaQuery(css`
-    max-width: ${breakpoints.mobile};
-    ${theme.typography.size_16}
-  `)}
+  max-width: ${breakpoints.mobile};
 
   ${pcMediaQuery(css`
     max-width: ${breakpoints.pc};
-    ${theme.typography.size_24}
-    font-weight: 500;
   `)}
 
   & button {

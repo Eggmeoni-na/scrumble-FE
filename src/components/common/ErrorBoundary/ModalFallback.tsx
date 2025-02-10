@@ -1,6 +1,6 @@
 import { ActionModal } from '@/components/common/Modal';
 import { useModal, useUserCookie } from '@/hooks';
-import { breakpoints, mobileMediaQuery, pcMediaQuery } from '@/styles/breakpoints';
+import { breakpoints, pcMediaQuery } from '@/styles/breakpoints';
 import { ActionModalType, ApiErrorResponse } from '@/types';
 import { handleNavigate } from '@/utils';
 import { css, Theme } from '@emotion/react';
@@ -82,10 +82,7 @@ const containerStyles = (theme: Theme) => css`
   flex-direction: column;
   justify-content: space-between;
   background-color: ${theme.colors.background.lightYellow};
-
-  ${mobileMediaQuery(css`
-    max-width: ${breakpoints.mobile};
-  `)}
+  max-width: ${breakpoints.mobile};
 
   ${pcMediaQuery(css`
     max-width: ${breakpoints.pc};

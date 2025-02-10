@@ -6,7 +6,7 @@ export const breakpoints = {
 };
 
 export const mobileMediaQuery = (styles: SerializedStyles) => css`
-  @media (min-width: ${breakpoints.mobile}) {
+  @media (max-width: ${breakpoints.mobile}) {
     ${styles}
   }
 `;

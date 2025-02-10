@@ -1,5 +1,5 @@
 import { useDayStore } from '@/stores';
-import { breakpoints, mobileMediaQuery, pcMediaQuery } from '@/styles/breakpoints';
+import { breakpoints, pcMediaQuery } from '@/styles/breakpoints';
 import { fullSizeButtonStyle, scrollBarStyle } from '@/styles/globalStyles';
 import { getDaysInMonth } from '@/utils';
 import { css, Theme, useTheme } from '@emotion/react';
@@ -197,6 +197,8 @@ const monthNavButtonStyle = (theme: Theme) => css`
   display: flex;
   justify-content: center;
   align-items: center;
+  max-width: ${breakpoints.mobile};
+  margin: 8px auto;
 
   & span {
     display: flex;
@@ -225,10 +227,6 @@ const monthNavButtonStyle = (theme: Theme) => css`
       background-color: #eeeeee70;
     }
   }
-  ${mobileMediaQuery(css`
-    max-width: ${breakpoints.mobile};
-    margin: 8px 36px;
-  `)}
 
   ${pcMediaQuery(css`
     max-width: ${breakpoints.pc};
