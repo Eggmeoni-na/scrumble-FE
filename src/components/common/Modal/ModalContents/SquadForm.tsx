@@ -28,7 +28,7 @@ const SquadForm = ({ onSubmit, onAbort, isEdit = false }: ModalContentProps<stri
             type="text"
             value={squadName}
             onChange={(e) => setSquadName(e.target.value)}
-            maxLength={9}
+            maxLength={20}
             autoFocus
           />
           <ModalButtonGroup>
