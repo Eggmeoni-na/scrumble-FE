@@ -311,6 +311,7 @@ React, TypeScript, Emotion, Zustand, React Query, React-Router-Dom, date-fns, Vi
 
 ## 01. 웹 접근성과 웹 표준
 
+- Lighthouse 접근성 점수를 **79점**에서 **100점**으로 점진적 개선했습니다. [[관련 PR 바로가기]](https://github.com/Eggmeoni-na/scrumble-FE/pull/182#issue-2840561133)
 - 관련된 ESLint 규칙을 활성화 하고, **jsx-a11y** 플러그인을 추가 설치하여 규칙을 강화하였습니다.
 
   1. **정적 요소에 인터랙션 핸들러 할당**
@@ -348,20 +349,14 @@ React, TypeScript, Emotion, Zustand, React Query, React-Router-Dom, date-fns, Vi
 
      Wrapper 자체에 클릭 이벤트가 필요하지 않은 상황에서도, 이벤트 버블링을 제어하기 위해 핸들러를 적용하여 명확한 동작을 보장했습니다. 또한, Wrapper가 단순히 시각적 레이아웃을 위한 역할만 수행하며, 의미 있는 콘텐츠나 상호작용 요소가 아니기 때문에 <code>role="presentation"</code>을 지정했습니다.
 
-  3. **`li`는 비상호작용(non-interactive) 요소**로, 상호작용(interactive) 역할을 부여하면 접근성 규칙에 어긋납니다.
+  3. **목록 요소(ul/li)의 올바른 활용과 이벤트 처리 최적화**
 
-     ```jsx
-     'jsx-a11y/no-noninteractive-element-to-interactive-role': [
-       'error',
-       {
-         li: ['button'],
-       },
-     ],
-     ```
+     - 투두리스트는 리스트형 UI로 ul - li 구조를 적용하였으며, 각 li 요소는 개별 투두 아이템을 나타냅니다. li 태그는 Non-interactive 요소이므로 직접 이벤트 핸들러를 할당하는 것은 적절하지 않습니다. 이에 button 요소로 감싸 클릭 이벤트의 명확한 역할을 부여하였습니다.
 
-     투두리스트는 목록형으로 `ul - li` 구조로 설계하였고, 각 `li` 태그는 투두아이템으로 클릭 이벤트가 적용됩니다. 이때 `role="button”` 을 적용하지 않으면 에러가 발생합니다.
-
-     상호작용 요소로 변경하는 것은 스타일 구성이나 구조상 적합하지 않아 eslint 설정을 통해 `button` 역할 부여를 허용하도록 했습니다.
+     - 이벤트 위임 최적화
+       - Calendar 컴포넌트는 월별 날짜를 렌더링하며, 상대적으로 변동이 적습니다.
+       - 각 날짜 요소마다 개별적으로 이벤트 핸들러를 할당하는 대신, `ul` 부모 요소에 한 번만 이벤트 리스너를 등록하고, `dataset`을 활용하여 개별 요소를 식별함으로써 메모리 사용량을 줄였습니다.
+       - 접근성을 고려하여 ul 요소에 `role="listbox"`, li 요소에 `role="option"`을 설정하고, `aria-activedescendant` 및 `id` 속성을 활용하여 선택된 날짜를 스크린 리더가 정확히 인식할 수 있도록 하였습니다.
 
   4. **Compound Component Pattern**
 
@@ -374,10 +369,32 @@ React, TypeScript, Emotion, Zustand, React Query, React-Router-Dom, date-fns, Vi
 - 시맨틱 태그를 적극 활용했습니다.
 - `section` 태그에 heading 태그가 필요하지 않는 경우에 IR 기법 중 `sr-only` 속성을 전역 클래스로 선언하여 사용했습니다.
 - `aria-label` 속성을 적용해 의미가 명확하지 않은 UI 요소에 대한 정보를 제공했습니다.
+  
+<br/>
+
+## 02. 검색 엔진 최적화
+
+- meta 태그 및 robots/sitemap 설정 추가로 lighthouse SEO 점수를 **22% 향상**시켰습니다.
+- Open Graph 이미지 최적화로 크기를 **48% 감축**하였습니다.
+<table>
+  <tr>
+    <th width="240px">Before</th>
+    <th width="240px">After</th>
+  </tr>
+  <tr>
+    <td>
+      <img width="100%" src="https://github.com/user-attachments/assets/59ba6c11-7bcd-402b-bcb4-8f99c693b7d9" alt="SEO 최적화 전" >
+    </td>
+    <td>
+      <img width="100%" src="https://github.com/user-attachments/assets/599d0307-5260-4880-b170-0de39f15cfc3" alt="SEO 최적화 후">
+    </td>
+  </tr>
+</table>
+
 
 <br/>
 
-## 02. SVG 에셋 컴포넌트화
+## 03. SVG 에셋 컴포넌트화
 
 - **아이콘용으로 사용할 svg 파일을 정적 자산이 아닌 컴포넌트로 관리했습니다.**
 
@@ -435,7 +452,7 @@ React, TypeScript, Emotion, Zustand, React Query, React-Router-Dom, date-fns, Vi
 
 <br/>
 
-## 03. 컴포넌트를 매개변수로 받는 전역 모달에 props 추가 및 스타일 확장성 보완
+## 04. 컴포넌트를 매개변수로 받는 전역 모달에 props 추가 및 스타일 확장성 보완
 
 - **ModuleCSS와 classNames 조합으로 설계했던 기존 모달의 라이브러리 의존성을 제거합니다.**
   - Emotion을 사용중인 프로젝트에서도 호환되도록 전역 클래스를 활용하여 스타일을 적용했습니다.
@@ -472,7 +489,7 @@ React, TypeScript, Emotion, Zustand, React Query, React-Router-Dom, date-fns, Vi
 
 <br/>
 
-## 04. SSE(Server Sent Event)
+## 05. SSE(Server Sent Event)
 
 ### 스쿼드 초대 알림 구현 필요성
 
@@ -577,11 +594,11 @@ SSE는 폴링 및 롱폴링에 비해 **불필요한 요청을 줄이고 지속�
     <th width="360px">리더 변경</th>
   </tr>
   <tr>
-        <td>
-    <img src="https://github.com/user-attachments/assets/1929de92-ac50-44ed-a6b5-2a3012303548" alt="스쿼드 멤버별 투두 조회" >
+    <td>
+      <img src="https://github.com/user-attachments/assets/1929de92-ac50-44ed-a6b5-2a3012303548" alt="스쿼드 멤버별 투두 조회" >
     </td>
     <td>
-    <img src="https://github.com/user-attachments/assets/780d45e4-3019-45ab-9071-c2b001b474a7" alt="멤버 초대">
+      <img src="https://github.com/user-attachments/assets/780d45e4-3019-45ab-9071-c2b001b474a7" alt="멤버 초대">
     </td>
     <td>
       <img src="https://github.com/user-attachments/assets/ff4c8f17-951a-49f1-967e-e91500138a2e" alt="멤버 강퇴">
