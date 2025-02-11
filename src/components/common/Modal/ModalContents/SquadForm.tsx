@@ -10,7 +10,7 @@ const SquadForm = ({
   squadName = '',
   isEdit = false,
 }: ModalContentProps<string> & { squadName?: string; isEdit?: boolean }) => {
-  const [newSquadName, setNewSquadName] = useState('');
+  const [newSquadName, setNewSquadName] = useState(squadName);
 
   const handleCreateSquad = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -31,7 +31,7 @@ const SquadForm = ({
           <input
             css={inputStyle}
             type="text"
-            value={squadName}
+            value={newSquadName}
             onChange={(e) => setNewSquadName(e.target.value)}
             maxLength={20}
             autoFocus
