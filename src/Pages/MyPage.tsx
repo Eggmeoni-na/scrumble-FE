@@ -2,7 +2,8 @@ import { deleteUser, editNickname, logoutUser } from '@/apis';
 import { Edit } from '@/assets/icons';
 import { IconWrapper } from '@/components';
 import { Button } from '@/components/common';
-import { useToastHandler, useUserCookie } from '@/hooks';
+import { ActionModal } from '@/components/common/Modal';
+import { useModal, useToastHandler, useUserCookie } from '@/hooks';
 import { userQueries } from '@/hooks/queries';
 import { handleKeyDown } from '@/utils';
 import { css, Theme } from '@emotion/react';
@@ -14,13 +15,16 @@ const MyPage = () => {
   const navigate = useNavigate();
   const { user: profile, setCookie, clearCookie } = useUserCookie();
   const { successToast, failedToast } = useToastHandler();
-  const { data: user } = useSuspenseQuery(userQueries()).data;
   const [newNickname, setNewNickname] = useState(profile?.name || '');
   const [isEditNickname, setIsEditNickname] = useState(false);
+  const { ModalContainer: DeleteUserModal, openModal } = useModal();
+
+  const { data: user } = useSuspenseQuery(userQueries()).data;
   const { mutate: deleteUserMutate } = useMutation({
     mutationFn: deleteUser,
     onSuccess: () => {
       successToast('회원탈퇴에 성공했어요');
+      clearCookie();
       navigate('/login');
     },
     onError: () => failedToast('잠시 후 다시 시도해주세요'),
@@ -50,10 +54,17 @@ const MyPage = () => {
     }
   };
 
-  const handleDeleteUser = () => {
-    deleteUserMutate();
-    navigate('/login');
-    return;
+  const handleDeleteUser = async () => {
+    const res = await openModal(ActionModal, undefined, {
+      type: 'delete',
+      text: '회원탈퇴',
+      message: '회원 탈퇴 시 모든 이력이 삭제됩니다.\n정말 탈퇴하시겠어요?',
+      displayCancel: true,
+    });
+
+    if (res.ok) {
+      deleteUserMutate();
+    }
   };
 
   return (
@@ -104,6 +115,7 @@ const MyPage = () => {
           회원탈퇴
         </span>
       </section>
+      <DeleteUserModal />
     </div>
   );
 };
