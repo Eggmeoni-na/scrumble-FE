@@ -24,6 +24,7 @@ const MyPage = () => {
     mutationFn: deleteUser,
     onSuccess: () => {
       successToast('회원탈퇴에 성공했어요');
+      clearCookie();
       navigate('/login');
     },
     onError: () => failedToast('잠시 후 다시 시도해주세요'),
