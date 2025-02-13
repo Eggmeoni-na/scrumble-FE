@@ -1,3 +1,4 @@
+import { hasUnreadNotifications } from '@/apis';
 import { Check, Close } from '@/assets/icons';
 import { IconWrapper } from '@/components';
 import { Button, Overlay } from '@/components/common';
@@ -7,8 +8,10 @@ import { useInfinite, useToastHandler } from '@/hooks';
 import { useAcceptInvitation } from '@/hooks/mutations';
 import useUpdateNotification from '@/hooks/mutations/useUpdateNotification';
 import { notificationInfiniteQueryOptions, squadKeys } from '@/hooks/queries';
+import { useNotificationStore } from '@/stores';
 import { fullSizeButtonStyle, scrollBarStyle } from '@/styles/globalStyles';
 import { NotificationResponse, NotificationUpdateRequestPayload } from '@/types';
+import { getDateRange } from '@/utils/getDateRange';
 import { css, Theme } from '@emotion/react';
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import { MouseEvent, MouseEventHandler } from 'react';
@@ -83,20 +86,28 @@ const NotificationList = ({
 
 const NotificationItem = ({ data }: { data: NotificationResponse }) => {
   const { notificationType, notificationData, read, notificationId, notificationMessage, notificationStatus } = data;
-  const { failedToast, successToast } = useToastHandler();
   const isAccept = notificationStatus === 'COMPLETED';
+  const { failedToast, successToast } = useToastHandler();
+  const setHasUnread = useNotificationStore((state) => state.setHasUnread);
 
   const queryClient = useQueryClient();
   const { updateNotificationMutate } = useUpdateNotification();
   const { acceptInvitation } = useAcceptInvitation();
 
-  const handleReadStatus = () => {
+  const handleReadStatus = async () => {
     if (read) return;
+
     const params: NotificationUpdateRequestPayload = {
       notificationStatus,
       readFlag: true,
     };
-    updateNotificationMutate({ notificationId, params });
+
+    await updateNotificationMutate({ notificationId, params });
+    const {
+      data: { hasUnreadMessages },
+    } = await hasUnreadNotifications(getDateRange());
+
+    setHasUnread(hasUnreadMessages);
   };
 
   const handleAccept = async (e: MouseEvent<HTMLButtonElement>) => {
@@ -121,9 +132,7 @@ const NotificationItem = ({ data }: { data: NotificationResponse }) => {
         <p>{notificationMessage}</p>
       </button>
       {notificationType === INVITATION_TYPE.INVITE_REQUEST && (
-        <button>
-          <AcceptStatus isAccept={isAccept} onAccept={handleAccept} />
-        </button>
+        <AcceptStatus isAccept={isAccept} onAccept={handleAccept} />
       )}
     </li>
   );

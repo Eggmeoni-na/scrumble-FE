@@ -1,4 +1,4 @@
-import { updateNotification } from '@/apis/notification';
+import { updateNotification } from '@/apis';
 import { MutateOptionsType } from '@/hooks/mutations/types';
 import { notiKeys } from '@/hooks/queries';
 import { InfiniteQueryData } from '@/hooks/queries/types';
@@ -14,7 +14,7 @@ const useUpdateNotification = (
   >,
 ) => {
   const queryClient = useQueryClient();
-  const { mutate: updateNotificationMutate } = useMutation({
+  const { mutateAsync: updateNotificationMutate } = useMutation({
     mutationFn: updateNotification,
     onMutate: async (data) => {
       const oldData = await optimisticUpdateMutateHandler<InfiniteQueryData<ApiResponse<NotificationResponse[]>>>(
