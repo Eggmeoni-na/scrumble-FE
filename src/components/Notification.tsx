@@ -4,11 +4,11 @@ import { IconWrapper } from '@/components';
 import { Button, Overlay } from '@/components/common';
 import { commonButtonStyle, headerStyle, sidebarContainer } from '@/components/common/Sidebar';
 import { INVITATION_TYPE } from '@/constants/squad';
+import { useNotificationUpdateContext } from '@/context/notification';
 import { useInfinite, useToastHandler } from '@/hooks';
 import { useAcceptInvitation } from '@/hooks/mutations';
 import useUpdateNotification from '@/hooks/mutations/useUpdateNotification';
 import { notificationInfiniteQueryOptions, squadKeys } from '@/hooks/queries';
-import { useNotificationStore } from '@/stores';
 import { fullSizeButtonStyle, scrollBarStyle } from '@/styles/globalStyles';
 import { NotificationResponse, NotificationUpdateRequestPayload } from '@/types';
 import { getDateRange } from '@/utils/getDateRange';
@@ -88,7 +88,7 @@ const NotificationItem = ({ data }: { data: NotificationResponse }) => {
   const { notificationType, notificationData, read, notificationId, notificationMessage, notificationStatus } = data;
   const isAccept = notificationStatus === 'COMPLETED';
   const { failedToast, successToast } = useToastHandler();
-  const setHasUnread = useNotificationStore((state) => state.setHasUnread);
+  const { setHasUnreadMessages } = useNotificationUpdateContext();
 
   const queryClient = useQueryClient();
   const { updateNotificationMutate } = useUpdateNotification();
@@ -107,7 +107,7 @@ const NotificationItem = ({ data }: { data: NotificationResponse }) => {
       data: { hasUnreadMessages },
     } = await hasUnreadNotifications(getDateRange());
 
-    setHasUnread(hasUnreadMessages);
+    setHasUnreadMessages(hasUnreadMessages);
   };
 
   const handleAccept = async (e: MouseEvent<HTMLButtonElement>) => {

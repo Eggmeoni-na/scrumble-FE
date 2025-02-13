@@ -1,8 +1,9 @@
 import { ActiveBell, Back, Bell, Dark, Light, Menu } from '@/assets/icons';
 import { IconWrapper, Notification } from '@/components';
+import { useNotificationStateContext } from '@/context/notification';
 
 import { useOpenToggle } from '@/hooks';
-import { useNotificationStore, useThemeStore } from '@/stores';
+import { useThemeStore } from '@/stores';
 import { css, Theme } from '@emotion/react';
 import { PropsWithChildren } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -37,12 +38,12 @@ const ToggleThemeButton = () => {
 
 const NotificationsButton = () => {
   const { isOpen, toggleOpen } = useOpenToggle();
-  const hasUnread = useNotificationStore((state) => state.hasUnread);
+  const { hasUnreadMessages } = useNotificationStateContext();
 
   return (
     <>
       <IconWrapper aria-label="알림 조회" onClick={() => toggleOpen()} role="button">
-        {hasUnread ? <ActiveBell /> : <Bell />}
+        {hasUnreadMessages ? <ActiveBell /> : <Bell />}
       </IconWrapper>
       {isOpen && <Notification toggleOpen={toggleOpen} />}
     </>

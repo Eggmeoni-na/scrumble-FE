@@ -1,6 +1,5 @@
 import { Loading, RootErrorFallback, ToastContainer } from '@/components/common';
 import { ModalProvider } from '@/context/modal';
-import useSSE from '@/hooks/useSSE';
 import { useThemeStore } from '@/stores';
 import { darkTheme, globalStyles, lightTheme } from '@/styles';
 import { Global, ThemeProvider } from '@emotion/react';
@@ -23,7 +22,6 @@ const queryClient = new QueryClient({
 function App() {
   const isDarkMode = useThemeStore((state) => state.isDarkMode);
   const { reset } = useQueryErrorResetBoundary();
-  useSSE();
 
   return (
     <ModalProvider>
