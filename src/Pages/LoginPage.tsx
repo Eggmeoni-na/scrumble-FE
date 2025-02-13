@@ -1,5 +1,6 @@
-import { getOAuthUrl, getTempUserSession } from '@/apis';
+import { generateTempSession, getOAuthUrl } from '@/apis';
 import { EmailInputModal } from '@/components/common/Modal';
+import CopyText from '@/components/CopyText';
 import { useModal, useUserCookie } from '@/hooks';
 import { pcMediaQuery } from '@/styles/breakpoints';
 import { AuthUser } from '@/types';
@@ -38,7 +39,7 @@ const LoginPage = () => {
       const user = await getUserInput();
       if (!user) return;
 
-      const session = await getTempUserSession(user);
+      const { data: session } = await generateTempSession(user);
       if (!session) return;
       setUserCookie(session);
 
@@ -58,6 +59,7 @@ const LoginPage = () => {
         <button css={demoUserStyle} onClick={handleTempLogin}>
           테스트 계정 로그인
         </button>
+        <CopyText />
       </div>
       <EmailInputModalContainer />
     </>
