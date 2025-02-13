@@ -1,6 +1,7 @@
 import { instance } from '@/apis';
 import {
   ApiResponse,
+  HasUnreadRequestPayload,
   NotificationRequestPayload,
   NotificationResponse,
   NotificationUpdateRequestPayload,
@@ -26,6 +27,19 @@ export const updateNotification = async ({
   const response = await instance.put(`/api/notifications/${notificationId}`, {
     notificationStatus,
     readFlag,
+  });
+  return response.data;
+};
+
+export const hasUnreadNotifications = async (
+  params: HasUnreadRequestPayload,
+): Promise<{
+  data: {
+    hasUnreadMessages: boolean;
+  };
+}> => {
+  const response = await instance.get('/api/notifications/unread-exists', {
+    params,
   });
   return response.data;
 };

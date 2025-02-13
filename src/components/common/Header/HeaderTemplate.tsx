@@ -1,6 +1,6 @@
 import { ActiveBell, Back, Bell, Dark, Light, Menu } from '@/assets/icons';
 import { IconWrapper, Notification } from '@/components';
-import { useNotificationContext } from '@/context/notification';
+import { useNotificationStateContext } from '@/context/notification';
 
 import { useOpenToggle } from '@/hooks';
 import { useThemeStore } from '@/stores';
@@ -38,7 +38,7 @@ const ToggleThemeButton = () => {
 
 const NotificationsButton = () => {
   const { isOpen, toggleOpen } = useOpenToggle();
-  const { hasUnreadMessages } = useNotificationContext();
+  const { hasUnreadMessages } = useNotificationStateContext();
 
   return (
     <>

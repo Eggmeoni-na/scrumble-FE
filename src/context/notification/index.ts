@@ -1,3 +1,6 @@
-import { useNotificationContext } from '@/context/notification/useNotificationContext';
+import {
+  useNotificationStateContext,
+  useNotificationUpdateContext,
+} from '@/context/notification/useNotificationContext';
 
-export { useNotificationContext };
+export { useNotificationStateContext, useNotificationUpdateContext };

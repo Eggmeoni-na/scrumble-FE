@@ -1,18 +1,12 @@
 import { instance } from '@/apis';
-import { OAuthRequestParams, OAuthUrl, UserProfile } from '@/types';
+import { AuthUser, OAuthRequestParams, OAuthUrl, UserProfile } from '@/types';
 import { AxiosResponse } from 'axios';
 
-// 개발기용 임시 로그인 API
-export const generateEmptySession = async () => {
-  const response = await instance.post('/api/test/session/no-content-session');
-  return response;
-};
-
-export const generateTempSession = async () => {
+export const generateTempSession = async (email: string): Promise<{ data: AuthUser }> => {
   const response = await instance.post('/api/test/session/session', {
-    email: import.meta.env.VITE_TEST_LOGIN_EMAIL,
+    email,
   });
-  return response;
+  return response.data;
 };
 
 export const getOAuthUrl = async (oauthType: string) => {

@@ -1,10 +1,18 @@
-import { notificationContext } from '@/context/notification/context';
+import { NotificationStateContext, NotificationUpdateContext } from '@/context/notification/context';
 import { useContext } from 'react';
 
-export const useNotificationContext = () => {
-  const context = useContext(notificationContext);
+export const useNotificationStateContext = () => {
+  const context = useContext(NotificationStateContext);
   if (!context) {
-    throw new Error('notificationContext is not available.');
+    throw new Error('NotificationStateContext is not available.');
+  }
+  return context;
+};
+
+export const useNotificationUpdateContext = () => {
+  const context = useContext(NotificationUpdateContext);
+  if (!context) {
+    throw new Error('NotificationUpdateContext is not available.');
   }
   return context;
 };

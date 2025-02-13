@@ -9,7 +9,7 @@ const ActionModal = ({ onSubmit, onAbort, actionModal }: ActionModalContentProps
       <p css={descStyle}>{actionModal.message}</p>
       <ModalButtonGroup>
         {actionModal.displayCancel && (
-          <Button text="닫기" onClick={() => onAbort()} name="cancel" variant="default" type="button" />
+          <Button text="취소" onClick={() => onAbort()} name="cancel" variant="default" type="button" />
         )}
         <Button
           text={actionModal.text}

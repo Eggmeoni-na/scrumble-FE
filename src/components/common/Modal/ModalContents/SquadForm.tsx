@@ -4,7 +4,7 @@ import { ModalContentProps } from '@/types';
 import { css, Theme } from '@emotion/react';
 import { FormEvent, useState } from 'react';
 
-const SquadForm = ({
+export const SquadForm = ({
   onSubmit,
   onAbort,
   squadName = '',
@@ -46,13 +46,11 @@ const SquadForm = ({
   );
 };
 
-export default SquadForm;
-
-const descStyle = (theme: Theme) => css`
+export const descStyle = (theme: Theme) => css`
   color: ${theme.colors.black.black300};
 `;
 
-const inputStyle = (theme: Theme) => css`
+export const inputStyle = (theme: Theme) => css`
   width: 100%;
   height: 40px;
   border: 1.5px solid #dfdfdf;

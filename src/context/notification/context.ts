@@ -1,11 +1,17 @@
 import { createContext, Dispatch, SetStateAction } from 'react';
 
-type NotificationContextValue = {
-  hasUnreadMessages: boolean | null;
-  setHasUnreadMessages: Dispatch<SetStateAction<boolean | null>>;
+type NotificationStateContextValue = {
+  hasUnreadMessages: boolean;
 };
 
-export const notificationContext = createContext<NotificationContextValue>({
-  hasUnreadMessages: null,
+type NotificationUpdateContextValue = {
+  setHasUnreadMessages: Dispatch<SetStateAction<boolean>>;
+};
+
+export const NotificationStateContext = createContext<NotificationStateContextValue>({
+  hasUnreadMessages: false,
+});
+
+export const NotificationUpdateContext = createContext<NotificationUpdateContextValue>({
   setHasUnreadMessages: () => {},
 });
