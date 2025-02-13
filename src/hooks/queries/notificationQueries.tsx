@@ -1,4 +1,4 @@
-import { getNotifications } from '@/apis/notification';
+import { getNotifications } from '@/apis';
 import { infiniteQueryOptions } from '@tanstack/react-query';
 import { formatISO, subDays } from 'date-fns';
 

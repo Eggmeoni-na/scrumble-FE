@@ -26,3 +26,5 @@ export type NotificationUpdateRequestPayload = {
   notificationStatus: NotificationStatusType;
   readFlag: boolean;
 };
+
+export type HasUnreadRequestPayload = Pick<NotificationRequestPayload, 'startDateTime' | 'endDateTime'>;
