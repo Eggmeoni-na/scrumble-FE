@@ -1,11 +1,11 @@
 import { baseURL } from '@/apis';
-import { notificationContext } from '@/context/notification/context';
+import { NotificationStateContext, NotificationUpdateContext } from '@/context/notification/context';
 import { useUserCookie } from '@/hooks';
 import { getDateRange } from '@/utils/getDateRange';
-import { PropsWithChildren, useEffect, useMemo, useState } from 'react';
+import { PropsWithChildren, useEffect, useState } from 'react';
 
 export const NotificationProvider = ({ children }: PropsWithChildren) => {
-  const [hasUnreadMessages, setHasUnreadMessages] = useState<boolean | null>(null);
+  const [hasUnreadMessages, setHasUnreadMessages] = useState(false);
   const { user } = useUserCookie();
 
   useEffect(() => {
@@ -30,7 +30,11 @@ export const NotificationProvider = ({ children }: PropsWithChildren) => {
     return () => eventSource.close();
   }, [user]);
 
-  const value = useMemo(() => ({ hasUnreadMessages, setHasUnreadMessages }), [hasUnreadMessages]);
-
-  return <notificationContext.Provider value={value}>{children}</notificationContext.Provider>;
+  return (
+    <NotificationStateContext.Provider value={{ hasUnreadMessages }}>
+      <NotificationUpdateContext.Provider value={{ setHasUnreadMessages }}>
+        {children}
+      </NotificationUpdateContext.Provider>
+    </NotificationStateContext.Provider>
+  );
 };

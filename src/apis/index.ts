@@ -17,5 +17,6 @@ const errorHandler = (error: AxiosError): Promise<AxiosError> => Promise.reject(
 instance.interceptors.response.use(responseInterceptor, errorHandler);
 
 export * from './auth';
+export * from './notification';
 export * from './squad';
 export * from './todo';
