@@ -14,7 +14,7 @@ import { ApiResponse, SearchMemberResponse, Squad, SquadDetail } from '@/types';
 import { MutationFunction } from '@tanstack/react-query';
 
 export const getSquadList = async (): Promise<{ data: Squad[] }> => {
-  const response = await instance.get('/api/squads');
+  const response = await instance.get('/api/squads?role=');
   return response.data;
 };
 
