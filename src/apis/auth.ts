@@ -2,24 +2,11 @@ import { instance } from '@/apis';
 import { AuthUser, OAuthRequestParams, OAuthUrl, UserProfile } from '@/types';
 import { AxiosResponse } from 'axios';
 
-const generateTempSession = async (email: string) => {
-  const response = await instance.post('/api/test/session/join', {
+export const generateTempSession = async (email: string): Promise<{ data: AuthUser }> => {
+  const response = await instance.post('/api/test/session/session', {
     email,
   });
-  return response;
-};
-
-export const getTempUserSession = async (email: string): Promise<AuthUser | null> => {
-  try {
-    const res: AxiosResponse<{ data: AuthUser }> = await generateTempSession(email);
-    if (res.status === 200) {
-      return res.data.data;
-    }
-  } catch (error) {
-    console.error('세션 발급 실패:', error);
-  }
-
-  return null;
+  return response.data;
 };
 
 export const getOAuthUrl = async (oauthType: string) => {
