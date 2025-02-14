@@ -2,7 +2,7 @@
 
 **개요:** https://github.com/Eggmeoni-na 
 
-**기간:** 2024.09 ~ 2024.11 (3개월)
+**기간:** 2024.09 ~ 진행중
 
 **참여:** FE 1명 / BE 1명
 
@@ -27,15 +27,8 @@ React, TypeScript, Emotion, Zustand, React Query, React-Router-Dom, date-fns, Vi
     <th width=120px><strong>Zustand</strong></th>
     <td>
       <ol>
-            <li>Firebase는 로그인/로그아웃 API를 제공했지만, 이번에는 프로젝트 요구사항에 맞게 직접 구현 필요</li>
-            <li>상태를 중앙에서 효율적으로 관리하며, 상태 변경 로직을 간단히 처리할 수 있는 도구가 적합함</li>
-        <li>이전 프로젝트에서 Toast UI를 Context API로 관리했으나, 생각보다 사용하는 컴포넌트가 많음
-          <ul>
-            <li>Toast UI는 모달과 달리 복잡한 UI 커스텀 요구 사항이 적었기에, 보다 단순한 상태 관리 도구가 적합함</li>
-          </ul>
-        </li>
-          <li>단일 스토어에서 상태를 공유하며 여러 액션을 수행 가능
-        </li>
+        <li>단일 스토어에서 상태를 공유하며 여러 액션 수행 가능</li>
+        <li>Toast UI는 컴포넌트 트리 내 사용되는 곳이 많아 최적화를 위해 Provider를 국소적으로 사용하기에 적합하지 않음</li>
       </ol>
     </td>
   </tr>
@@ -48,7 +41,7 @@ React, TypeScript, Emotion, Zustand, React Query, React-Router-Dom, date-fns, Vi
   <tr>
     <th width=120px><strong>Context API</strong></th>
     <td>
-      Provider를 통해 상태를 특정 범위에 제한할 수 있다는 장점이 있지만, 프로젝트에서는 상태를 국소적으로 관리할 필요가 없어 이 구조가 필요하지 않음
+      상태 주입 도구로서, 독립적인 트리를 사용하는 알림 기능 및 전역 모달 로직을 활용하는 데 사용
     </td>
   </tr>
 </table>
@@ -445,6 +438,7 @@ React, TypeScript, Emotion, Zustand, React Query, React-Router-Dom, date-fns, Vi
             <li><code>aria-label</code>은 Link 태그에만 설정하여 접근성 속성이 중복되지 않도록 처리합니다.</li>
           </ul>
         </li>
+        <li>강제성과 유연성 간의 트레이드오프를 경험하며, 상황에 맞는 설계와 컨벤션 활용 방안을 고민할 수 있었습니다.</li>
       </ul>
     </td>
     </tr>
@@ -477,6 +471,7 @@ React, TypeScript, Emotion, Zustand, React Query, React-Router-Dom, date-fns, Vi
   ### 단점
 
   모달 콘텐츠 컴포넌트에 전달되는 추가 props는 옵셔널 속성입니다. 하지만 이는 `openModal` 함수에 타입을 지정한 것이므로, 모달 컴포넌트는 props를 상세히 추론하지 못합니다. 이로 인해 콘텐츠 컴포넌트에서 필요한 props가 누락되더라도 컴파일 단계에서 확인되지 않아, 개발자가 이를 실수로 놓칠 가능성이 있습니다.
+
   **보완**
 
   ```tsx
@@ -486,6 +481,7 @@ React, TypeScript, Emotion, Zustand, React Query, React-Router-Dom, date-fns, Vi
   // 02.
   props?: Omit<P, 'onSubmit' | 'onAbort'> | undefined,
   ```
+  누락을 완전히 막을 수는 없지만, 어떤 속성이 필요한 지 추론 되도록 합니다.
 
 <br/>
 
