@@ -43,7 +43,6 @@ const Member = ({ member }: { member: SquadMember }) => {
 
 const containerStyle = css`
   display: flex;
-  gap: 8px;
   flex-wrap: nowrap;
   align-items: center;
   margin: 0 16px;
