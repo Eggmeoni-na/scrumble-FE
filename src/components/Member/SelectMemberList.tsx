@@ -74,7 +74,6 @@ const Member = ({ squadId, member }: { squadId: number; member: SquadMember }) =
     <>
       <li css={itemStyle}>
         <button onClick={handleSelectMember} style={fullSizeButtonStyle} aria-label={member.name}>
-          <MemberProfile member={member} displayRole={false} type={MEMBER_STYLE_TYPE.DEFAULT} />
           <IconWrapper
             aria-label={isChecked ? '선택된 멤버' : '선택되지 않은 멤버'}
             aria-checked={isChecked}
@@ -83,6 +82,7 @@ const Member = ({ squadId, member }: { squadId: number; member: SquadMember }) =
           >
             {isChecked && <Check />}
           </IconWrapper>
+          <MemberProfile member={member} displayRole={false} type={MEMBER_STYLE_TYPE.DEFAULT} />
         </button>
       </li>
       <AssignSquadLeaderModal />
@@ -95,18 +95,21 @@ const containerStyle = css`
 `;
 
 const itemStyle = css`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   cursor: pointer;
   padding: 8px;
+
+  & button {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
 
   & svg {
     stroke-width: 2.5;
   }
 
   :hover {
-    background-color: rgba(231, 201, 138, 0.3);
+    background-color: rgba(186, 186, 186, 0.3);
     border-radius: 12px;
   }
 `;
