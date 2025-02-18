@@ -3,19 +3,29 @@ import { useModalContext } from '@/context/modal';
 import { ActionModalType } from '@/types';
 import { ComponentType, useCallback, useEffect, useId } from 'react';
 
+export type OpenModalType = <
+  P extends {
+    onSubmit(value: unknown): unknown;
+  },
+>(
+  Component: ComponentType<P>,
+  props?: Omit<P, 'onSubmit' | 'onAbort'> | undefined,
+  actionModal?: ActionModalType,
+) => Promise<{
+  ok: boolean;
+  value?: Parameters<P['onSubmit']>[0];
+  error?: string;
+}>;
+
 export const useModal = () => {
   const context = useModalContext();
   const { modals, open, close, portalRef } = context;
   const modalId = useId();
 
   const closeModal = useCallback(() => close(modalId), [modalId, close]);
-  const openModal = useCallback(
-    <P extends { onSubmit(value: unknown): unknown }>(
-      Component: ComponentType<P>,
-      props?: Omit<P, 'onSubmit' | 'onAbort'> | undefined,
-      actionModal?: ActionModalType,
-    ) =>
-      new Promise<{ ok: boolean; value?: Parameters<P['onSubmit']>[0]; error?: string }>((resolve) => {
+  const openModal: OpenModalType = useCallback(
+    (Component, props?, actionModal?) =>
+      new Promise((resolve) => {
         const modal = {
           element: Component,
           props,
