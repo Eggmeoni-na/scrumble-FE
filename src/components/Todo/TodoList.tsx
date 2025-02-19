@@ -181,11 +181,15 @@ const TodoItem = ({ todo, squadMemberId }: { todo: ToDoDetail; squadMemberId: nu
           )}
         </li>
       ) : (
-        <li css={todoItemStyle(isDeleteMode)}>
-          <button onClick={handleConfirmDelete} style={fullSizeButtonStyle} aria-label="삭제하기" tabIndex={0}>
-            등록된 할일을 삭제할까요?
-          </button>
-          <IconWrapper style={{ marginRight: '8px' }} onClick={() => setIsDeleteMode(false)} aria-label="삭제 취소">
+        <li css={[todoItemStyle(), deleteModeStyle]}>
+          <Button
+            onClick={handleConfirmDelete}
+            text="삭제"
+            style={fullSizeButtonStyle}
+            css={deleteButtonStyle}
+            aria-label="삭제"
+          />
+          <IconWrapper css={cancelButtonStyle} onClick={() => setIsDeleteMode(false)} aria-label="삭제 취소">
             <Close />
           </IconWrapper>
         </li>
@@ -222,7 +226,6 @@ const slideInFromRight = keyframes`
 `;
 
 export const todoItemStyle = (isDeleteMode?: boolean) => css`
-  background-color: ${isDeleteMode && '#ff5a5a'};
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -235,14 +238,34 @@ export const todoItemStyle = (isDeleteMode?: boolean) => css`
   cursor: pointer;
   transition: transform 0.3s ease-out;
 
-  ${isDeleteMode &&
-  css`
-    animation: ${slideInFromRight} 0.3s ease-out;
-  `}
-
   & button {
     font-size: 1rem;
-    color: ${isDeleteMode && 'white'};
+  }
+`;
+
+const deleteModeStyle = css`
+  animation: ${slideInFromRight} 0.3s ease-out;
+
+  & button {
+    border-radius: 16px;
+    color: white;
+  }
+`;
+
+const deleteButtonStyle = css`
+  background-color: #ff5a5a;
+`;
+
+const cancelButtonStyle = css`
+  width: 56px;
+  height: 100%;
+  background-color: #dfdfdf;
+  border-radius: 8px;
+  margin-right: 8px;
+
+  & svg {
+    width: 24px;
+    color: var(--color-text-gray);
   }
 `;
 
