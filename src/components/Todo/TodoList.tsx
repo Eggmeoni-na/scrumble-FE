@@ -215,7 +215,6 @@ const slideInFromRight = keyframes`
 
 export const todoItemStyle = (isDeleteMode?: boolean) => css`
   background-color: ${isDeleteMode && '#ff5a5a'};
-  color: ${isDeleteMode && 'white'};
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -232,6 +231,11 @@ export const todoItemStyle = (isDeleteMode?: boolean) => css`
   css`
     animation: ${slideInFromRight} 0.3s ease-out;
   `}
+
+  & button {
+    font-size: 1rem;
+    color: ${isDeleteMode && 'white'};
+  }
 `;
 
 export const getStatusStyles = (isChecked: boolean, theme: Theme) => {
@@ -240,12 +244,16 @@ export const getStatusStyles = (isChecked: boolean, theme: Theme) => {
       return css`
         outline: 1.5px solid ${theme.colors.primary};
         background-color: ${theme.colors.background.lightYellow};
-        color: var(--color-primary);
+        text-decoration: line-through ${theme.colors.gray.gray200};
+        text-decoration-thickness: 1.5px;
+        & button,
+        div {
+          color: ${theme.colors.gray.gray200};
+        }
       `;
     default:
       return css`
         background-color: ${theme.colors.background.white};
-        color: var(--color-text-gray);
       `;
   }
 };
