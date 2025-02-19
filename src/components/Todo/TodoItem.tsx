@@ -184,7 +184,9 @@ const deleteModeStyle = css`
   animation: ${slideInFromRight} 0.3s ease-out;
 
   & button {
-    border-radius: 16px;
+    font-weight: 500;
+    text-align: center;
+    border-radius: 12px;
     color: white;
   }
 `;
