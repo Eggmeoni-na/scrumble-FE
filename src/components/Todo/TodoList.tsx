@@ -1,7 +1,6 @@
 import { MemberTodoItem } from '@/components/Member';
 import TodoItem from '@/components/Todo/TodoItem';
 import { useInfinite } from '@/hooks';
-import { pcMediaQuery } from '@/styles/breakpoints';
 import { ToDoDetail } from '@/types';
 import { css, Theme } from '@emotion/react';
 
@@ -51,72 +50,4 @@ export const todoContainerStyle = (theme: Theme) => css`
 
 const memberTodoListStyle = css`
   margin-bottom: 24px;
-`;
-
-export const todoItemStyle = css`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
-  border-radius: 16px;
-  margin: 0 8px;
-  padding: 4px 0 4px 8px;
-  min-height: 48px;
-  flex-shrink: 0;
-  cursor: pointer;
-  transition: transform 0.3s ease-out;
-
-  & button,
-  div {
-    font-size: 0.8rem;
-    text-align: left;
-  }
-
-  ${pcMediaQuery(css`
-    & button,
-    div {
-      font-size: 1rem;
-    }
-  `)}
-`;
-
-export const contentWrapperStyle = css`
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  height: 100%;
-
-  & p {
-    max-width: 140px;
-  }
-
-  ${pcMediaQuery(css`
-    & p {
-      max-width: unset;
-    }
-  `)}
-`;
-
-export const checkIconStyle = (theme: Theme) => css`
-  min-width: 20px;
-  max-width: 20px;
-  height: 20px;
-  background-color: ${theme.colors.background.white};
-  border: 2px solid ${theme.colors.gray.gray100};
-  border-radius: 8px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-export const checkedStyle = (theme: Theme) => css`
-  background-color: ${theme.colors.primary};
-  border: none;
-
-  & svg {
-    color: white;
-    stroke-width: 2;
-    width: 12px;
-    height: 12px;
-  }
 `;
