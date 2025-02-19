@@ -9,7 +9,7 @@ const MemberTodoItem = ({ todo }: { todo: ToDoDetail }) => {
   const isCompleted = todo.toDoStatus === TODO_STATUS.COMPLETED;
   const theme = useTheme();
   return (
-    <li css={[todoItemStyle(), getStatusStyles(isCompleted, theme), memberTodoItemStyle]}>
+    <li css={[todoItemStyle, getStatusStyles(isCompleted, theme), memberTodoItemStyle]}>
       <div css={contentStyle}>
         <IconWrapper
           aria-label={isCompleted ? '완료' : '미완료'}
@@ -30,4 +30,8 @@ export default MemberTodoItem;
 const memberTodoItemStyle = css`
   cursor: default;
   opacity: 0.5;
+
+  & div {
+    padding: 1px 6px;
+  }
 `;

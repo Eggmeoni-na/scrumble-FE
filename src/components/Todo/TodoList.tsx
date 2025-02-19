@@ -66,13 +66,15 @@ export const todoItemStyle = css`
   cursor: pointer;
   transition: transform 0.3s ease-out;
 
-  & button {
+  & button,
+  div {
     font-size: 0.8rem;
     text-align: left;
   }
 
   ${pcMediaQuery(css`
-    & button {
+    & button,
+    div {
       font-size: 1rem;
     }
   `)}
