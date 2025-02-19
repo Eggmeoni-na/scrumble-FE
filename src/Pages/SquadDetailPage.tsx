@@ -89,7 +89,7 @@ const SquadDetailPage = () => {
       <div css={headerStyle}>
         <span>{selectedDay}</span>
         <span>{!selectedMember ? user?.name : selectedMember.name}</span>
-        <span>달성률: {progressRate}%</span>
+        <span css={completionRateStyle}>달성률: {progressRate}%</span>
       </div>
       <TodoList
         todos={todos}
@@ -123,4 +123,9 @@ const headerStyle = (theme: Theme) => css`
   ${pcMediaQuery(css`
     ${theme.typography.size_16}
   `)}
+`;
+
+const completionRateStyle = css`
+  width: 90px;
+  text-align: right;
 `;

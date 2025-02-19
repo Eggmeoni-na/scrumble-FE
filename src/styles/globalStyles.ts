@@ -15,6 +15,7 @@ export const globalStyles = (theme: Theme) => css`
     --color-default-bg: #f5f5f5;
     --color-failed-bg: #ffe2da;
     --color-hover: #9c9c9c1f;
+    --color-black: #24272b;
   }
 
   @font-face {

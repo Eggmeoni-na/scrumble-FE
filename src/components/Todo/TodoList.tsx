@@ -51,6 +51,7 @@ const TodoItem = ({ todo, squadMemberId }: { todo: ToDoDetail; squadMemberId: nu
   const [isEditMode, setIsEditMode] = useState(false);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [newContents, setNewContents] = useState(contents);
+  const [isToggleStatus, setIsToggleStatus] = useState(false);
   const isCompleted = toDoStatus === TODO_STATUS.COMPLETED;
   const { successToast, failedToast } = useToastHandler();
 
@@ -62,7 +63,13 @@ const TodoItem = ({ todo, squadMemberId }: { todo: ToDoDetail; squadMemberId: nu
 
   const queryClient = useQueryClient();
   const { updateTodoMutate } = useUpdateTodo(queryParams, {
-    onSuccess: () => successToast('수정에 성공했어요'),
+    onSuccess: () => {
+      if (isToggleStatus) {
+        setIsToggleStatus(false);
+        return;
+      }
+      successToast('수정에 성공했어요');
+    },
     onError: (error, data, context) => {
       failedToast('수정에 실패했어요');
       if (context?.oldData) {
@@ -88,6 +95,7 @@ const TodoItem = ({ todo, squadMemberId }: { todo: ToDoDetail; squadMemberId: nu
       toDoStatus: newStatus,
       contents,
     };
+    setIsToggleStatus(true);
     updateTodoMutate({ toDoId, newTodo });
   };
 
@@ -173,11 +181,15 @@ const TodoItem = ({ todo, squadMemberId }: { todo: ToDoDetail; squadMemberId: nu
           )}
         </li>
       ) : (
-        <li css={todoItemStyle(isDeleteMode)}>
-          <button onClick={handleConfirmDelete} style={fullSizeButtonStyle} aria-label="삭제하기" tabIndex={0}>
-            등록된 할일을 삭제할까요?
-          </button>
-          <IconWrapper style={{ marginRight: '8px' }} onClick={() => setIsDeleteMode(false)} aria-label="삭제 취소">
+        <li css={[todoItemStyle(), deleteModeStyle]}>
+          <Button
+            onClick={handleConfirmDelete}
+            text="삭제"
+            style={fullSizeButtonStyle}
+            css={deleteButtonStyle}
+            aria-label="삭제"
+          />
+          <IconWrapper css={cancelButtonStyle} onClick={() => setIsDeleteMode(false)} aria-label="삭제 취소">
             <Close />
           </IconWrapper>
         </li>
@@ -214,8 +226,6 @@ const slideInFromRight = keyframes`
 `;
 
 export const todoItemStyle = (isDeleteMode?: boolean) => css`
-  background-color: ${isDeleteMode && '#ff5a5a'};
-  color: ${isDeleteMode && 'white'};
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -228,10 +238,35 @@ export const todoItemStyle = (isDeleteMode?: boolean) => css`
   cursor: pointer;
   transition: transform 0.3s ease-out;
 
-  ${isDeleteMode &&
-  css`
-    animation: ${slideInFromRight} 0.3s ease-out;
-  `}
+  & button {
+    font-size: 1rem;
+  }
+`;
+
+const deleteModeStyle = css`
+  animation: ${slideInFromRight} 0.3s ease-out;
+
+  & button {
+    border-radius: 16px;
+    color: white;
+  }
+`;
+
+const deleteButtonStyle = css`
+  background-color: #ff5a5a;
+`;
+
+const cancelButtonStyle = css`
+  width: 56px;
+  height: 100%;
+  background-color: #dfdfdf;
+  border-radius: 8px;
+  margin-right: 8px;
+
+  & svg {
+    width: 24px;
+    color: var(--color-text-gray);
+  }
 `;
 
 export const getStatusStyles = (isChecked: boolean, theme: Theme) => {
@@ -240,12 +275,16 @@ export const getStatusStyles = (isChecked: boolean, theme: Theme) => {
       return css`
         outline: 1.5px solid ${theme.colors.primary};
         background-color: ${theme.colors.background.lightYellow};
-        color: var(--color-primary);
+        text-decoration: line-through ${theme.colors.gray.gray200};
+        text-decoration-thickness: 1.5px;
+        & button,
+        div {
+          color: ${theme.colors.gray.gray200};
+        }
       `;
     default:
       return css`
         background-color: ${theme.colors.background.white};
-        color: var(--color-text-gray);
       `;
   }
 };

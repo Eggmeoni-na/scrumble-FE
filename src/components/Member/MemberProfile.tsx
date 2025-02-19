@@ -16,13 +16,13 @@ const DEFAULT_PROFILE_IMG = '/images/defaultImg.png';
 const MemberProfile = ({ member, selectedMember, displayRole, type }: Props) => {
   const { user } = useUserCookie();
   const { name, profileImg, memberId, squadMemberRole } = member;
-  const activeMember = selectedMember ?? user;
+  const activeMemberId = selectedMember?.memberId ?? user!.id;
   const isSquadDetail = type === MEMBER_STYLE_TYPE.SQUAD_DETIAL;
 
   return (
     <div css={infoStyle}>
       {isSquadDetail && (
-        <div css={[imgContainerStyle, activeMember?.name === name ? activeStyle : inactiveStyle]}>
+        <div css={[imgContainerStyle, activeMemberId === memberId ? activeStyle : inactiveStyle]}>
           <img css={imgStyle} src={profileImg ? profileImg : DEFAULT_PROFILE_IMG} alt={`${name}님의 프로필 이미지`} />
         </div>
       )}
