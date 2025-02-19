@@ -51,6 +51,7 @@ const TodoItem = ({ todo, squadMemberId }: { todo: ToDoDetail; squadMemberId: nu
   const [isEditMode, setIsEditMode] = useState(false);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [newContents, setNewContents] = useState(contents);
+  const [isToggleStatus, setIsToggleStatus] = useState(false);
   const isCompleted = toDoStatus === TODO_STATUS.COMPLETED;
   const { successToast, failedToast } = useToastHandler();
 
@@ -62,7 +63,13 @@ const TodoItem = ({ todo, squadMemberId }: { todo: ToDoDetail; squadMemberId: nu
 
   const queryClient = useQueryClient();
   const { updateTodoMutate } = useUpdateTodo(queryParams, {
-    onSuccess: () => successToast('수정에 성공했어요'),
+    onSuccess: () => {
+      if (isToggleStatus) {
+        setIsToggleStatus(false);
+        return;
+      }
+      successToast('수정에 성공했어요');
+    },
     onError: (error, data, context) => {
       failedToast('수정에 실패했어요');
       if (context?.oldData) {
@@ -88,6 +95,7 @@ const TodoItem = ({ todo, squadMemberId }: { todo: ToDoDetail; squadMemberId: nu
       toDoStatus: newStatus,
       contents,
     };
+    setIsToggleStatus(true);
     updateTodoMutate({ toDoId, newTodo });
   };
 
