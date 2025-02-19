@@ -1,7 +1,7 @@
 import { Check, Close, Delete, Edit } from '@/assets/icons';
 import { Button } from '@/components/common';
 import IconWrapper from '@/components/IconWrapper';
-import { checkedStyle, checkIconStyle, contentStyle, getStatusStyles, todoItemStyle } from '@/components/Todo/TodoList';
+import { checkedStyle, checkIconStyle, contentWrapperStyle, todoItemStyle } from '@/components/Todo/TodoList';
 import { TODO_STATUS } from '@/constants/todo';
 import { useToastHandler } from '@/hooks';
 import { useDeleteTodo, useUpdateTodo } from '@/hooks/mutations';
@@ -103,7 +103,7 @@ const TodoItem = ({ todo, squadMemberId }: { todo: ToDoDetail; squadMemberId: nu
       {!isDeleteMode ? (
         <li css={[todoItemStyle, getStatusStyles(isCompleted, theme)]}>
           <button onClick={toggleTodoStatus} style={fullSizeButtonStyle} aria-label="투두 상태 변경">
-            <div css={contentStyle}>
+            <div css={contentWrapperStyle}>
               <IconWrapper
                 aria-label={isCompleted ? '완료된 투두' : '완료되지 않은 투두'}
                 aria-checked={isCompleted}
@@ -113,7 +113,7 @@ const TodoItem = ({ todo, squadMemberId }: { todo: ToDoDetail; squadMemberId: nu
                 {isCompleted && <Check />}
               </IconWrapper>
               {!isEditMode ? (
-                <p>{contents}</p>
+                <p css={isCompleted && contentStyle(theme)}>{contents}</p>
               ) : (
                 <input
                   type="text"
@@ -171,6 +171,26 @@ const TodoItem = ({ todo, squadMemberId }: { todo: ToDoDetail; squadMemberId: nu
 
 export default TodoItem;
 
+export const getStatusStyles = (isChecked: boolean, theme: Theme) => {
+  switch (isChecked) {
+    case true:
+      return css`
+        outline: 1.5px solid ${theme.colors.primary};
+        background-color: ${theme.colors.background.lightYellow};
+      `;
+    default:
+      return css`
+        background-color: ${theme.colors.background.white};
+      `;
+  }
+};
+
+const contentStyle = (theme: Theme) => css`
+  color: ${theme.colors.gray.gray200};
+  text-decoration: line-through ${theme.colors.gray.gray200};
+  text-decoration-thickness: 1.5px;
+`;
+
 const slideInFromRight = keyframes`
   from {
     transform: translateX(100%);
@@ -203,7 +223,7 @@ const cancelButtonStyle = css`
   margin-right: 8px;
 
   & svg {
-    width: 24px;
+    width: 20px;
     color: var(--color-text-gray);
   }
 `;
@@ -234,6 +254,7 @@ const editActionStyle = css`
   display: flex;
   gap: 4px;
   margin-right: 8px;
+  text-decoration: none;
 
   & button {
     border-radius: 12px;

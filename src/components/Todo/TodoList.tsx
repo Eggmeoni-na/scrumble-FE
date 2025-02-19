@@ -80,28 +80,7 @@ export const todoItemStyle = css`
   `)}
 `;
 
-export const getStatusStyles = (isChecked: boolean, theme: Theme) => {
-  switch (isChecked) {
-    case true:
-      return css`
-        outline: 1.5px solid ${theme.colors.primary};
-        background-color: ${theme.colors.background.lightYellow};
-        text-decoration: line-through ${theme.colors.gray.gray200};
-        text-decoration-thickness: 1.5px;
-
-        & button,
-        div {
-          color: ${theme.colors.gray.gray200};
-        }
-      `;
-    default:
-      return css`
-        background-color: ${theme.colors.background.white};
-      `;
-  }
-};
-
-export const contentStyle = css`
+export const contentWrapperStyle = css`
   display: flex;
   align-items: center;
   gap: 12px;
