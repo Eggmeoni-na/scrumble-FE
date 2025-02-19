@@ -52,4 +52,8 @@ const containerStyle = css`
 
 const memberStyle = css`
   cursor: pointer;
+
+  & button {
+    padding: 0;
+  }
 `;
