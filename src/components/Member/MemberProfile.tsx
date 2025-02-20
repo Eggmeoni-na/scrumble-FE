@@ -1,6 +1,7 @@
 import { ROLE } from '@/constants/role';
 import { MEMBER_STYLE_TYPE } from '@/constants/squad';
 import { useUserCookie } from '@/hooks';
+import { pcMediaQuery } from '@/styles/breakpoints';
 import { SquadMember } from '@/types';
 import { css, Theme } from '@emotion/react';
 
@@ -63,19 +64,29 @@ const sidebarNameStyle = (theme: Theme) => css`
 `;
 
 const imgContainerStyle = css`
-  width: 88px;
-  height: 88px;
+  width: 80px;
+  height: 80px;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  ${pcMediaQuery(css`
+    width: 88px;
+    height: 88px;
+  `)}
 `;
 
 const imgStyle = (theme: Theme) => css`
-  width: 80px;
-  height: 80px;
+  width: 72px;
+  height: 72px;
   object-fit: cover;
   border-radius: 50%;
   border: 3.5px solid ${theme.colors.background.white};
+
+  ${pcMediaQuery(css`
+    width: 80px;
+    height: 80px;
+  `)}
 `;
 
 const activeStyle = css`
