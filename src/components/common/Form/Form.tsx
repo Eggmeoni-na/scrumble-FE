@@ -1,6 +1,6 @@
 import { Add } from '@/assets/icons';
 import { IconWrapper } from '@/components';
-import { css, SerializedStyles, Theme } from '@emotion/react';
+import { css, Theme } from '@emotion/react';
 import { ChangeEvent, FormEvent, HTMLInputTypeAttribute, KeyboardEvent } from 'react';
 
 type Props = {
@@ -10,11 +10,10 @@ type Props = {
   value: string | number;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
-  style?: (theme: Theme) => SerializedStyles;
 };
 
-const Form = ({ type, onSubmit, onKeyDown, value, onChange, placeholder, style }: Props) => (
-  <form css={[formStyle, style]} onSubmit={onSubmit}>
+const Form = ({ type, onSubmit, onKeyDown, value, onChange, placeholder }: Props) => (
+  <form css={formStyle} onSubmit={onSubmit}>
     <input type={type} value={value} onChange={onChange} autoFocus placeholder={placeholder} />
     <IconWrapper
       css={addIconStyle}
@@ -38,6 +37,7 @@ const formStyle = (theme: Theme) => css`
   background-color: ${theme.colors.background.gray};
   border-radius: 18px;
   padding: 8px;
+  margin: 16px;
 
   & input {
     height: 40px;

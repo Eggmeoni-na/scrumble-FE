@@ -1,6 +1,7 @@
 import { ROLE } from '@/constants/role';
 import { MEMBER_STYLE_TYPE } from '@/constants/squad';
 import { useUserCookie } from '@/hooks';
+import { pcMediaQuery } from '@/styles/breakpoints';
 import { SquadMember } from '@/types';
 import { css, Theme } from '@emotion/react';
 
@@ -16,13 +17,13 @@ const DEFAULT_PROFILE_IMG = '/images/defaultImg.png';
 const MemberProfile = ({ member, selectedMember, displayRole, type }: Props) => {
   const { user } = useUserCookie();
   const { name, profileImg, memberId, squadMemberRole } = member;
-  const activeMember = selectedMember ?? user;
+  const activeMemberId = selectedMember?.memberId ?? user!.id;
   const isSquadDetail = type === MEMBER_STYLE_TYPE.SQUAD_DETIAL;
 
   return (
     <div css={infoStyle}>
       {isSquadDetail && (
-        <div css={activeMember?.name === name ? activeStyle : inactiveStyle}>
+        <div css={[imgContainerStyle, activeMemberId === memberId ? activeStyle : inactiveStyle]}>
           <img css={imgStyle} src={profileImg ? profileImg : DEFAULT_PROFILE_IMG} alt={`${name}님의 프로필 이미지`} />
         </div>
       )}
@@ -45,14 +46,15 @@ const infoStyle = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
 `;
 
-const detailNameStyle = (theme: Theme) => css`
-  ${theme.typography.size_10}
-  width: 42px;
+const detailNameStyle = css`
+  font-size: 12px;
+  font-weight: 500;
+  width: 80px;
   text-align: center;
-  text-overflow: clip;
+  text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
 `;
@@ -61,28 +63,38 @@ const sidebarNameStyle = (theme: Theme) => css`
   ${theme.typography.size_16}
 `;
 
+const imgContainerStyle = css`
+  width: 80px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  ${pcMediaQuery(css`
+    width: 88px;
+    height: 88px;
+  `)}
+`;
+
 const imgStyle = (theme: Theme) => css`
-  width: 56px;
-  height: 56px;
+  width: 72px;
+  height: 72px;
   object-fit: cover;
   border-radius: 50%;
   border: 3.5px solid ${theme.colors.background.white};
+
+  ${pcMediaQuery(css`
+    width: 80px;
+    height: 80px;
+  `)}
 `;
 
 const activeStyle = css`
-  display: flex;
-  justify-content: center;
-  align-items: center;
   background: linear-gradient(90deg, rgb(255, 126, 0) 10%, rgba(255, 191, 0, 1) 72%, rgba(255, 246, 0, 1) 100%);
   border-radius: 50%;
-  width: 64px;
-  height: 64px;
 `;
 
 const inactiveStyle = css`
-  display: flex;
-  justify-content: center;
-  align-items: center;
   opacity: 50%;
 `;
 

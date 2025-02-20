@@ -5,7 +5,6 @@ import { useCreateTodo } from '@/hooks/mutations';
 import { todoKeys } from '@/hooks/queries';
 import { InfiniteQueryData } from '@/hooks/queries/types';
 import { ApiResponse, PostTodoRequest, ToDoDetail } from '@/types';
-import { css, Theme } from '@emotion/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { FormEvent, KeyboardEventHandler, useCallback, useState } from 'react';
 
@@ -67,14 +66,8 @@ const TodoForm = ({
       value={contents}
       onChange={(e) => setContents(e.target.value)}
       placeholder="할일을 입력해주세요"
-      style={formStyle}
     />
   );
 };
 
 export default TodoForm;
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const formStyle = (theme: Theme) => css`
-  margin: 16px;
-`;
