@@ -1,4 +1,4 @@
-import { Button } from '@/components/common';
+import { Button, EmptyContent } from '@/components/common';
 import { useCreateSquad } from '@/hooks/mutations';
 import { squadQueryOptions } from '@/hooks/queries';
 import { useToastStore } from '@/stores';
@@ -26,15 +26,19 @@ const SquadPage = () => {
 
   return (
     <>
-      <ul>
-        <li css={headerStyle}>
-          <span>스쿼드</span>
-          <Button text="스쿼드 생성" onClick={handleCreateSquad} aria-label="스쿼드 생성" />
-        </li>
-        {squadList.map((squad) => (
-          <SquadItem key={squad.squadId} squad={squad} />
-        ))}
-      </ul>
+      <div css={headerStyle}>
+        <span>스쿼드</span>
+        <Button text="스쿼드 생성" onClick={handleCreateSquad} aria-label="스쿼드 생성" />
+      </div>
+      {squadList.length ? (
+        <ul>
+          {squadList.map((squad) => (
+            <SquadItem key={squad.squadId} squad={squad} />
+          ))}
+        </ul>
+      ) : (
+        <EmptyContent message="참여중인 스쿼드가 없어요" css={blankStyle} />
+      )}
       <CreateSquadModal />
     </>
   );
@@ -94,8 +98,16 @@ const headerStyle = (theme: Theme) => css`
 
   & button {
     width: 112px;
-    ${theme.typography.size_16};
+    ${theme.typography.size_18};
     background-color: var(--color-primary);
     color: white;
+  }
+`;
+
+const blankStyle = css`
+  height: calc(100% - 84px);
+
+  & p {
+    margin-bottom: 84px;
   }
 `;
