@@ -7,7 +7,7 @@ import { AuthUser } from '@/types';
 import { css, Theme } from '@emotion/react';
 import { Navigate, useNavigate } from 'react-router-dom';
 
-const LoginPage = () => {
+const LoginPage = ({ isDev }: { isDev: boolean }) => {
   const { user, setCookie } = useUserCookie();
   const navigate = useNavigate();
   const { ModalContainer: EmailInputModalContainer, openModal } = useModal();
@@ -56,12 +56,16 @@ const LoginPage = () => {
         <button onClick={handleGoogleLogin} aria-label="구글 계정으로 로그인">
           <img css={googleLoginImgStyle} src="/images/google_login.png" alt="google_login" />
         </button>
-        <button css={demoUserStyle} onClick={handleTempLogin}>
-          테스트 계정 로그인
-        </button>
-        <CopyText />
+        {isDev && (
+          <>
+            <button css={demoUserStyle} onClick={handleTempLogin}>
+              테스트 계정 로그인
+            </button>
+            <CopyText />
+          </>
+        )}
       </div>
-      <EmailInputModalContainer />
+      {isDev && <EmailInputModalContainer />}
     </>
   );
 };
