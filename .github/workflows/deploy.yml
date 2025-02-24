@@ -18,13 +18,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '20'
-          cache: 'pnpm'
 
-      - name: Install pnpm manually (if missing)
-        run: |
-          corepack enable
-          corepack prepare pnpm@latest --activate
-          corepack install || npm install -g pnpm
+      - name: Install pnpm
+        run: npm install -g pnpm
 
       - name: Install dependencies
         run: pnpm install
