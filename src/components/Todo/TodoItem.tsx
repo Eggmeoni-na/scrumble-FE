@@ -129,7 +129,7 @@ const TodoItem = ({ todo, squadMemberId }: { todo: ToDoDetail; squadMemberId: nu
           autoFocus
         />
       ) : (
-        <p css={isCompleted && completedContentStyle} style={{ textAlign: 'left' }}>
+        <p id={`todo-${todo.toDoId}`} css={isCompleted && completedContentStyle} style={{ textAlign: 'left' }}>
           {contents}
         </p>
       )}
@@ -163,7 +163,7 @@ const TodoItem = ({ todo, squadMemberId }: { todo: ToDoDetail; squadMemberId: nu
   );
 
   return (
-    <li css={[todoItemStyle, getStatusStyles(isCompleted, theme)]}>
+    <li css={[todoItemStyle, getStatusStyles(isCompleted, theme)]} aria-labelledby={`todo-${todo.toDoId}`}>
       <button onClick={toggleTodoStatus} css={fullSizeButtonStyle} aria-label="투두 상태 변경">
         {renderTodoContent()}
       </button>

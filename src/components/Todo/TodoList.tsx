@@ -16,7 +16,7 @@ export const TodoList = ({ todos, loadMoreTodos, hasNextPage, isMeSelected, squa
   const { loadMoreRef } = useInfinite(loadMoreTodos, hasNextPage);
 
   return (
-    <ul css={[todoContainerStyle, !isMeSelected && memberTodoListStyle]}>
+    <ul css={[todoContainerStyle, !isMeSelected && memberTodoListStyle]} aria-label="투두 리스트">
       {todos.map((todo) =>
         isMeSelected ? (
           <TodoItem key={todo.toDoId} todo={todo} squadMemberId={squadMemberId} />

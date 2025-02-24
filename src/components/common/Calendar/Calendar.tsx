@@ -5,7 +5,7 @@ import { getDaysInMonth } from '@/utils';
 import { css, Theme, useTheme } from '@emotion/react';
 import { addMonths, format, subMonths } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import { forwardRef, KeyboardEvent, MouseEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 const Calendar = ({ onChangeSelectedDay }: { onChangeSelectedDay: (day: string) => void }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -55,31 +55,9 @@ const CalendarHeader = ({
 };
 
 const CalendarList = ({ currentMonth }: { currentMonth: Date }) => {
-  const daysContainerRef = useRef<HTMLUListElement>(null);
   const selectedDayRef = useRef<HTMLLIElement>(null);
   const daysInCurrentMonth = useMemo(() => getDaysInMonth(new Date(currentMonth)), [currentMonth]);
-  const { selectedDay, setSelectedDay } = useDayStore((state) => state);
-
-  const handleInteraction = (day: string | undefined) => {
-    if (!day || selectedDay === day) return;
-    setSelectedDay(day);
-  };
-
-  const handleClick = (e: MouseEvent<HTMLUListElement>) => {
-    const target = (e.target as HTMLElement).closest('li');
-    if (target && target instanceof HTMLLIElement) {
-      handleInteraction(target.dataset.day);
-    }
-  };
-
-  const handleKeyDown = (e: KeyboardEvent<HTMLUListElement>) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      const focusedElement = document.activeElement as HTMLElement;
-      if (focusedElement && focusedElement.dataset.day) {
-        handleInteraction(focusedElement.dataset.day);
-      }
-    }
-  };
+  const selectedDay = useDayStore((state) => state.selectedDay);
 
   useEffect(() => {
     if (selectedDayRef.current) {
@@ -96,9 +74,6 @@ const CalendarList = ({ currentMonth }: { currentMonth: Date }) => {
       {daysInCurrentMonth.length > 0 && (
         <ul
           css={calendarStyle}
-          ref={daysContainerRef}
-          onClick={handleClick}
-          onKeyDown={handleKeyDown}
           tabIndex={0}
           role="listbox"
           aria-label="날짜 선택"
@@ -115,9 +90,15 @@ const CalendarList = ({ currentMonth }: { currentMonth: Date }) => {
 
 Calendar.Item = forwardRef<HTMLLIElement, { day: string }>(({ day }, ref) => {
   const theme = useTheme();
-  const selectedDay = useDayStore((state) => state.selectedDay);
+  const { selectedDay, setSelectedDay } = useDayStore((state) => state);
   const isSelected = selectedDay === day;
   const isToday = format(new Date(), 'yyyy-MM-dd') === day;
+
+  const handleClick = () => {
+    if (!day || selectedDay === day) return;
+    setSelectedDay(day);
+  };
+
   return (
     <li
       key={day}
@@ -126,13 +107,12 @@ Calendar.Item = forwardRef<HTMLLIElement, { day: string }>(({ day }, ref) => {
         isSelected && selectedDateStyle,
         isToday && todayStyle(theme, isSelected),
       ]}
-      data-day={day}
       ref={ref}
       role="option"
       aria-selected={selectedDay === day}
       id={`${day}일`}
     >
-      <button style={fullSizeButtonStyle} aria-label={`${day}일`}>
+      <button style={fullSizeButtonStyle} onClick={handleClick}>
         <span>{format(new Date(day), 'dd')}</span>
         <span css={dayNameStyle}>{format(new Date(day), 'EEE', { locale: ko })}</span>
       </button>
