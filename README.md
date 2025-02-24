@@ -1,6 +1,6 @@
 # 스크럼블 - 스쿼드 단위 데일리 스크럼 공유 서비스
 
-**개요:** https://github.com/Eggmeoni-na 
+**개요:** https://github.com/Eggmeoni-na
 
 **기간:** 2024.09 ~ 진행중
 
@@ -111,7 +111,7 @@ React, TypeScript, Emotion, Zustand, React Query, React-Router-Dom, date-fns, Vi
 
 # 주요 이슈
 
-### 투두 생성/수정/삭제 시 API 호출 최소 50% 감소
+### 투두 생성/수정/삭제 시 API 호출 최적화
 
 <table>
   <tr>
@@ -157,7 +157,7 @@ React, TypeScript, Emotion, Zustand, React Query, React-Router-Dom, date-fns, Vi
     <td>결과</td>
     <td>
       <ul>
-        <li><strong>API 호출 최소화</strong>: API 요청 횟수 최소 50% 감소, 조회된 페이지 수에 비례하여 최대 90% 감소 효과 기대</li>
+        <li><strong>API 호출 최소화</strong>: API 중복 요청 방지, 무한 스크롤 조회 페이지 증가에 비례한 리렌더링 부담 최소화</li>
         <li><strong>사용성 개선</strong>: 투두 생성, 수정, 삭제 시 리페치 없이 변경된 데이터를 즉시 반영하여 사용자 경험 향상</li>
         <li>업데이트 로직을 유틸 함수로 분리하여 <strong>가독성과 유지보수성</strong> 향상</li>
       </ul>
@@ -345,11 +345,7 @@ React, TypeScript, Emotion, Zustand, React Query, React-Router-Dom, date-fns, Vi
   3. **목록 요소(ul/li)의 올바른 활용과 이벤트 처리 최적화**
 
      - 투두리스트는 리스트형 UI로 ul - li 구조를 적용하였으며, 각 li 요소는 개별 투두 아이템을 나타냅니다. li 태그는 Non-interactive 요소이므로 직접 이벤트 핸들러를 할당하는 것은 적절하지 않습니다. 이에 button 요소로 감싸 클릭 이벤트의 명확한 역할을 부여하였습니다.
-
-     - 이벤트 위임 최적화
-       - Calendar 컴포넌트는 월별 날짜를 렌더링하며, 상대적으로 변동이 적습니다.
-       - 각 날짜 요소마다 개별적으로 이벤트 핸들러를 할당하는 대신, `ul` 부모 요소에 한 번만 이벤트 리스너를 등록하고, `dataset`을 활용하여 개별 요소를 식별함으로써 메모리 사용량을 줄였습니다.
-       - 접근성을 고려하여 ul 요소에 `role="listbox"`, li 요소에 `role="option"`을 설정하고, `aria-activedescendant` 및 `id` 속성을 활용하여 선택된 날짜를 스크린 리더가 정확히 인식할 수 있도록 하였습니다.
+     - 접근성을 고려하여 `aria-activedescendant` 및 `id` 속성을 활용하여 선택된 투두를 스크린 리더가 인식할 수 있도록 하였습니다.
 
   4. **Compound Component Pattern**
 
@@ -362,7 +358,7 @@ React, TypeScript, Emotion, Zustand, React Query, React-Router-Dom, date-fns, Vi
 - 시맨틱 태그를 적극 활용했습니다.
 - `section` 태그에 heading 태그가 필요하지 않는 경우에 IR 기법 중 `sr-only` 속성을 전역 클래스로 선언하여 사용했습니다.
 - `aria-label` 속성을 적용해 의미가 명확하지 않은 UI 요소에 대한 정보를 제공했습니다.
-  
+
 <br/>
 
 ## 02. 검색 엔진 최적화
@@ -383,7 +379,6 @@ React, TypeScript, Emotion, Zustand, React Query, React-Router-Dom, date-fns, Vi
     </td>
   </tr>
 </table>
-
 
 <br/>
 
@@ -481,6 +476,7 @@ React, TypeScript, Emotion, Zustand, React Query, React-Router-Dom, date-fns, Vi
   // 02.
   props?: Omit<P, 'onSubmit' | 'onAbort'> | undefined,
   ```
+
   누락을 완전히 막을 수는 없지만, 어떤 속성이 필요한 지 추론 되도록 합니다.
 
 <br/>
@@ -591,7 +587,7 @@ SSE는 폴링 및 롱폴링에 비해 **불필요한 요청을 줄이고 지속�
   </tr>
   <tr>
     <td>
-      <img src="https://github.com/user-attachments/assets/1929de92-ac50-44ed-a6b5-2a3012303548" alt="스쿼드 멤버별 투두 조회" >
+      <img src="https://github.com/user-attachments/assets/1929de92-ac50-44ed-a6b5-2a3012303548" alt="스쿼드 멤버별 투두 조회" >
     </td>
     <td>
       <img src="https://github.com/user-attachments/assets/780d45e4-3019-45ab-9071-c2b001b474a7" alt="멤버 초대">
