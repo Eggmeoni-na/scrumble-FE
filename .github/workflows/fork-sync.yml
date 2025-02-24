@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - dev
   workflow_dispatch:
 
 jobs:
@@ -15,10 +16,23 @@ jobs:
       - name: Checkout Organization Repository
         uses: actions/checkout@v4
         with:
-          ref: main
+          fetch-depth: 0
           token: ${{ secrets.AUTO_ACTIONS }}
 
-      - name: Push Upstream Main to Fork Main
+      - name: Add Fork Repository as Remote
         run: |
           git remote add fork https://x-access-token:${{ secrets.AUTO_ACTIONS }}@github.com/k-jeonghee/scrumble-FE.git
+
+      - name: Sync Origin Main to Fork Main
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git checkout main
+          git pull origin main
           git push fork main --force
+
+      - name: Sync Origin Dev to Fork Main
+        if: github.ref == 'refs/heads/dev'
+        run: |
+          git checkout dev
+          git pull origin dev
+          git push fork dev:main --force
