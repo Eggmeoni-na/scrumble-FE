@@ -22,14 +22,8 @@ jobs:
       - name: Install pnpm
         run: npm install -g pnpm
 
-      - name: Set NODE_ENV
-        run: echo "NODE_ENV=production" >> $GITHUB_ENV
-
-      - name: Print Environment Variables
-        run: printenv | grep NODE_ENV
-
       - name: Install dependencies
-        run: pnpm install --prod=false
+        run: pnpm install
 
       - name: Create .env.production
         run: |
@@ -37,9 +31,6 @@ jobs:
 
       - name: Build project
         run: pnpm run build
-
-      - name: Remove devDependencies
-        run: pnpm prune --prod
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
