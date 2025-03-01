@@ -32,9 +32,6 @@ jobs:
       - name: Verify .env.production contents
         run: cat .env.production
 
-      - name: Print environment variables
-        run: env | grep VITE_API_URL
-
       - name: Build project
         run: pnpm run build
 
