@@ -29,7 +29,7 @@ jobs:
         run: printenv | grep NODE_ENV
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --prod=false
 
       - name: Create .env.production
         run: |
@@ -37,6 +37,9 @@ jobs:
 
       - name: Build project
         run: pnpm run build
+
+      - name: Remove devDependencies
+        run: pnpm prune --prod
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
