@@ -22,6 +22,12 @@ jobs:
       - name: Install pnpm
         run: npm install -g pnpm
 
+      - name: Print Environment Variables
+        run: printenv | grep NODE_ENV
+
+      - name: Set NODE_ENV
+        run: echo "NODE_ENV=production" >> $GITHUB_ENV
+
       - name: Install dependencies
         run: pnpm install
 
