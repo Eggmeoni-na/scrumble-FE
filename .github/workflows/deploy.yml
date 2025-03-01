@@ -33,7 +33,7 @@ jobs:
         run: cat .env.production
 
       - name: Print environment variables
-        run: printenv | grep VITE_API_URL
+        run: env | grep VITE_API_URL
 
       - name: Build project
         run: pnpm run build
