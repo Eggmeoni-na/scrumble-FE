@@ -25,9 +25,15 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Create .env
+      - name: Create .env.production
         run: |
-          echo "VITE_API_URL=${{ secrets.API_URL }}" >> .env
+          echo "VITE_API_URL=${{ secrets.API_URL }}" >> .env.production
+
+      - name: Verify .env.production contents
+        run: cat .env.production
+
+      - name: Print environment variables
+        run: printenv | grep VITE_API_URL
 
       - name: Build project
         run: pnpm run build
