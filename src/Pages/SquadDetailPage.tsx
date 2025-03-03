@@ -6,6 +6,7 @@ import { useUserCookie } from '@/hooks';
 import { squadDetailQueryOptions, todoInfiniteQueryOptions } from '@/hooks/queries';
 import { useDayStore, useMemberStore, useSquadStore } from '@/stores';
 import { pcMediaQuery } from '@/styles/breakpoints';
+import { ellipsisStyle } from '@/styles/globalStyles';
 import { css, Theme } from '@emotion/react';
 import { useInfiniteQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
@@ -80,17 +81,27 @@ const SquadDetailPage = () => {
   return (
     <section css={containerStyle}>
       <Calendar onChangeSelectedDay={setSelectedDay} />
+
       <section aria-labelledby="squad-members">
         <h2 id="squad-members" className="sr-only">
           멤버
         </h2>
         <SquadDetailMemberList squadMembers={squadDetail.squadMembers} />
       </section>
-      <div css={headerStyle}>
-        <span>{selectedDay}</span>
-        <span>{!selectedMember ? user?.name : selectedMember.name}</span>
+
+      <header css={headerStyle}>
+        <span style={{ width: '90px' }}>{selectedDay}</span>
+        <span
+          css={ellipsisStyle}
+          style={{
+            width: '112px',
+          }}
+        >
+          {!selectedMember ? user?.name : selectedMember.name}
+        </span>
         <span css={completionRateStyle}>달성률: {progressRate}%</span>
-      </div>
+      </header>
+
       <TodoList
         todos={todos}
         loadMoreTodos={loadMoreTodos}
@@ -98,7 +109,15 @@ const SquadDetailPage = () => {
         isMeSelected={isMeSelected}
         squadMemberId={squadMemberId}
       />
-      {isMeSelected && <TodoForm squadId={squadId} selectedDay={selectedDay} squadMemberId={squadMemberId} />}
+
+      {isMeSelected && (
+        <section aria-labelledby="todo-form">
+          <h2 id="todo-form" className="sr-only">
+            투두 작성 폼
+          </h2>
+          <TodoForm squadId={squadId} selectedDay={selectedDay} squadMemberId={squadMemberId} />
+        </section>
+      )}
     </section>
   );
 };

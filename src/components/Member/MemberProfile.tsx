@@ -2,6 +2,7 @@ import { ROLE } from '@/constants/role';
 import { MEMBER_STYLE_TYPE } from '@/constants/squad';
 import { useUserCookie } from '@/hooks';
 import { pcMediaQuery } from '@/styles/breakpoints';
+import { ellipsisStyle } from '@/styles/globalStyles';
 import { SquadMember } from '@/types';
 import { css, Theme } from '@emotion/react';
 
@@ -27,7 +28,7 @@ const MemberProfile = ({ member, selectedMember, displayRole, type }: Props) => 
           <img css={imgStyle} src={profileImg ? profileImg : DEFAULT_PROFILE_IMG} alt={`${name}님의 프로필 이미지`} />
         </div>
       )}
-      <p css={isSquadDetail ? detailNameStyle : sidebarNameStyle}>
+      <p css={[isSquadDetail ? detailNameStyle : sidebarNameStyle, ellipsisStyle]}>
         {name}
         {displayRole && (
           <>
@@ -53,10 +54,6 @@ const detailNameStyle = css`
   font-size: 12px;
   font-weight: 500;
   width: 80px;
-  text-align: center;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
 `;
 
 const sidebarNameStyle = (theme: Theme) => css`

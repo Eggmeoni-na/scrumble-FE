@@ -28,7 +28,7 @@ const SquadPage = () => {
     <>
       <div css={headerStyle}>
         <span>스쿼드</span>
-        <Button text="스쿼드 생성" onClick={handleCreateSquad} aria-label="스쿼드 생성" />
+        <Button text="스쿼드 생성" onClick={handleCreateSquad} customCss={createSquadButtonStyle} />
       </div>
       {squadList.length ? (
         <ul>
@@ -95,13 +95,6 @@ const headerStyle = (theme: Theme) => css`
     ${theme.typography.size_24};
     padding-left: 16px;
   }
-
-  & button {
-    width: 112px;
-    ${theme.typography.size_18};
-    background-color: var(--color-primary);
-    color: white;
-  }
 `;
 
 const blankStyle = css`
@@ -110,4 +103,12 @@ const blankStyle = css`
   & p {
     margin-bottom: 84px;
   }
+`;
+
+const createSquadButtonStyle = (theme: Theme) => css`
+  width: 112px;
+  ${theme.typography.size_16}
+  font-weight: 700;
+  background-color: var(--color-primary);
+  color: white;
 `;

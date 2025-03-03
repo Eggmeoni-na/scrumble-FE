@@ -112,7 +112,7 @@ Calendar.Item = forwardRef<HTMLLIElement, { day: string }>(({ day }, ref) => {
       aria-selected={selectedDay === day}
       id={`${day}일`}
     >
-      <button style={fullSizeButtonStyle} onClick={handleClick}>
+      <button style={fullSizeButtonStyle} onClick={handleClick} css={calendarButtonStyle}>
         <span>{format(new Date(day), 'dd')}</span>
         <span css={dayNameStyle}>{format(new Date(day), 'EEE', { locale: ko })}</span>
       </button>
@@ -152,6 +152,13 @@ const calendarItemStyle = (theme: Theme, isSelected: boolean) => css`
     background-color: ${!isSelected && theme.colors.background.yellow};
     cursor: ${isSelected && 'default'};
   }
+`;
+
+const calendarButtonStyle = css`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 const todayStyle = (theme: Theme, isSelected: boolean) => css`
