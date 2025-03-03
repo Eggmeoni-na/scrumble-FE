@@ -1,13 +1,13 @@
 import { Form } from '@/components/common';
+import { formStyle } from '@/components/Todo/styles';
 import { TODO_TYPES } from '@/constants/todo';
 import { useToastHandler } from '@/hooks';
 import { useCreateTodo } from '@/hooks/mutations';
 import { todoKeys } from '@/hooks/queries';
 import { InfiniteQueryData } from '@/hooks/queries/types';
 import { ApiResponse, PostTodoRequest, ToDoDetail } from '@/types';
-import { css } from '@emotion/react';
 import { useQueryClient } from '@tanstack/react-query';
-import { FormEvent, KeyboardEventHandler, useCallback, useState } from 'react';
+import { FormEvent, KeyboardEventHandler, useState } from 'react';
 
 const TodoForm = ({
   squadId,
@@ -51,13 +51,13 @@ const TodoForm = ({
     setContents('');
   };
 
-  const handleEnterSubmit: KeyboardEventHandler<HTMLFormElement> = useCallback((e) => {
+  const handleEnterSubmit: KeyboardEventHandler<HTMLFormElement> = (e) => {
     if (e.key !== 'Enter') return;
     if (!e.nativeEvent.isComposing) {
       e.preventDefault();
       handleSubmit(e);
     }
-  }, []);
+  };
 
   return (
     <Form
@@ -73,7 +73,3 @@ const TodoForm = ({
 };
 
 export default TodoForm;
-
-const formStyle = () => css`
-  margin: 16px;
-`;
