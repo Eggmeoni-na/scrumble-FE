@@ -7,7 +7,9 @@ import { AuthUser } from '@/types';
 import { css, Theme } from '@emotion/react';
 import { Navigate, useNavigate } from 'react-router-dom';
 
-const LoginPage = ({ isDev }: { isDev: boolean }) => {
+const isDev = window.location.hostname === import.meta.env.VITE_DEV_DOMAIN || window.location.hostname === 'localhost';
+
+const LoginPage = () => {
   const { user, setCookie } = useUserCookie();
   const navigate = useNavigate();
   const { ModalContainer: EmailInputModalContainer, openModal } = useModal();
