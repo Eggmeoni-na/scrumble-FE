@@ -8,7 +8,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export const useUpdateTodo = (
   queryParams: TodoQueryParams,
-  options: MutateOptionsType<
+  options?: MutateOptionsType<
     ApiResponse<CreateAndUpdateResponseType>,
     UpdateTodoParamType,
     { oldData: InfiniteQueryData<ApiResponse<ToDoDetail[]>> | never[] | undefined }

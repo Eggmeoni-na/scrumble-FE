@@ -8,14 +8,14 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const useDeleteTodo = (
   queryParams: TodoQueryParams,
-  options: MutateOptionsType<
+  options?: MutateOptionsType<
     ApiResponse<{ toDoId: number }>,
     DeleteTodoParamType,
     { oldData: InfiniteQueryData<ApiResponse<ToDoDetail[]>> | never[] | undefined }
   >,
 ) => {
   const queryClient = useQueryClient();
-  const { mutate: deleteTodoMuate } = useMutation({
+  const { mutate: deleteTodoMutate } = useMutation({
     mutationFn: deleteTodo,
     onMutate: async (data) => {
       const { squadId, selectedDay, squadMemberId } = queryParams;
@@ -35,7 +35,7 @@ const useDeleteTodo = (
     ...options,
   });
 
-  return { deleteTodoMuate };
+  return { deleteTodoMutate };
 };
 
 export default useDeleteTodo;

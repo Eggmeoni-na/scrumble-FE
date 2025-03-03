@@ -61,7 +61,7 @@ const TodoItem = ({ todo, squadMemberId }: { todo: ToDoDetail; squadMemberId: nu
     },
   });
 
-  const { deleteTodoMuate } = useDeleteTodo(queryParams, {
+  const { deleteTodoMutate } = useDeleteTodo(queryParams, {
     onSuccess: () => successToast('삭제에 성공했어요'),
     onError: (error, data, context) => {
       failedToast('삭제에 실패했어요');
@@ -106,7 +106,7 @@ const TodoItem = ({ todo, squadMemberId }: { todo: ToDoDetail; squadMemberId: nu
   const handleDeleteTodo = () => setIsDeleteMode(true);
 
   const handleConfirmDelete = () => {
-    deleteTodoMuate({ toDoId, squadId });
+    deleteTodoMutate({ toDoId, squadId });
     setIsDeleteMode(false);
   };
 
