@@ -1,15 +1,17 @@
 import { Calendar } from '@/components/common';
 import { SquadDetailMemberList } from '@/components/Member';
-import { TodoForm, TodoList } from '@/components/Todo';
+import { Todo, Form as TodoForm } from '@/components/Todo';
 import { TODO_PAGE_SIZE, TODO_STATUS } from '@/constants/todo';
+import { TodoProvider } from '@/context/todo/provider';
 import { useUserCookie } from '@/hooks';
 import { squadDetailQueryOptions, todoInfiniteQueryOptions } from '@/hooks/queries';
 import { useDayStore, useMemberStore, useSquadStore } from '@/stores';
 import { pcMediaQuery } from '@/styles/breakpoints';
 import { ellipsisStyle } from '@/styles/globalStyles';
+import { TodoQueryParams } from '@/types';
 import { css, Theme } from '@emotion/react';
 import { useInfiniteQuery, useSuspenseQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 const SquadDetailPage = () => {
@@ -30,6 +32,15 @@ const SquadDetailPage = () => {
   const me = squadDetail.squadMembers.find((member) => member.memberId === user?.id);
   const isMeSelected = !selectedMember || selectedMember.squadMemberId === me?.squadMemberId;
   const squadMemberId = isMeSelected ? me!.squadMemberId : selectedMember!.squadMemberId;
+
+  const queryParams: TodoQueryParams = useMemo(
+    () => ({
+      squadId,
+      selectedDay,
+      squadMemberId,
+    }),
+    [squadId, selectedDay, squadMemberId],
+  );
 
   const payload = {
     startDate: selectedDay,
@@ -102,13 +113,9 @@ const SquadDetailPage = () => {
         <span css={completionRateStyle}>달성률: {progressRate}%</span>
       </header>
 
-      <TodoList
-        todos={todos}
-        loadMoreTodos={loadMoreTodos}
-        hasNextPage={hasNextPage}
-        isMeSelected={isMeSelected}
-        squadMemberId={squadMemberId}
-      />
+      <TodoProvider queryParams={queryParams}>
+        <Todo todos={todos} loadMoreTodos={loadMoreTodos} hasNextPage={hasNextPage} isMeSelected={isMeSelected} />
+      </TodoProvider>
 
       {isMeSelected && (
         <section aria-labelledby="todo-form">
@@ -124,11 +131,11 @@ const SquadDetailPage = () => {
 
 export default SquadDetailPage;
 
-const containerStyle = (them: Theme) => css`
+const containerStyle = (theme: Theme) => css`
   display: flex;
   flex-direction: column;
   height: 100%;
-  background-color: ${them.colors.background.white};
+  background-color: ${theme.colors.background.white};
 `;
 
 const headerStyle = (theme: Theme) => css`
