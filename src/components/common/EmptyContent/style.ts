@@ -1,17 +1,7 @@
 import { pcMediaQuery } from '@/styles/breakpoints';
 import { css, Theme } from '@emotion/react';
-import { HTMLAttributes } from 'react';
 
-const EmptyContent = ({ message, ...rest }: { message: string } & HTMLAttributes<HTMLElement>) => (
-  <div css={containerStyle} {...rest}>
-    <span>🪹</span>
-    <p>{message}</p>
-  </div>
-);
-
-export default EmptyContent;
-
-const containerStyle = (theme: Theme) => css`
+export const containerStyle = (theme: Theme) => css`
   height: 100%;
   display: flex;
   flex-direction: column;

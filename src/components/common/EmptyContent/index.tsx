@@ -1,3 +1,11 @@
-import EmptyContent from '@/components/common/EmptyContent/EmptyContent';
+import { containerStyle } from '@/components/common/EmptyContent/style';
+import { HTMLAttributes } from 'react';
 
-export { EmptyContent };
+const EmptyContent = ({ message, ...rest }: { message: string } & HTMLAttributes<HTMLElement>) => (
+  <div css={containerStyle} {...rest}>
+    <span>🪹</span>
+    <p>{message}</p>
+  </div>
+);
+
+export default EmptyContent;
