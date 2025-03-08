@@ -1,4 +1,4 @@
-import { Form } from '@/components/common';
+import { Form as TodoForm } from '@/components/common';
 import { formStyle } from '@/components/Todo/styles';
 import { TODO_TYPES } from '@/constants/todo';
 import { useToastHandler } from '@/hooks';
@@ -7,9 +7,9 @@ import { todoKeys } from '@/hooks/queries';
 import { InfiniteQueryData } from '@/hooks/queries/types';
 import { ApiResponse, PostTodoRequest, ToDoDetail } from '@/types';
 import { useQueryClient } from '@tanstack/react-query';
-import { FormEvent, KeyboardEventHandler, useState } from 'react';
+import { FormEvent, KeyboardEventHandler, memo, useState } from 'react';
 
-const TodoForm = ({
+const Form = ({
   squadId,
   selectedDay,
   squadMemberId,
@@ -60,7 +60,7 @@ const TodoForm = ({
   };
 
   return (
-    <Form
+    <TodoForm
       type="text"
       onSubmit={handleSubmit}
       onKeyDown={handleEnterSubmit}
@@ -72,4 +72,4 @@ const TodoForm = ({
   );
 };
 
-export default TodoForm;
+export default memo(Form);

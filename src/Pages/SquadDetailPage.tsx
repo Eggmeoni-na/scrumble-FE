@@ -1,6 +1,6 @@
 import { Calendar } from '@/components/common';
 import { SquadDetailMemberList } from '@/components/Member';
-import { Todo, Form as TodoForm } from '@/components/Todo';
+import { TodoForm, TodoList } from '@/components/Todo';
 import { TODO_PAGE_SIZE, TODO_STATUS } from '@/constants/todo';
 import { TodoProvider } from '@/context/todo/provider';
 import { useUserCookie } from '@/hooks';
@@ -114,7 +114,7 @@ const SquadDetailPage = () => {
       </header>
 
       <TodoProvider queryParams={queryParams}>
-        <Todo todos={todos} loadMoreTodos={loadMoreTodos} hasNextPage={hasNextPage} isMeSelected={isMeSelected} />
+        <TodoList todos={todos} loadMoreTodos={loadMoreTodos} hasNextPage={hasNextPage} isMeSelected={isMeSelected} />
       </TodoProvider>
 
       {isMeSelected && (
