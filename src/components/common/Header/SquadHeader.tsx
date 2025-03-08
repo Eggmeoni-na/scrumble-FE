@@ -1,5 +1,5 @@
+import { Sidebar } from '@/components/common';
 import { HeaderTemplate } from '@/components/common/Header';
-import { Sidebar } from '@/components/common/Sidebar';
 import { useOpenToggle } from '@/hooks';
 import { squadDetailQueryOptions } from '@/hooks/queries';
 import { pcMediaQuery } from '@/styles/breakpoints';

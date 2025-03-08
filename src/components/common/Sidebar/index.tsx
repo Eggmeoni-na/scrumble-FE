@@ -21,7 +21,7 @@ import { getPriority } from '@/utils';
 import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
-export const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
+const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
   const squadId = useSquadStore((state) => state.currentSquadId);
   const navigate = useNavigate();
   const createToast = useToastStore((state) => state.createToast);
@@ -115,20 +115,20 @@ export const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
           <h2 id="squad-settings">설정</h2>
           <ul>
             <li>
-              <button onClick={handleInvitation} style={fullSizeButtonStyle} aria-label="멤버 초대">
+              <button onClick={handleInvitation} style={fullSizeButtonStyle}>
                 멤버 초대
               </button>
             </li>
             {isLeader && (
               <li>
-                <button onClick={handleAssignLeader} style={fullSizeButtonStyle} aria-label="리더 변경">
+                <button onClick={handleAssignLeader} style={fullSizeButtonStyle}>
                   리더 변경
                 </button>
               </li>
             )}
             {isLeader && (
               <li>
-                <button onClick={handleSquadDelete} style={fullSizeButtonStyle} aria-label="스쿼드 삭제">
+                <button onClick={handleSquadDelete} style={fullSizeButtonStyle}>
                   스쿼드 삭제
                 </button>
               </li>
@@ -145,3 +145,5 @@ export const Sidebar = ({ closeSidebar }: { closeSidebar: VoidFunction }) => {
     </Overlay>
   );
 };
+
+export default Sidebar;

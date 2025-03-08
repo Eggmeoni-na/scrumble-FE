@@ -6,6 +6,7 @@ import Form from '@/components/common/Form';
 import { DefaultHeader, HeaderTemplate, SquadHeader } from '@/components/common/Header';
 import Loading from '@/components/common/Loading';
 import Overlay from '@/components/common/Overlay';
+import Sidebar from '@/components/common/Sidebar';
 import ToastContainer from '@/components/common/Toast';
 
 export {
@@ -18,6 +19,7 @@ export {
   Loading,
   Overlay,
   RootErrorFallback,
+  Sidebar,
   SquadHeader,
   ToastContainer,
 };
