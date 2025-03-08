@@ -1,7 +1,8 @@
 import { Check } from '@/assets/icons';
 import { IconWrapper } from '@/components';
-import { checkedStyle, checkIconStyle, contentWrapperStyle, getStatusStyles, todoItemStyle } from '@/components/Todo';
+import { completedContentStyle, contentWrapperStyle, getStatusStyles, todoItemStyle } from '@/components/Todo/styles';
 import { TODO_STATUS } from '@/constants/todo';
+import { checkedStyle, checkIconStyle } from '@/styles/common';
 import { ToDoDetail } from '@/types';
 import { css, useTheme } from '@emotion/react';
 
@@ -19,7 +20,7 @@ const MemberTodoItem = ({ todo }: { todo: ToDoDetail }) => {
         >
           {isCompleted && <Check />}
         </IconWrapper>
-        <p>{todo.contents}</p>
+        <p css={isCompleted && completedContentStyle}>{todo.contents}</p>
       </div>
     </li>
   );

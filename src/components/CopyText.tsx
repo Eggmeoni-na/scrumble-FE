@@ -1,4 +1,3 @@
-import { css, Theme } from '@emotion/react';
 import { useState } from 'react';
 
 const TEST_USER = 'scrumble@email.com';
@@ -26,18 +25,3 @@ const CopyText = () => {
 };
 
 export default CopyText;
-
-const containerStyle = (theme: Theme) => css`
-  display: flex;
-  align-items: center;
-  ${theme.typography.size_10}
-
-  & span {
-    font-weight: 500;
-    margin-top: 2px;
-  }
-
-  & button {
-    color: ${theme.colors.primary};
-  }
-`;
