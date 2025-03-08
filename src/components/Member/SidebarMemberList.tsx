@@ -1,7 +1,7 @@
 import { Exit } from '@/assets/icons';
 import { IconWrapper } from '@/components';
 import { MemberProfile } from '@/components/Member';
-import { commonButtonStyle } from '@/components/common/Sidebar';
+import { commonButtonStyle } from '@/components/common/Sidebar/style';
 import { ROLE } from '@/constants/role';
 import { MEMBER_STYLE_TYPE } from '@/constants/squad';
 import { useRemoveUserFromSquad } from '@/hooks/mutations';

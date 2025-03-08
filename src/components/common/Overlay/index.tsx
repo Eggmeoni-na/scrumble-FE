@@ -1,11 +1,6 @@
+import { OverlayProps } from '@/types';
 import { css } from '@emotion/react';
-import { HTMLAttributes, MouseEvent, PropsWithChildren } from 'react';
-
-export type OverlayProps = {
-  onClose?: () => void;
-  preventClick?: boolean;
-  transparent?: boolean;
-} & HTMLAttributes<HTMLDivElement>;
+import { MouseEvent, PropsWithChildren } from 'react';
 
 const Overlay = ({
   children,

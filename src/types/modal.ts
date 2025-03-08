@@ -1,4 +1,4 @@
-import { ComponentType } from 'react';
+import { ComponentType, HTMLAttributes, PropsWithChildren } from 'react';
 
 export type ModalStyle = 'common' | 'local' | 'alert';
 export type ActionStatus = 'confirm' | 'delete';
@@ -18,6 +18,18 @@ export type ModalType<P> = {
   reject: (reason: string) => void;
   actionModal?: ActionModalType;
 };
+
+export type OverlayProps = {
+  onClose?: () => void;
+  preventClick?: boolean;
+  transparent?: boolean;
+} & HTMLAttributes<HTMLDivElement>;
+
+export type ModalTemplate = PropsWithChildren &
+  OverlayProps & {
+    isOverlay: boolean;
+    styleType?: ModalStyle;
+  };
 
 export type ModalContentProps<T = unknown> = {
   onSubmit: (result: T) => void;

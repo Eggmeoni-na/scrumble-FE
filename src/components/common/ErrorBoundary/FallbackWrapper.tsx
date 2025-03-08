@@ -1,5 +1,5 @@
+import { Loading } from '@/components/common';
 import { ModalFallback } from '@/components/common/ErrorBoundary';
-import { Loading } from '@/components/common/Loading';
 import { MainLayout } from '@/components/layouts';
 import { useQueryErrorResetBoundary } from '@tanstack/react-query';
 import { PropsWithChildren, Suspense } from 'react';
