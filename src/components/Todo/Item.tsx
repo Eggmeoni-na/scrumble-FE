@@ -1,18 +1,16 @@
 import { ActionButton, Content, DeleteMode } from '@/components/Todo';
 import { getStatusStyles, todoItemStyle } from '@/components/Todo/styles';
 import { TODO_STATUS } from '@/constants/todo';
-import { useTodoQueryParamsContext } from '@/context/todo';
 import { useTodoDeleteActions, useTodoUpdateActions } from '@/hooks/todo';
-import { ToDoDetail } from '@/types';
+import { ToDoDetail, TodoQueryParams } from '@/types';
 import { useTheme } from '@emotion/react';
 import { memo, useMemo } from 'react';
 
-const Item = ({ todo }: { todo: ToDoDetail }) => {
+const Item = ({ todo, queryParams }: { todo: ToDoDetail; queryParams: TodoQueryParams }) => {
   const theme = useTheme();
   const { contents, toDoStatus } = todo;
   const isCompleted = toDoStatus === TODO_STATUS.COMPLETED;
 
-  const queryParams = useTodoQueryParamsContext();
   const { isDeleteMode, handleConfirmDelete, toggleDeleteMode } = useTodoDeleteActions(todo.toDoId, queryParams);
   const todoUpdateActions = useTodoUpdateActions(todo, queryParams);
 
