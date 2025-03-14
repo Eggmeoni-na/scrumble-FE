@@ -14,17 +14,17 @@ type Props = {
 const Content = ({ todo, isCompleted, updateActions }: Props) => {
   const { isEditMode, toggleTodoStatus } = updateActions;
 
+  if (isEditMode) {
+    return <EditMode updateActions={updateActions} />;
+  }
+
   return (
     <button onClick={toggleTodoStatus} css={fullSizeButtonStyle} aria-label="투두 상태 변경">
       <div css={contentWrapperStyle}>
         <Status isCompleted={isCompleted} />
-        {isEditMode ? (
-          <EditMode updateActions={updateActions} />
-        ) : (
-          <p id={`todo-${todo.toDoId}`} css={isCompleted && completedContentStyle} style={{ textAlign: 'left' }}>
-            {todo.contents}
-          </p>
-        )}
+        <p id={`todo-${todo.toDoId}`} css={isCompleted && completedContentStyle} style={{ textAlign: 'left' }}>
+          {todo.contents}
+        </p>
       </div>
     </button>
   );

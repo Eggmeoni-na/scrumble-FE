@@ -2,7 +2,7 @@ import { editInputStyle } from '@/components/Todo/styles';
 import { TodoUpdateActionsReturnType } from '@/hooks/todo';
 
 const EditMode = ({ updateActions }: { updateActions: TodoUpdateActionsReturnType }) => {
-  const { newContents, setNewContents, handleKeyPressForEdit } = updateActions;
+  const { newContents, setNewContents, handleKeyDownForEdit } = updateActions;
 
   return (
     <input
@@ -10,7 +10,7 @@ const EditMode = ({ updateActions }: { updateActions: TodoUpdateActionsReturnTyp
       value={newContents}
       onChange={(e) => setNewContents(e.target.value)}
       onClick={(e) => e.stopPropagation()}
-      onKeyDown={handleKeyPressForEdit}
+      onKeyDown={handleKeyDownForEdit}
       css={editInputStyle}
       autoFocus
     />
