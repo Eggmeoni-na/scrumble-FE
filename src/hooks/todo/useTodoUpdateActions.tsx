@@ -13,7 +13,7 @@ export type TodoUpdateActionsReturnType = {
   setNewContents: Dispatch<SetStateAction<string>>;
   toggleTodoStatus: () => void;
   handleEditContents: () => void;
-  handleKeyPressForEdit: (e: KeyboardEvent<HTMLInputElement>) => void;
+  handleKeyDownForEdit: (e: KeyboardEvent<HTMLInputElement>) => void;
 };
 
 export const useTodoUpdateActions = (todo: ToDoDetail, queryParams: TodoQueryParams) => {
@@ -69,7 +69,7 @@ export const useTodoUpdateActions = (todo: ToDoDetail, queryParams: TodoQueryPar
     setIsEditMode(false);
   }, [contents, newContents, selectedDay, toDoId, updateTodoMutate]);
 
-  const handleKeyPressForEdit = useCallback((e: KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDownForEdit = useCallback((e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
       e.preventDefault();
       handleEditContents();
@@ -84,9 +84,9 @@ export const useTodoUpdateActions = (todo: ToDoDetail, queryParams: TodoQueryPar
       setNewContents,
       toggleTodoStatus,
       handleEditContents,
-      handleKeyPressForEdit,
+      handleKeyDownForEdit,
     }),
-    [isEditMode, newContents, toggleTodoStatus, handleEditContents, handleKeyPressForEdit],
+    [isEditMode, newContents, toggleTodoStatus, handleEditContents, handleKeyDownForEdit],
   );
 
   return todoUpdateActions;
