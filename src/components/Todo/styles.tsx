@@ -121,6 +121,7 @@ export const actionStyle = css`
 
 export const editInputStyle = (theme: Theme) => css`
   height: 100%;
+  padding-left: 8px;
   flex: 1;
   font-size: 0.8rem;
   color: var(--color-text-gray);
@@ -131,7 +132,7 @@ export const editInputStyle = (theme: Theme) => css`
 `;
 
 export const editActionStyle = css`
-  width: 132px;
+  width: 112px;
   display: flex;
   gap: 4px;
   margin-right: 8px;
