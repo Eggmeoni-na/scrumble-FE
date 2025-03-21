@@ -23,17 +23,14 @@ export const useUpdateTodo = (
         queryClient,
         todoKeys.todosByMember(squadId, selectedDay, squadMemberId),
         (prevData: InfiniteQueryData<ApiResponse<ToDoDetail[]>>) => {
-          const todo = {
-            ...newTodo,
-            toDoId,
-          };
+          const updatedPages = prevData.pages.map((page) => ({
+            ...page,
+            data: page.data.map((prevTodo) => (prevTodo.toDoId === toDoId ? { ...prevTodo, ...newTodo } : prevTodo)),
+          }));
 
           return {
             ...prevData,
-            pages: prevData.pages.map((page) => ({
-              ...page,
-              data: page.data.map((prevTodo) => (prevTodo.toDoId === toDoId ? todo : prevTodo)),
-            })),
+            pages: updatedPages,
           };
         },
       );
