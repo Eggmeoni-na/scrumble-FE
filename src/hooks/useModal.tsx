@@ -38,12 +38,7 @@ export const useModal = () => {
             resolve({ ok: false, error: reason });
             closeModal();
           },
-          actionModal: actionModal && {
-            type: actionModal.type,
-            text: actionModal.text,
-            message: actionModal.message,
-            displayCancel: actionModal.displayCancel,
-          },
+          actionModal: actionModal ?? undefined,
         };
         open(modal);
       }),
