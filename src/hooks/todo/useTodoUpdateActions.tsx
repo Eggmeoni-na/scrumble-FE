@@ -69,12 +69,15 @@ export const useTodoUpdateActions = (todo: ToDoDetail, queryParams: TodoQueryPar
     setIsEditMode(false);
   }, [contents, newContents, selectedDay, toDoId, updateTodoMutate]);
 
-  const handleKeyDownForEdit = useCallback((e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
-      e.preventDefault();
-      handleEditContents();
-    }
-  }, []);
+  const handleKeyDownForEdit = useCallback(
+    (e: KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
+        e.preventDefault();
+        handleEditContents();
+      }
+    },
+    [newContents],
+  );
 
   const todoUpdateActions = useMemo(
     () => ({
