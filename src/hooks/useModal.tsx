@@ -9,8 +9,8 @@ export type OpenModalType = <
   },
 >(
   Component: ComponentType<P>,
-  props?: Omit<P, 'onSubmit' | 'onAbort'> | undefined,
-  actionModal?: ActionModalType,
+  props?: Omit<P, 'onSubmit' | 'onAbort'> | null,
+  actionModal?: ActionModalType | null,
 ) => Promise<{
   ok: boolean;
   value?: Parameters<P['onSubmit']>[0];
@@ -24,7 +24,7 @@ export const useModal = () => {
 
   const closeModal = useCallback(() => close(modalId), [modalId, close]);
   const openModal: OpenModalType = useCallback(
-    (Component, props?, actionModal?) =>
+    (Component, props = null, actionModal = null) =>
       new Promise((resolve) => {
         const modal = {
           element: Component,
@@ -38,7 +38,7 @@ export const useModal = () => {
             resolve({ ok: false, error: reason });
             closeModal();
           },
-          actionModal: actionModal ?? undefined,
+          actionModal: actionModal,
         };
         open(modal);
       }),
