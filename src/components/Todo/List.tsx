@@ -23,9 +23,12 @@ const List = ({ isMeSelected, onChangeProgressRate, queryParams }: Props) => {
     pageSize: TODO_PAGE_SIZE,
   };
 
-  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery(
-    todoInfiniteQueryOptions(squadMemberId, squadId, selectedDay, payload),
-  );
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    refetch: refetchTodos,
+  } = useInfiniteQuery(todoInfiniteQueryOptions(squadMemberId, squadId, selectedDay, payload));
 
   const todos = data ?? [];
 
@@ -36,6 +39,10 @@ const List = ({ isMeSelected, onChangeProgressRate, queryParams }: Props) => {
   };
 
   const { loadMoreRef } = useInfinite(loadMoreTodos, hasNextPage);
+
+  useEffect(() => {
+    if (!data) refetchTodos();
+  }, [data]);
 
   useEffect(() => {
     const isCompleted = todos.filter((todo) => todo.toDoStatus === TODO_STATUS.COMPLETED).length;
