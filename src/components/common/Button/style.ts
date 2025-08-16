@@ -1,33 +1,18 @@
 import { css } from '@emotion/react';
-import { ButtonHTMLAttributes } from 'react';
 
-type Variant = 'default' | 'primary' | 'confirm' | 'delete';
+export type Variant = 'default' | 'primary' | 'confirm' | 'delete';
 
-type ButtonProps = {
-  text: string;
-  variant?: Variant;
-} & ButtonHTMLAttributes<HTMLButtonElement>;
-
-const Button = ({ text, variant = 'default', onClick, ...rest }: ButtonProps) => (
-    <button css={[buttonStyle, getVariantStyles(variant)]} onClick={onClick} {...rest}>
-      {text}
-    </button>
-  );
-
-export default Button;
-
-const buttonStyle = () => css`
+export const buttonStyle = css`
   width: 100%;
   height: 36px;
   border-radius: 6px;
   font-weight: 700;
-
   :hover {
     opacity: 0.5;
   }
 `;
 
-const getVariantStyles = (variant: Variant) => {
+export const getVariantStyles = (variant: Variant) => {
   switch (variant) {
     case 'primary':
       return css`

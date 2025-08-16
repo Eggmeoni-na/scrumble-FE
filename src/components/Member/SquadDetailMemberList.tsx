@@ -5,6 +5,7 @@ import { useMemberStore } from '@/stores';
 import { fullSizeButtonStyle, scrollBarStyle } from '@/styles/globalStyles';
 import { SquadMember } from '@/types';
 import { css } from '@emotion/react';
+import { memo } from 'react';
 
 type Props = {
   squadMembers: SquadMember[];
@@ -23,7 +24,7 @@ const SquadDetailMemberList = ({ squadMembers }: Props) => {
   );
 };
 
-export default SquadDetailMemberList;
+export default memo(SquadDetailMemberList);
 
 const Member = ({ member }: { member: SquadMember }) => {
   const { selectedMember, setSelectedMember } = useMemberStore((state) => state);

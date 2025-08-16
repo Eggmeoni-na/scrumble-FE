@@ -235,3 +235,10 @@ export const scrollBarStyle = css`
 `;
 
 export const fullSizeButtonStyle = { width: '100%', height: '100%' };
+
+export const ellipsisStyle = css`
+  text-align: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+`;

@@ -1,11 +1,19 @@
+import {
+  calendarButtonStyle,
+  calendarItemStyle,
+  calendarStyle,
+  dayNameStyle,
+  monthNavButtonStyle,
+  selectedDateStyle,
+  todayStyle,
+} from '@/components/common/Calendar/style';
 import { useDayStore } from '@/stores';
-import { breakpoints, pcMediaQuery } from '@/styles/breakpoints';
-import { fullSizeButtonStyle, scrollBarStyle } from '@/styles/globalStyles';
+import { fullSizeButtonStyle } from '@/styles/globalStyles';
 import { getDaysInMonth } from '@/utils';
-import { css, Theme, useTheme } from '@emotion/react';
+import { useTheme } from '@emotion/react';
 import { addMonths, format, subMonths } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { forwardRef, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 const Calendar = ({ onChangeSelectedDay }: { onChangeSelectedDay: (day: string) => void }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -26,7 +34,7 @@ const Calendar = ({ onChangeSelectedDay }: { onChangeSelectedDay: (day: string) 
   );
 };
 
-export default Calendar;
+export default memo(Calendar);
 
 const CalendarHeader = ({
   currentMonth,
@@ -88,7 +96,7 @@ const CalendarList = ({ currentMonth }: { currentMonth: Date }) => {
   );
 };
 
-Calendar.Item = forwardRef<HTMLLIElement, { day: string }>(({ day }, ref) => {
+const CalendarItem = forwardRef<HTMLLIElement, { day: string }>(({ day }, ref) => {
   const theme = useTheme();
   const { selectedDay, setSelectedDay } = useDayStore((state) => state);
   const isSelected = selectedDay === day;
@@ -112,7 +120,7 @@ Calendar.Item = forwardRef<HTMLLIElement, { day: string }>(({ day }, ref) => {
       aria-selected={selectedDay === day}
       id={`${day}일`}
     >
-      <button style={fullSizeButtonStyle} onClick={handleClick}>
+      <button style={fullSizeButtonStyle} onClick={handleClick} css={calendarButtonStyle}>
         <span>{format(new Date(day), 'dd')}</span>
         <span css={dayNameStyle}>{format(new Date(day), 'EEE', { locale: ko })}</span>
       </button>
@@ -120,96 +128,8 @@ Calendar.Item = forwardRef<HTMLLIElement, { day: string }>(({ day }, ref) => {
   );
 });
 
+CalendarItem.displayName = 'CalendarItem';
+
 Calendar.Header = CalendarHeader;
 Calendar.List = CalendarList;
-Calendar.Item.displayName = 'CalendarItem';
-
-const calendarStyle = css`
-  display: flex;
-  gap: 4px;
-  margin: 8px 16px;
-  overflow-x: auto;
-
-  ${scrollBarStyle}
-`;
-
-const calendarItemStyle = (theme: Theme, isSelected: boolean) => css`
-  width: 32px;
-  height: 48px;
-  flex-shrink: 0;
-  border-radius: 14px;
-  color: ${theme.colors.text};
-  background-color: ${theme.colors.background.white};
-  border: 2px solid ${theme.colors.gray.gray100};
-  border-radius: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-
-  :hover {
-    background-color: ${!isSelected && theme.colors.background.yellow};
-    cursor: ${isSelected && 'default'};
-  }
-`;
-
-const todayStyle = (theme: Theme, isSelected: boolean) => css`
-  color: ${isSelected ? 'white' : theme.colors.primary};
-  border: 2px solid ${theme.colors.primary};
-`;
-
-const selectedDateStyle = (theme: Theme) => css`
-  background-color: ${theme.colors.primary};
-  border: 2px solid ${theme.colors.primary};
-
-  & button {
-    color: #1b1b52;
-  }
-`;
-
-const dayNameStyle = (theme: Theme) => css`
-  ${theme.typography.size_10}
-  font-weight: 500;
-`;
-
-const monthNavButtonStyle = (theme: Theme) => css`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  max-width: ${breakpoints.mobile};
-  margin: 8px auto;
-
-  & span {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex: 1;
-    height: 28px;
-    border: 2px solid ${theme.colors.gray.gray100};
-    border-radius: 4px;
-    ${theme.typography.size_14}
-    font-weight: 500;
-  }
-
-  & button {
-    width: 28px;
-    height: 28px;
-    border: 2px solid ${theme.colors.gray.gray100};
-    border-radius: 4px;
-    color: ${theme.colors.text};
-    cursor: pointer;
-    margin: 0 16px;
-
-    transition: transform 0.3s ease-in-out;
-    :hover {
-      transform: scale(1.1);
-      background-color: #eeeeee70;
-    }
-  }
-
-  ${pcMediaQuery(css`
-    max-width: ${breakpoints.pc};
-    margin: 8px 150px;
-  `)}
-`;
+Calendar.Item = memo(CalendarItem);

@@ -1,34 +1,60 @@
 import { generateTempSession, getOAuthUrl } from '@/apis';
-import { EmailInputModal } from '@/components/common/Modal';
+import { ActionModal, EmailInputModal } from '@/components/common/Modal';
 import CopyText from '@/components/CopyText';
+import { EXTERNAL_URLS, LOGIN_ERROR_MESSAGES, OAUTH_TYPE } from '@/constants';
 import { useModal, useUserCookie } from '@/hooks';
 import { pcMediaQuery } from '@/styles/breakpoints';
-import { AuthUser } from '@/types';
+import { ActionModalType, AuthUser } from '@/types';
 import { css, Theme } from '@emotion/react';
 import { Navigate, useNavigate } from 'react-router-dom';
 
-const LoginPage = ({ isDev }: { isDev: boolean }) => {
+const isDev =
+  window.location.hostname === import.meta.env.VITE_DEV_DOMAIN ||
+  import.meta.env.MODE === 'development' ||
+  window.location.hostname === 'localhost';
+
+const ERROR_REDIRECT_MODAL: ActionModalType = {
+  type: 'confirm',
+  text: '운영 서비스로 이동',
+  message: isDev ? LOGIN_ERROR_MESSAGES.SERVER_DOWN : LOGIN_ERROR_MESSAGES.TRY_AGAIN_LATER,
+  displayCancel: false,
+};
+
+const LoginPage = () => {
   const { user, setCookie } = useUserCookie();
   const navigate = useNavigate();
-  const { ModalContainer: EmailInputModalContainer, openModal } = useModal();
+  const { ModalContainer: EmailInputModalContainer, openModal: openEmailInputModal } = useModal();
+  const { ModalContainer: LoginErrorModalContainer, openModal: openErrorModal } = useModal();
 
   if (user) {
     return <Navigate to="/" replace />;
   }
 
-  const handleGoogleLogin = async () => {
-    try {
-      const response = await getOAuthUrl('GOOGLE');
-      window.location.href = `${response.data.redirectUrl}`;
-    } catch (error) {
-      console.error('Failed to fetch Google OAuth URL', error);
+  const redirectTo = (url: string) => {
+    window.location.href = url;
+  };
+
+  const handleServerErrorRedirect = async () => {
+    const result = await openErrorModal(ActionModal, null, ERROR_REDIRECT_MODAL);
+
+    if (result.ok && isDev) {
+      redirectTo(EXTERNAL_URLS.PROD_SERVICE);
     }
   };
 
-  const getUserInput = async () => {
-    const res = await openModal(EmailInputModal);
-    if (!res.ok || !res.value) return null;
-    return res.value;
+  const handleGoogleLogin = async () => {
+    try {
+      const response = await getOAuthUrl(OAUTH_TYPE.GOOGLE);
+      redirectTo(response.data.redirectUrl);
+    } catch (error) {
+      console.error('Failed to fetch Google OAuth URL', error);
+      await handleServerErrorRedirect();
+    }
+  };
+
+  const getUserEmailFromModal = async () => {
+    const result = await openEmailInputModal(EmailInputModal);
+    return result.ok ? result.value : null;
   };
 
   const setUserCookie = (user: AuthUser) =>
@@ -36,16 +62,17 @@ const LoginPage = ({ isDev }: { isDev: boolean }) => {
 
   const handleTempLogin = async () => {
     try {
-      const user = await getUserInput();
-      if (!user) return;
+      const email = await getUserEmailFromModal();
+      if (!email) return;
 
-      const { data: session } = await generateTempSession(user);
-      if (!session) return;
-      setUserCookie(session);
+      const { data: tempSession } = await generateTempSession(email);
+      if (!tempSession) return;
 
+      setUserCookie(tempSession);
       navigate('/squads', { replace: true });
     } catch (error) {
       console.error('임시 로그인 실패', error);
+      await handleServerErrorRedirect();
     }
   };
 
@@ -66,6 +93,7 @@ const LoginPage = ({ isDev }: { isDev: boolean }) => {
         )}
       </div>
       {isDev && <EmailInputModalContainer />}
+      {isDev && <LoginErrorModalContainer />}
     </>
   );
 };

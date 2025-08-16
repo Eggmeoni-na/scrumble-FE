@@ -1,5 +1,5 @@
-import { Button } from '@/components/common/Button';
-import { descStyle, inputStyle } from '@/components/common/Modal/ModalContents/SquadForm';
+import { Button } from '@/components/common';
+import { descStyle, inputStyle } from '@/components/common/Modal/ModalContents/SquadForm/style';
 import { ModalButtonGroup, ModalContent, ModalHeader, ModalTemplate } from '@/components/common/Modal/ModalTemplate';
 import { ModalContentProps } from '@/types';
 import { FormEvent, useState } from 'react';

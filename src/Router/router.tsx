@@ -17,8 +17,6 @@ import {
 
 import { createBrowserRouter } from 'react-router-dom';
 
-const isDev = import.meta.env.MODE === 'development';
-
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -76,7 +74,7 @@ export const router = createBrowserRouter([
         path: 'login',
         element: (
           <LoginLayout>
-            <LoginPage isDev={isDev} />
+            <LoginPage />
           </LoginLayout>
         ),
       },

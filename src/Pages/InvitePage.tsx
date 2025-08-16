@@ -2,10 +2,10 @@ import { getSearchMember } from '@/apis';
 import { Check } from '@/assets/icons';
 import { IconWrapper } from '@/components';
 import { Button, Form } from '@/components/common';
-import { checkedStyle, checkIconStyle } from '@/components/Todo';
 import { useToastHandler } from '@/hooks';
 import { useInviteMember } from '@/hooks/mutations';
 import { useSquadStore } from '@/stores';
+import { checkedStyle, checkIconStyle } from '@/styles/common';
 import { SearchMemberResponse } from '@/types';
 import { css, Theme, useTheme } from '@emotion/react';
 import { FormEvent, KeyboardEventHandler, useState } from 'react';
@@ -16,6 +16,7 @@ const InvitePage = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [searchResult, setSearchResult] = useState<SearchMemberResponse | null>(null);
   const [isSelected, setIsSelected] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
   const { successToast, warningToast, failedToast } = useToastHandler();
   const theme = useTheme();
   const navigate = useNavigate();
@@ -24,8 +25,13 @@ const InvitePage = () => {
     onError: () => failedToast('멤버 초대에 실패했어요.'),
   });
 
+  const isSearchEmpty = hasSearched && !searchResult;
+
   const handleSearch = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setHasSearched(true);
+    setSearchResult(null);
+
     if (!searchKeyword.length) {
       warningToast('이메일을 입력해주세요');
       return;
@@ -90,6 +96,11 @@ const InvitePage = () => {
           </IconWrapper>
           <p>{searchResult.name}</p>
         </div>
+      )}
+      {isSearchEmpty && (
+        <p css={emptyStyle}>
+          사용자를 찾을 수 없어요😢 <br /> 계정 정보를 다시 확인해주세요.
+        </p>
       )}
       <Button
         text="초대하기"
@@ -157,4 +168,14 @@ const searchResultStyle = (theme: Theme, isSelected: boolean) => css`
 
 const customCheckedStyle = css`
   background-color: #409c2c;
+`;
+
+const emptyStyle = css`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  line-height: 22px;
 `;
