@@ -1,7 +1,6 @@
 import { ROLE } from '@/constants/role';
 import { MEMBER_STYLE_TYPE } from '@/constants/squad';
 import { useUserCookie } from '@/hooks';
-import { pcMediaQuery } from '@/styles/breakpoints';
 import { ellipsisStyle } from '@/styles/globalStyles';
 import { SquadMember } from '@/types';
 import { css, Theme } from '@emotion/react';
@@ -53,7 +52,7 @@ const infoStyle = css`
 const detailNameStyle = css`
   font-size: 12px;
   font-weight: 500;
-  width: 80px;
+  width: 64px;
 `;
 
 const sidebarNameStyle = (theme: Theme) => css`
@@ -61,29 +60,19 @@ const sidebarNameStyle = (theme: Theme) => css`
 `;
 
 const imgContainerStyle = css`
-  width: 80px;
-  height: 80px;
+  width: 50px;
+  height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
-
-  ${pcMediaQuery(css`
-    width: 88px;
-    height: 88px;
-  `)}
 `;
 
 const imgStyle = (theme: Theme) => css`
-  width: 72px;
-  height: 72px;
+  width: 42px;
+  height: 42px;
   object-fit: cover;
   border-radius: 50%;
-  border: 3.5px solid ${theme.colors.background.white};
-
-  ${pcMediaQuery(css`
-    width: 80px;
-    height: 80px;
-  `)}
+  border: 2.5px solid ${theme.colors.background.white};
 `;
 
 const activeStyle = css`
