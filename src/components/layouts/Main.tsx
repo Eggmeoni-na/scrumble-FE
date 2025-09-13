@@ -11,6 +11,6 @@ export default Main;
 
 const mainContainer = (theme: Theme) => css`
   flex: 1;
-  background-color: ${theme.colors.background.yellow};
+  background-color: ${theme.colors.background.white};
   overflow: auto;
 `;
