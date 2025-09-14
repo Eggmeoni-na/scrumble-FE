@@ -210,8 +210,8 @@ const getViewTitle = (view: CalendarView, currentDate: Date) => {
     case 'daily':
       return format(currentDate, 'yyyy년 M월 d일', { locale: ko });
     case 'weekly':
-      const weekStart = startOfWeek(currentDate, { weekStartsOn: 0 });
-      const weekEnd = endOfWeek(currentDate, { weekStartsOn: 0 });
+      const weekStart = startOfWeek(currentDate, { weekStartsOn: 1 });
+      const weekEnd = endOfWeek(currentDate, { weekStartsOn: 1 });
       return `${format(weekStart, 'M월 d일', { locale: ko })} - ${format(weekEnd, 'M월 d일', { locale: ko })}`;
     case 'monthly':
       return format(currentDate, 'yyyy년 M월', { locale: ko });
