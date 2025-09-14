@@ -18,6 +18,7 @@ import {
   titleStyle,
   viewButtonStyle,
   viewSelectorStyle,
+  viewSelectorWrapperStyle,
   weekDayContentCellStyle,
   weekDayHeaderCellStyle,
   weekendDayNumberStyle,
@@ -29,9 +30,11 @@ import { todoInfiniteQueryOptions } from '@/hooks/queries';
 import { useTodoProgressStore } from '@/stores/progressRete';
 import { TodoQueryParams } from '@/types';
 
+import { ArrowLeft, ArrowRight, Daily, Monthly, Weekly } from '@/assets/icons';
+import IconWrapper from '@/components/IconWrapper';
 import ProgressRate from '@/components/ProgressRate';
 
-type CalendarView = 'month' | 'week' | 'day';
+type CalendarView = 'monthly' | 'weekly' | 'daily';
 
 interface CalendarComponentProps {
   onDateChange: (date: string) => void;
@@ -39,10 +42,15 @@ interface CalendarComponentProps {
   queryParams: TodoQueryParams;
 }
 
-const viewOptions = ['day', 'week', 'month'];
+const viewOptions = ['daily', 'weekly', 'monthly'];
+const viewIcons = {
+  daily: <Daily />,
+  weekly: <Weekly />,
+  monthly: <Monthly />,
+};
 
 const CalendarComponent = ({ onDateChange, selectedDate = new Date(), queryParams }: CalendarComponentProps) => {
-  const [view, setView] = useState<CalendarView>('week');
+  const [view, setView] = useState<CalendarView>('weekly');
   const [currentDate, setCurrentDate] = useState<Date>(selectedDate);
   const theme = useTheme();
 
@@ -63,13 +71,13 @@ const CalendarComponent = ({ onDateChange, selectedDate = new Date(), queryParam
     let newDate;
 
     switch (view) {
-      case 'day':
+      case 'daily':
         newDate = addDays(currentDate, step);
         break;
-      case 'week':
+      case 'weekly':
         newDate = addDays(currentDate, step * 7);
         break;
-      case 'month':
+      case 'monthly':
         newDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + step, 1);
         break;
       default:
@@ -87,13 +95,13 @@ const CalendarComponent = ({ onDateChange, selectedDate = new Date(), queryParam
     onDateChange(transformDate(newDate));
   };
 
-  const renderMonthView = () => (
+  const renderMonthlyView = () => (
     <div css={monthViewStyle(theme)}>
       <Calendar onChange={handleDateChange} value={currentDate} tileClassName={tileClassName} />
     </div>
   );
 
-  const renderWeekView = () => {
+  const renderWeeklyView = () => {
     const weekStart = startOfWeek(currentDate, { weekStartsOn: 1 });
     const weekEnd = endOfWeek(currentDate, { weekStartsOn: 1 });
     const weekDays = eachDayOfInterval({ start: weekStart, end: weekEnd });
@@ -138,33 +146,39 @@ const CalendarComponent = ({ onDateChange, selectedDate = new Date(), queryParam
 
   return (
     <div css={containerStyle}>
-      <div css={viewSelectorStyle}>
-        {viewOptions.map((v) => (
-          <button
-            css={viewButtonStyle(view === v, theme)}
-            onClick={() => setView(v as CalendarView)}
-            disabled={view === v}
-          >
-            {v}
-          </button>
-        ))}
+      <div css={viewSelectorWrapperStyle}>
+        <div css={viewSelectorStyle(theme)}>
+          {viewOptions.map((v) => (
+            <button
+              css={viewButtonStyle(view === v, theme)}
+              onClick={() => setView(v as CalendarView)}
+              disabled={view === v}
+            >
+              <IconWrapper>{viewIcons[v as CalendarView]}</IconWrapper>
+            </button>
+          ))}
+        </div>
       </div>
 
       <div css={headerStyle}>
         <div css={navigationStyle}>
           <button css={navButtonStyle} onClick={() => handleNavigateDate('prev')}>
-            ‹
+            <IconWrapper>
+              <ArrowLeft />
+            </IconWrapper>
           </button>
           <h2 css={titleStyle}>{getViewTitle(view, currentDate)}</h2>
           <button css={navButtonStyle} onClick={() => handleNavigateDate('next')}>
-            ›
+            <IconWrapper>
+              <ArrowRight />
+            </IconWrapper>
           </button>
         </div>
       </div>
 
       <div css={contentStyle}>
-        {view === 'month' && renderMonthView()}
-        {view === 'week' && renderWeekView()}
+        {view === 'monthly' && renderMonthlyView()}
+        {view === 'weekly' && renderWeeklyView()}
       </div>
     </div>
   );
@@ -193,13 +207,13 @@ const transformDate = (date: Date) => format(date, 'yyyy-MM-dd');
 
 const getViewTitle = (view: CalendarView, currentDate: Date) => {
   switch (view) {
-    case 'day':
+    case 'daily':
       return format(currentDate, 'yyyy년 M월 d일', { locale: ko });
-    case 'week':
+    case 'weekly':
       const weekStart = startOfWeek(currentDate, { weekStartsOn: 0 });
       const weekEnd = endOfWeek(currentDate, { weekStartsOn: 0 });
       return `${format(weekStart, 'M월 d일', { locale: ko })} - ${format(weekEnd, 'M월 d일', { locale: ko })}`;
-    case 'month':
+    case 'monthly':
       return format(currentDate, 'yyyy년 M월', { locale: ko });
     default:
       return '';

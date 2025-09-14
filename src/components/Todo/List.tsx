@@ -50,13 +50,11 @@ const List = ({ isMeSelected, queryParams }: Props) => {
   }, [data]);
 
   useEffect(() => {
-    if (!isFetching) {
-      const isCompleted = todos.filter((todo) => todo.toDoStatus === TODO_STATUS.COMPLETED).length;
-      const newProgressRate = !todos.length ? 0 : Math.floor((isCompleted / todos.length) * 100);
+    const isCompleted = todos.filter((todo) => todo.toDoStatus === TODO_STATUS.COMPLETED).length;
+    const newProgressRate = !todos.length ? 0 : Math.floor((isCompleted / todos.length) * 100);
 
-      setProgress(squadMemberId, selectedDay, newProgressRate);
-    }
-  }, [todos, isFetching]);
+    setProgress(squadMemberId, selectedDay, newProgressRate);
+  }, [todos]);
 
   if (todos.length === 0) return null;
 

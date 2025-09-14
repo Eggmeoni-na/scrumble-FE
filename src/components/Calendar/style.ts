@@ -33,7 +33,7 @@ export const navigationStyle = css`
 
 export const navButtonStyle = (theme: Theme) => css`
   border: 1.5px solid #ddd;
-  border-radius: 6px;
+  border-radius: 16px;
   width: 40px;
   height: 40px;
   display: flex;
@@ -59,20 +59,26 @@ export const titleStyle = (theme: Theme) => css`
   `)}
 `;
 
-export const viewSelectorStyle = css`
+export const viewSelectorWrapperStyle = css`
   display: flex;
   justify-content: flex-end;
+`;
+
+export const viewSelectorStyle = (theme: Theme) => css`
+  display: inline-flex;
   gap: 5px;
-  border-radius: 8px;
+  border-radius: 22px;
   padding: 4px;
   margin-bottom: 16px;
+  border: 1.5px solid ${theme.colors.gray.gray100};
+  background: ${theme.colors.background.white};
 `;
 
 export const viewButtonStyle = (active: boolean, theme: Theme) => css`
-  padding: 8px 16px;
+  padding: 8px;
   border: none;
   background: ${active ? theme.colors.background.yellow : 'transparent'};
-  border-radius: 6px;
+  border-radius: 16px;
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;
