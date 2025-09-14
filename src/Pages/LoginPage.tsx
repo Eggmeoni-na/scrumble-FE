@@ -84,12 +84,12 @@ const LoginPage = () => {
           <img css={googleLoginImgStyle} src="/images/google_login.png" alt="google_login" />
         </button>
         {isDev && (
-          <>
+          <div css={demoUserContainerStyle}>
             <button css={demoUserStyle} onClick={handleTempLogin}>
               테스트 계정 로그인
             </button>
             <CopyText />
-          </>
+          </div>
         )}
       </div>
       {isDev && <EmailInputModalContainer />}
@@ -119,16 +119,23 @@ const loginHomeImgStyle = css`
 `;
 
 const googleLoginImgStyle = css`
-  height: 48px;
+  height: 32px;
   flex: 1;
 
   ${pcMediaQuery(css`
-    height: 64px;
+    height: 48px;
   `)}
 `;
 
 const demoUserStyle = (theme: Theme) => css`
   color: ${theme.colors.text};
-  ${theme.typography.size_16}
+  ${theme.typography.size_14}
+  font-weight: 500;
   text-decoration: underline;
+`;
+
+const demoUserContainerStyle = css`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 `;

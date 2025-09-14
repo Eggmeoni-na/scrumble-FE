@@ -52,7 +52,7 @@ const infoStyle = css`
 const detailNameStyle = css`
   font-size: 12px;
   font-weight: 500;
-  width: 64px;
+  width: 58px;
 `;
 
 const sidebarNameStyle = (theme: Theme) => css`
