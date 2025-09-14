@@ -52,7 +52,7 @@ const infoStyle = css`
 const detailNameStyle = css`
   font-size: 12px;
   font-weight: 500;
-  width: 64px;
+  width: 58px;
 `;
 
 const sidebarNameStyle = (theme: Theme) => css`
@@ -60,16 +60,16 @@ const sidebarNameStyle = (theme: Theme) => css`
 `;
 
 const imgContainerStyle = css`
-  width: 56px;
-  height: 56px;
+  width: 50px;
+  height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
 const imgStyle = (theme: Theme) => css`
-  width: 48px;
-  height: 48px;
+  width: 42px;
+  height: 42px;
   object-fit: cover;
   border-radius: 50%;
   border: 2.5px solid ${theme.colors.background.white};
