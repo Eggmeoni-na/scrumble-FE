@@ -42,7 +42,7 @@ const Circle = styled.div`
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #f3f4f6;
+  background: white;
   overflow: hidden;
 `;
 
