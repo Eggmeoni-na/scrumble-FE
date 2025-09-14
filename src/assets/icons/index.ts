@@ -10,6 +10,7 @@ import Daily from './daily.svg?react';
 import Dark from './dark.svg?react';
 import Delete from './delete.svg?react';
 import Edit from './edit.svg?react';
+import EmotionSadLine from './emotionSadLine.svg?react';
 import Exit from './exit.svg?react';
 import Failed from './failed.svg?react';
 import Light from './light.svg?react';
@@ -36,6 +37,7 @@ export {
   Dark,
   Delete,
   Edit,
+  EmotionSadLine,
   Exit,
   Failed,
   Light,

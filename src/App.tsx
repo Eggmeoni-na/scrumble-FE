@@ -2,7 +2,7 @@ import { Loading, RootErrorFallback, ToastContainer } from '@/components/common'
 import { ModalProvider } from '@/context/modal';
 import { useThemeStore } from '@/stores';
 import { darkTheme, globalStyles, lightTheme } from '@/styles';
-import { Global, ThemeProvider } from '@emotion/react';
+import { css, Global, Theme, ThemeProvider } from '@emotion/react';
 import { QueryClient, QueryClientProvider, useQueryErrorResetBoundary } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Suspense } from 'react';
@@ -30,7 +30,9 @@ function App() {
           <Global styles={globalStyles} />
           <ErrorBoundary FallbackComponent={RootErrorFallback} onReset={reset}>
             <Suspense fallback={<Loading />}>
-              <Outlet />
+              <div css={containerStyle}>
+                <Outlet />
+              </div>
             </Suspense>
           </ErrorBoundary>
           <ToastContainer />
@@ -42,3 +44,8 @@ function App() {
 }
 
 export default App;
+
+const containerStyle = (theme: Theme) => css`
+  margin: 0 24px;
+  box-shadow: ${theme.mode === 'dark' ? theme.shadow.dark : theme.shadow.light};
+`;

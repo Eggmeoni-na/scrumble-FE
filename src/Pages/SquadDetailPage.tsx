@@ -83,6 +83,8 @@ const containerStyle = (theme: Theme) => css`
   display: flex;
   flex-direction: column;
 
+  height: 100% !important;
+
   background-color: ${theme.colors.background.white};
   overflow: auto;
 `;

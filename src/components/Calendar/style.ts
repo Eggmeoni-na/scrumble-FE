@@ -61,13 +61,14 @@ export const titleStyle = (theme: Theme) => css`
 
 export const viewSelectorWrapperStyle = css`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 export const viewSelectorStyle = (theme: Theme) => css`
   display: inline-flex;
   gap: 5px;
-  border-radius: 22px;
+  border-radius: 16px;
   padding: 4px;
   margin-bottom: 16px;
   border: 1.5px solid ${theme.colors.gray.gray100};
@@ -75,10 +76,10 @@ export const viewSelectorStyle = (theme: Theme) => css`
 `;
 
 export const viewButtonStyle = (active: boolean, theme: Theme) => css`
-  padding: 8px;
+  padding: 2px;
   border: none;
   background: ${active ? theme.colors.background.yellow : 'transparent'};
-  border-radius: 16px;
+  border-radius: 12px;
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;
@@ -241,5 +242,17 @@ export const weekDayContentCellStyle = (selected: boolean, theme: Theme) => css`
   &[aria-disabled='true'] {
     background: ${theme.colors.background.yellow};
     pointer-events: none;
+  }
+`;
+
+export const todayButtonStyle = (theme: Theme) => css`
+  height: 40px;
+  border: 1.5px solid ${theme.colors.gray.gray100};
+  background: ${theme.colors.background.white};
+  padding: 4px 16px;
+  border-radius: 16px;
+
+  &:hover {
+    background: ${theme.colors.gray.gray100};
   }
 `;

@@ -16,6 +16,7 @@ import {
   navButtonStyle,
   navigationStyle,
   titleStyle,
+  todayButtonStyle,
   viewButtonStyle,
   viewSelectorStyle,
   viewSelectorWrapperStyle,
@@ -147,6 +148,9 @@ const CalendarComponent = ({ onDateChange, selectedDate = new Date(), queryParam
   return (
     <div css={containerStyle}>
       <div css={viewSelectorWrapperStyle}>
+        <button css={todayButtonStyle} onClick={() => handleDateChange(new Date())}>
+          오늘
+        </button>
         <div css={viewSelectorStyle(theme)}>
           {viewOptions.map((v) => (
             <button
@@ -154,7 +158,7 @@ const CalendarComponent = ({ onDateChange, selectedDate = new Date(), queryParam
               onClick={() => setView(v as CalendarView)}
               disabled={view === v}
             >
-              <IconWrapper>{viewIcons[v as CalendarView]}</IconWrapper>
+              <IconWrapper style={{ width: '28px', height: '28px' }}>{viewIcons[v as CalendarView]}</IconWrapper>
             </button>
           ))}
         </div>
@@ -210,8 +214,8 @@ const getViewTitle = (view: CalendarView, currentDate: Date) => {
     case 'daily':
       return format(currentDate, 'yyyy년 M월 d일', { locale: ko });
     case 'weekly':
-      const weekStart = startOfWeek(currentDate, { weekStartsOn: 0 });
-      const weekEnd = endOfWeek(currentDate, { weekStartsOn: 0 });
+      const weekStart = startOfWeek(currentDate, { weekStartsOn: 1 });
+      const weekEnd = endOfWeek(currentDate, { weekStartsOn: 1 });
       return `${format(weekStart, 'M월 d일', { locale: ko })} - ${format(weekEnd, 'M월 d일', { locale: ko })}`;
     case 'monthly':
       return format(currentDate, 'yyyy년 M월', { locale: ko });
