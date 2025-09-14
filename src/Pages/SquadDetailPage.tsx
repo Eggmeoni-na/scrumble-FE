@@ -85,7 +85,6 @@ const containerStyle = (theme: Theme) => css`
   flex-direction: column;
 
   height: 100% !important;
-  // min-height: 120px !important;
 
   background-color: ${theme.colors.background.white};
   overflow: auto;
