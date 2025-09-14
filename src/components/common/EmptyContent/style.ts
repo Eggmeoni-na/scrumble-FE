@@ -7,6 +7,7 @@ export const containerStyle = (theme: Theme) => css`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
   gap: 16px;
 
   & div {

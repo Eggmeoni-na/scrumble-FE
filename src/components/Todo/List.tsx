@@ -32,7 +32,6 @@ const List = ({ isMeSelected, queryParams }: Props) => {
     fetchNextPage,
     hasNextPage,
     refetch: refetchTodos,
-    isFetching,
   } = useInfiniteQuery(todoInfiniteQueryOptions(squadMemberId, squadId, selectedDay, payload));
 
   const todos = data ?? [];

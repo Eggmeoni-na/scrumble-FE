@@ -29,6 +29,7 @@ const SquadDetailPage = () => {
   const me = squadDetail.squadMembers.find((member) => member.memberId === user?.id);
   const isMeSelected = !selectedMember || selectedMember.squadMemberId === me?.squadMemberId;
   const squadMemberId = isMeSelected ? me!.squadMemberId : selectedMember!.squadMemberId;
+  const selectedMemberName = !selectedMember ? user?.name : selectedMember.name;
 
   const queryParams: TodoQueryParams = useMemo(
     () => ({
