@@ -60,16 +60,16 @@ const sidebarNameStyle = (theme: Theme) => css`
 `;
 
 const imgContainerStyle = css`
-  width: 50px;
-  height: 50px;
+  width: 56px;
+  height: 56px;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
 const imgStyle = (theme: Theme) => css`
-  width: 42px;
-  height: 42px;
+  width: 48px;
+  height: 48px;
   object-fit: cover;
   border-radius: 50%;
   border: 2.5px solid ${theme.colors.background.white};
