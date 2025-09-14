@@ -1,9 +1,10 @@
-import { Loading } from '@/components/common';
-import { ModalFallback } from '@/components/common/ErrorBoundary';
-import { MainLayout } from '@/components/layouts';
 import { useQueryErrorResetBoundary } from '@tanstack/react-query';
 import { PropsWithChildren, Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
+
+import { Loading } from '@/components/common';
+import { ModalFallback } from '@/components/common/ErrorBoundary';
+import { MainLayout } from '@/components/layouts';
 
 const FallbackWrapper = ({ children }: PropsWithChildren) => {
   const { reset } = useQueryErrorResetBoundary();

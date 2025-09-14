@@ -1,4 +1,4 @@
-import { Calendar } from '@/components/common';
+import Calendar from '@/components/Calendar';
 import { SquadDetailMemberList } from '@/components/Member';
 import { TodoContainer, TodoForm } from '@/components/Todo';
 import { useUserCookie } from '@/hooks';
@@ -13,6 +13,7 @@ import { useParams } from 'react-router-dom';
 const SquadDetailPage = () => {
   const params = useParams();
   const squadId = Number(params.squadId);
+
   const setCurrentSquadId = useSquadStore((state) => state.setCurrentSquadId);
   const { user } = useUserCookie();
   const { selectedDay, setSelectedDay } = useDayStore((state) => state);
@@ -54,8 +55,6 @@ const SquadDetailPage = () => {
 
   return (
     <section css={containerStyle}>
-      <Calendar onChangeSelectedDay={setSelectedDay} />
-
       <section aria-labelledby="squad-members">
         <h2 id="squad-members" className="sr-only">
           멤버
@@ -63,7 +62,7 @@ const SquadDetailPage = () => {
         <SquadDetailMemberList squadMembers={squadDetail.squadMembers} />
       </section>
 
-      <TodoContainer selectedMemberName={selectedMemberName} isMeSelected={isMeSelected} queryParams={queryParams} />
+      <Calendar selectedDate={new Date(selectedDay)} onDateChange={setSelectedDay} queryParams={queryParams} />
 
       {isMeSelected && (
         <section aria-labelledby="todo-form">
@@ -73,6 +72,8 @@ const SquadDetailPage = () => {
           <TodoForm squadId={squadId} selectedDay={selectedDay} squadMemberId={squadMemberId} />
         </section>
       )}
+
+      <TodoContainer isMeSelected={isMeSelected} queryParams={queryParams} />
     </section>
   );
 };
@@ -82,6 +83,9 @@ export default SquadDetailPage;
 const containerStyle = (theme: Theme) => css`
   display: flex;
   flex-direction: column;
-  height: 100%;
+
+  height: 100% !important;
+
   background-color: ${theme.colors.background.white};
+  overflow: auto;
 `;

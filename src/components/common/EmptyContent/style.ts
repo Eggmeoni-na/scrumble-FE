@@ -8,15 +8,18 @@ export const containerStyle = (theme: Theme) => css`
   justify-content: center;
   align-items: center;
 
-  & span {
-    display: inline-block;
-    font-size: 8rem;
+  gap: 16px;
+
+  & div {
+    width: 64px;
+    height: 64px;
+    color: ${theme.colors.gray.gray200};
   }
 
   & p {
     ${theme.typography.size_18}
     font-weight: 700;
-    color: ${theme.colors.primary};
+    color: ${theme.colors.gray.gray200};
   }
 
   ${pcMediaQuery(css`

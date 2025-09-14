@@ -1,25 +1,44 @@
-import { breakpoints } from '@/styles';
 import { pcMediaQuery } from '@/styles/breakpoints';
 import { css, Theme } from '@emotion/react';
+
+export const listStyle = (theme: Theme) => css`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 16px;
+`;
 
 export const itemStyle = (theme: Theme) => css`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 52px;
-  margin: 8px 16px;
-  border-radius: 8px;
-  background-color: ${theme.colors.background.lightYellow};
-  box-shadow: 0px 3px 28px 0px rgba(37, 37, 37, 0.05);
+  height: 88px;
+  border-radius: 16px;
+  padding: 12px 16px;
   cursor: pointer;
-  max-width: ${breakpoints.mobile};
+  max-width: ${theme.breakpoints.mobile};
+
+  background-color: ${theme.colors.background.white};
+  color: ${theme.colors.text};
+  border: 1px solid ${theme.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.08)'};
+
+  box-shadow: ${theme.mode === 'dark' ? theme.shadow.dark : theme.shadow.light};
 
   ${pcMediaQuery(css`
-    max-width: ${breakpoints.pc};
+    max-width: ${theme.breakpoints.pc};
   `)}
 
   & button {
     ${theme.typography.size_16}
+    color: inherit;
+    text-shadow: ${theme.mode === 'dark' ? '0 1px 2px rgba(0, 0, 0, 0.5)' : 'none'};
+  }
+
+  &:hover {
+    background-color: ${theme.mode === 'dark' ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)'};
+    box-shadow: ${theme.mode === 'dark'
+      ? '0 4px 12px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.08)'
+      : '0 4px 12px rgba(0,0,0,0.12)'};
   }
 `;
 

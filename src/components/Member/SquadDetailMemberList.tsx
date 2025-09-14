@@ -46,7 +46,8 @@ const containerStyle = css`
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
-  margin: 0 16px;
+  margin: 8px 16px;
+  gap: 4px;
   overflow-x: auto;
   ${scrollBarStyle}
 `;

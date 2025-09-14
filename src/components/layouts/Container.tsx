@@ -18,10 +18,9 @@ const containerStyles = css`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: #fff;
   max-width: ${breakpoints.mobile};
 
   ${pcMediaQuery(css`
     max-width: ${breakpoints.pc};
-  `)}
+  `)};
 `;

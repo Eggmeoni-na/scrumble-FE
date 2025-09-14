@@ -2,7 +2,7 @@ import { Button, EmptyContent } from '@/components/common';
 import { useCreateSquad } from '@/hooks/mutations';
 import { squadQueryOptions } from '@/hooks/queries';
 import SquadItem from '@/Pages/SquadPage/SquadItem';
-import { blankStyle, createSquadButtonStyle, headerStyle } from '@/Pages/SquadPage/style';
+import { blankStyle, createSquadButtonStyle, headerStyle, listStyle } from '@/Pages/SquadPage/style';
 import { useToastStore } from '@/stores';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
@@ -30,7 +30,11 @@ const SquadPage = () => {
         <span>스쿼드</span>
         <Button text="스쿼드 생성" onClick={handleCreateSquad} customCss={createSquadButtonStyle} />
       </div>
-      {squadList.length ? <ul>{squadList}</ul> : <EmptyContent message="참여중인 스쿼드가 없어요" css={blankStyle} />}
+      {squadList.length ? (
+        <ul css={listStyle}>{squadList}</ul>
+      ) : (
+        <EmptyContent message="참여중인 스쿼드가 없어요" css={blankStyle} />
+      )}
       <CreateSquadModal />
     </>
   );

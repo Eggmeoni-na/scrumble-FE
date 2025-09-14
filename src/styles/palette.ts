@@ -8,6 +8,7 @@ export const lightColors = {
     yellow: '#FFFACD',
     lightYellow: '#FFFEF6',
     gray: '#F8F8F8',
+    calendar: '#FCFCFC',
   },
   text: '#24272B',
   black: {
@@ -30,6 +31,7 @@ export const darkColors = {
     yellow: '#34373B',
     lightYellow: '#24272B',
     gray: '#24272B',
+    calendar: '#24272B',
   },
   text: '#ffffff',
   black: {
