@@ -7,16 +7,18 @@ export const containerStyle = (theme: Theme) => css`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 16px;
 
-  & span {
-    display: inline-block;
-    font-size: 8rem;
+  & div {
+    width: 64px;
+    height: 64px;
+    color: ${theme.colors.gray.gray200};
   }
 
   & p {
     ${theme.typography.size_18}
     font-weight: 700;
-    color: ${theme.colors.primary};
+    color: ${theme.colors.gray.gray200};
   }
 
   ${pcMediaQuery(css`
