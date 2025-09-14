@@ -67,7 +67,7 @@ export const viewSelectorWrapperStyle = css`
 export const viewSelectorStyle = (theme: Theme) => css`
   display: inline-flex;
   gap: 5px;
-  border-radius: 22px;
+  border-radius: 16px;
   padding: 4px;
   margin-bottom: 16px;
   border: 1.5px solid ${theme.colors.gray.gray100};
@@ -75,10 +75,10 @@ export const viewSelectorStyle = (theme: Theme) => css`
 `;
 
 export const viewButtonStyle = (active: boolean, theme: Theme) => css`
-  padding: 8px;
+  padding: 2px;
   border: none;
   background: ${active ? theme.colors.background.yellow : 'transparent'};
-  border-radius: 16px;
+  border-radius: 12px;
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;

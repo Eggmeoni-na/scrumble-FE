@@ -154,7 +154,7 @@ const CalendarComponent = ({ onDateChange, selectedDate = new Date(), queryParam
               onClick={() => setView(v as CalendarView)}
               disabled={view === v}
             >
-              <IconWrapper>{viewIcons[v as CalendarView]}</IconWrapper>
+              <IconWrapper style={{ width: '28px', height: '28px' }}>{viewIcons[v as CalendarView]}</IconWrapper>
             </button>
           ))}
         </div>
