@@ -6,6 +6,7 @@ export const todoContainerStyle = (theme: Theme) => css`
   display: flex;
   flex-direction: column;
   gap: 8px;
+  min-height: 240px;
   flex-grow: 1;
   margin: 0 16px 16px 16px;
   padding: 8px 0;
