@@ -61,7 +61,8 @@ export const titleStyle = (theme: Theme) => css`
 
 export const viewSelectorWrapperStyle = css`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 export const viewSelectorStyle = (theme: Theme) => css`
@@ -241,5 +242,17 @@ export const weekDayContentCellStyle = (selected: boolean, theme: Theme) => css`
   &[aria-disabled='true'] {
     background: ${theme.colors.background.yellow};
     pointer-events: none;
+  }
+`;
+
+export const todayButtonStyle = (theme: Theme) => css`
+  height: 40px;
+  border: 1.5px solid ${theme.colors.gray.gray100};
+  background: ${theme.colors.background.white};
+  padding: 4px 16px;
+  border-radius: 16px;
+
+  &:hover {
+    background: ${theme.colors.gray.gray100};
   }
 `;

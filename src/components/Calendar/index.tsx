@@ -16,6 +16,7 @@ import {
   navButtonStyle,
   navigationStyle,
   titleStyle,
+  todayButtonStyle,
   viewButtonStyle,
   viewSelectorStyle,
   viewSelectorWrapperStyle,
@@ -147,6 +148,9 @@ const CalendarComponent = ({ onDateChange, selectedDate = new Date(), queryParam
   return (
     <div css={containerStyle}>
       <div css={viewSelectorWrapperStyle}>
+        <button css={todayButtonStyle} onClick={() => handleDateChange(new Date())}>
+          오늘
+        </button>
         <div css={viewSelectorStyle(theme)}>
           {viewOptions.map((v) => (
             <button
