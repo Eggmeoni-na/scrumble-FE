@@ -63,6 +63,7 @@ export const viewSelectorWrapperStyle = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 16px;
 `;
 
 export const viewSelectorStyle = (theme: Theme) => css`
@@ -70,7 +71,6 @@ export const viewSelectorStyle = (theme: Theme) => css`
   gap: 5px;
   border-radius: 16px;
   padding: 4px;
-  margin-bottom: 16px;
   border: 1.5px solid ${theme.colors.gray.gray100};
   background: ${theme.colors.background.white};
 `;
