@@ -21,7 +21,7 @@ jobs:
 
       - name: Add Fork Repository as Remote
         run: |
-          git remote add fork https://x-access-token:${{ secrets.AUTO_ACTIONS }}@github.com/k-jeonghee/scrumble-FE.git
+          git remote add fork https://x-access-token:${{ secrets.AUTO_ACTIONS }}@github.com/kjheee/scrumble-FE.git
 
       - name: Sync Origin Main to Fork Main
         if: github.ref == 'refs/heads/main'
